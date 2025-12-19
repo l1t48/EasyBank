@@ -1,0 +1,67 @@
+@import "tailwindcss";
+@import 'bootstrap-icons/font/bootstrap-icons.css';
+@import "tailwindcss-animated";
+@import 'animate.css';
+@import "devicon/devicon.min.css";
+
+/* Light mode */
+:root {
+  --bg:  hsl(172, 50%, 90%); /*#E9E3DF*/
+  --text: black;
+  --nav-bg: hsl(164, 50%, 90%); /*#EFECE3*/
+  --nav-text-sec: hsl(190, 80%, 20%); /*#000000*/
+  --nav-text: hsl(190, 80%, 20%); /*#000000*/
+  --nav-hover: #2c577ab1; /*#131842*/ /*hsl(209, 80%, 20%)*/
+  --danger-border: oklch(63.7% 0.237 25.331);
+  --danger-hover-bg: oklch(39.6% 0.141 25.723);
+  --danger-disabled-border: oklch(63.195% 0.24825 27.948);
+  --danger-disabled-text: oklch(63.195% 0.24825 27.948);
+}
+
+/* Dark mode */
+.dark {
+  --bg: #17171b; /*1B192B*/
+  --text: white;
+  --nav-bg: #1b1b21; /*282440*/
+  --nav-text-sec: #44bc70; /*9E8FEB*/
+  --nav-text:#44bc70; /*#9E8FEB*/
+  --nav-hover: #44bc7088; /*8D81D4*/
+  --danger-border: oklch(63.7% 0.237 25.331);
+  --danger-hover-bg: oklch(62.391% 0.15179 19.542);
+  --danger-disabled-border: oklch(63.7% 0.237 25.331);
+  --danger-disabled-text: oklch(70.4% 0.191 22.216);
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+}
+
+button, a {
+    cursor: pointer;
+}
+
+.main-content {
+    padding-top: 4rem;
+}
+
+.dancing-script-icon {
+  font-family: "Dancing Script", cursive;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
+}
+
+body:not(.dark) .text-shadow-light {
+  text-shadow: 2px 2px 6px white; /* h-offset, v-offset, blur, color */
+}
+
+body:not(.dark) .text-shadow-light-sm {
+  text-shadow: 1px 1px 4px white;
+}
+
+input:-webkit-autofill {
+  -webkit-text-fill-color: var(--nav-hover) !important;
+  -webkit-box-shadow: 0 0 0px 1000px var(--nav-bg) inset !important;
+  transition: background-color 5000s ease-in-out, color 5000s ease-in-out;
+}
