@@ -1,7 +1,7 @@
 /*
-| Endpoint            | Method | Auth Required | Roles       | Description                                                           |
-|---------------------|--------|---------------|-------------|----------------------------------------------------------             |
-| /dashboard/user     | GET    | Yes           | User        | Returns user dashboard: account details, transactions, totals by type |
+| Endpoint                | Method | Auth Required | Roles       | Description                                                           |
+|---------------------    |--------|---------------|-------------|----------------------------------------------------------             |
+| /api/dashboard/user     | GET    | Yes           | User        | Returns user dashboard: account details, transactions, totals by type |
 */
 
 const express = require("express");

@@ -4,6 +4,7 @@ import { downloadJSON } from "../../../Utils/Admin-Utils/AdminAuditLogsExportUti
 import AdminAuditLogsFilteringOptions from "./AdminAuditLogsFilteringOptions";
 import AdminAuditLogsMobileCards from "./AdminAuditLogsMobileCards";
 import AdminAuditLogsTable from "./AdminAuditLogsTable";
+import { TABLE_COLUMN_COUNT } from "../../../Data/Global_variables";
 
 function AdminAuditLogsEntity() {
   const { logs, loading, error, expandedId, toggleExpandedId, fetchLogs } = useAuditLogsData();
@@ -85,19 +86,20 @@ function AdminAuditLogsEntity() {
 
       {loading && <p className="text-center text-[var(--nav-text)] mt-5">Loading...</p>}
       {error && <p className="text-center text-red-500">{error}</p>}
-      {!loading && !error && logs.length === 0 && (
-        <p className="text-center text-[var(--nav-text)]">No logs</p>
-      )}
 
       <div className="space-y-3 xl:hidden mt-10">
-        {!loading && !error && logs.map(log => (
-          <AdminAuditLogsMobileCards 
-            key={log._id || log.id || Math.random()} 
-            log={log} 
-            expandedId={expandedId} 
-            toggleExpandedId={toggleExpandedId} 
-          />
-        ))}
+        {logs.length === 0 && !loading ? (
+          <p className="text-center text-[var(--nav-text)]">No system logs available.</p>
+        ) : (
+          logs.map(log => (
+            <AdminAuditLogsMobileCards
+              key={log._id || log.id || Math.random()}
+              log={log}
+              expandedId={expandedId}
+              toggleExpandedId={toggleExpandedId}
+            />
+          ))
+        )}
       </div>
 
       <div className="hidden xl:block mt-10">
@@ -111,14 +113,18 @@ function AdminAuditLogsEntity() {
               </tr>
             </thead>
             <tbody>
-              {!loading && !error && logs.map(log => (
-                <AdminAuditLogsTable 
-                  key={log._id || log.id || Math.random()} 
-                  log={log} 
-                  expandedId={expandedId} 
-                  toggleExpandedId={toggleExpandedId} 
-                />
-              ))}
+              {logs.length === 0 && !loading ? (
+                <tr><td colSpan={TABLE_COLUMN_COUNT} className="p-3 text-center text-sm md:text-base bg-[var(--bg)]">No system logs available.</td></tr>
+              ) : (
+                logs.map(log => (
+                  <AdminAuditLogsTable
+                    key={log._id || log.id || Math.random()}
+                    log={log}
+                    expandedId={expandedId}
+                    toggleExpandedId={toggleExpandedId}
+                  />
+                ))
+              )}
             </tbody>
           </table>
         </div>

@@ -19,7 +19,7 @@ const SupervisorAuditLogsTable = ({ logs, loading, expandedId, setExpandedId }) 
                 </thead>
                 <tbody>
                     {logs.length === 0 ? (
-                        <tr><td colSpan={TABLE_COLUMN_COUNT} className="p-4 text-center">No logs</td></tr>
+                        <tr><td colSpan={TABLE_COLUMN_COUNT} className="p-3 text-center text-sm md:text-base bg-[var(--bg)]">No system logs available.</td></tr>
                     ) : (
                         logs.map(log => {
                             const logId = log._id || log.id || Math.random();

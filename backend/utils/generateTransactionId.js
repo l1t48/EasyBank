@@ -1,3 +1,7 @@
+// | Function Name     | Description                                                                                               |
+// |----------------   |-------------------------------------------------------------------------------------------------          |
+// | randomAlphaNum    | Generate a TransactionsId for each transactions                                                           |
+
 const crypto = require("crypto");
 
 const { _36BYTES, RANDOM_STRING_LENGTH, DATE_PAD_LENGTH } = require("../config/global_variables");

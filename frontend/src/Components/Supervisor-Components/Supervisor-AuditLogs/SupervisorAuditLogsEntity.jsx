@@ -101,7 +101,7 @@ function SupervisorAuditLogsEntity() {
 
       <div className="space-y-3 xl:hidden mt-10">
         {logs.length === 0 && !loading ? (
-            <p className="text-center text-[var(--nav-text)]">No logs</p>
+            <p className="text-center text-[var(--nav-text)]">No system logs available.</p>
         ) : (
             logs.map(log => (
                 <SupervisorAuditLogsMobileCards 

@@ -37,6 +37,21 @@ export default function AdminUsersManagementPanelCreateUser({ isOpen, onClose, o
         return () => window.removeEventListener("keydown", onKey);
     }, [isOpen, onClose]);
 
+    useEffect(() => {
+        if (!isOpen) {
+            setFormData({
+                firstName: '',
+                lastName: '',
+                email: '',
+                password: '',
+                accountType: 'User',
+            });
+            setError(null);
+            setSuccess(null);
+            setShowToast(false);
+        }
+    }, [isOpen]);
+
     if (!isOpen) return null;
 
     const handleChange = (e) => {
@@ -109,8 +124,8 @@ export default function AdminUsersManagementPanelCreateUser({ isOpen, onClose, o
                     <h2 className="text-lg md:text-2xl font-bold text-[var(--nav-text)]">
                         Create a New User
                     </h2>
-                    <button 
-                        onClick={onClose} 
+                    <button
+                        onClick={onClose}
                         className="ml-4 rounded p-2 hover:bg-[var(--nav-text)]/10 text-[var(--nav-text)]"
                     >
                         ✕

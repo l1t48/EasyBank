@@ -32,6 +32,17 @@ function UserTransactionsCreateNewTransaction({ isOpen, onClose }) {
     return () => window.removeEventListener("keydown", onKey);
   }, [isOpen, onClose]);
 
+  useEffect(() => {
+    if (!isOpen) {
+      setError(null);
+      setMessage("");
+      setAmount("");
+      setTargetAccountNumber("");
+      setTransactionType("Deposit");
+      setShowToast(false);
+    }
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
   const handleBackdropClick = (e) => {
@@ -74,7 +85,7 @@ function UserTransactionsCreateNewTransaction({ isOpen, onClose }) {
       setToastMsg("Transaction Successful!");
       setToastType("success");
       setShowToast(true);
-      
+
       // Reset Form
       setAmount("");
       setTargetAccountNumber("");
@@ -103,8 +114,8 @@ function UserTransactionsCreateNewTransaction({ isOpen, onClose }) {
           <h2 className="text-lg md:text-2xl font-bold text-[var(--nav-text)]">
             Create a New Transaction
           </h2>
-          <button 
-            onClick={onClose} 
+          <button
+            onClick={onClose}
             className="ml-4 rounded p-2 hover:bg-[var(--nav-text)]/10 text-[var(--nav-text)]"
           >
             ✕

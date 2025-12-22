@@ -107,6 +107,12 @@ This approach simulates real banking environments where multiple staff members m
 - CORS
 - RESTful API architecture
 
+### 5.3 Other Tools & Testing
+- Visual Studio Code (VS Code) – Primary IDE for coding, debugging, and project organization.
+- Postman – Manual testing of backend APIs, validating endpoints, and inspecting request/response payloads.
+- Jest – Automated testing framework planned for backend APIs; note that this feature was partially implemented and later removed from the final project.
+- Cross-Browser Testing – Application tested on multiple browsers, including Google Chrome, Opera, and Firefox.
+
 ## 6. System Architecture
 EasyBank follows a layered client–server architecture designed for clarity, security, and scalability. The system is structured as follows:
 - Client (Frontend) - A React-based frontend responsible for user interaction, role-specific dashboards, and real-time UI updates. The client communicates with the backend via REST APIs and WebSocket connections.
@@ -220,10 +226,33 @@ For a portfolio project, the current solution was considered sufficient.
 - Automatic logout when a user leaves the browser session is not implemented and should be added.
 - Introducing an additional role focused on incident response, threat detection, and security analysis would significantly enhance the system from a cybersecurity perspective.
 
-## 12. Author
+
+## 12 Testing
+Testing was conducted throughout the development process to ensure reliability, correctness, and stability of both the backend and frontend components.
+
+### 12.1 Backend Testing
+During the early stages of development, the backend was tested before implementing the real-time socket configuration and frontend integration. Manual testing was performed to verify API behavior, request handling, and response correctness.
+
+In addition, automated test cases were implemented using Jest, where each API endpoint had its own dedicated test suite and individual test cases to validate expected functionality and error handling. These automated tests were later removed from the project to keep the scope focused, with the intention of publishing them as a separate testing-focused project in the future.
+
+After frontend integration, the backend APIs were manually tested again to ensure correct communication between the frontend and backend. All APIs functioned as expected, and no critical issues were identified.
+
+## 12.2 Frontend Testing
+Frontend testing was performed manually using a structured testing approach:
+
+- Unit testing was applied to individual components to verify their isolated behavior.
+
+- Integration testing was conducted on each page to ensure proper interaction between components and backend APIs.
+
+- System testing was performed on the complete application across all user roles to validate end-to-end functionality.
+
+All tested scenarios behaved as intended, and no functional issues were observed during testing.
+
+
+## 13. Author
 Adnan Hamdan - Full-Stack Developer
 
-## 13. MIT License
+## 14. MIT License
 Copyright (c) 2025 Adnan Hamdan
 
 Permission is hereby granted, free of charge, to any person obtaining a copy

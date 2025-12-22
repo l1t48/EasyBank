@@ -1,8 +1,12 @@
 /*
-| Endpoint                           | Method | Auth Required | Roles | Description                                                                 |
-|------------------------------------|--------|---------------|-------|-----------------------------------------------------------------------------|
-| /api/data/names                   | POST   | Yes           | Any   | Returns first name, last name, and full name for a list of user IDs          |
-| /api/data/accountNumbers          | POST   | Yes           | Any   | Returns account numbers for a list of user IDs                               |
+| Endpoint                           | Method | Auth Required | Roles   | Description                                                                |
+|------------------------------------|--------|---------------|---------|----------------------------------------------------------------------------|
+| /api/data/accountNumbers           | POST   | Yes           | Any     | Returns account numbers for a list of user IDs.                            |
+| /api/data/accountNumber/:id        | GET    | Yes           | Any     | Returns the account number for a single user by ID.                        |
+| /api/data/names-by-accounts        | POST   | No            | Any     | Returns first name, last name, and full name for a list of account numbers.|
+| /api/data/names                    | POST   | Yes           | Any     | Returns first name, last name, and full name for multiple user IDs (array).|
+| /api/data/accountNumbers           | POST   | Yes           | Any     | Returns account numbers for multiple user IDs (array).                     |
+
 */
 
 const express = require("express");
@@ -39,7 +43,8 @@ router.get("/accountNumber/:id", authMiddleware, async (req, res) => {
 });
 
 
-router.post("/names-by-accounts", async (req, res) => {
+// router.post("/names-by-accounts", async (req, res) => {
+router.post("/names-by-accounts", authMiddleware, async (req, res) => {
   const { accountNumbers } = req.body;
 
   if (!Array.isArray(accountNumbers) || accountNumbers.length === 0) {

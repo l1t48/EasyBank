@@ -2,10 +2,6 @@ import { handleCancel } from '../../../Utils/User-Utils/UserTransactionsCancelUt
 import { AMOUNT_DECIMAL_PLACES } from '../../../Data/Global_variables';
 
 function UserTransactionsMobileCards({ transactions, fetchTx }) {
-  if (transactions.length === 0) {
-    return <p className="text-center text-[var(--nav-text)]">No transactions found.</p>;
-  }
-
   return (
     <div className="xl:hidden space-y-3">
       {transactions.map((tx) => {

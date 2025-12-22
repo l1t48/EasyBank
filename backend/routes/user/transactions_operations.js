@@ -1,8 +1,8 @@
 /*
 | Endpoint                              | Method | Auth Required | Roles | Description                                                                                 |
 |---------------------------------------|--------|---------------|-------|---------------------------------------------------------------------------------------------|
-| /api/user/create-transaction          | POST   | Yes           | User  | Creates a new transaction (deposit, withdrawal, or transfer) with validation and rate limit|
-| /api/user/transactions                | GET    | Yes           | User  | Returns user transaction history with filtering, sorting, and received/sent distinction    |
+| /api/user/create-transaction          | POST   | Yes           | User  | Creates a new transaction (deposit, withdrawal, or transfer) with validation and rate limit |
+| /api/user/transactions                | GET    | Yes           | User  | Returns user transaction history with filtering, sorting, and received/sent distinction     |
 | /api/user/cancel-transaction/:id      | PATCH  | Yes           | User  | Cancels a pending transaction and notifies relevant users and staff in real time            |
 */
 

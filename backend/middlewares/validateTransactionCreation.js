@@ -1,6 +1,6 @@
-// // // | Middleware Function         | Purpose                                                                 |
-// // // |-----------------------------|-------------------------------------------------------------------------|
-// // // | validateTransactionCreation | Validates transaction input (type, amount, user IDs) and ensures users exist |
+// | Middleware Function         | Purpose                                                                      |
+// |-----------------------------|-------------------------------------------------------------------------     |
+// | validateTransactionCreation | Validates transaction input (type, amount, user IDs) and ensures users exist |
 
 const { body, validationResult } = require("express-validator");
 const User = require("../models/User");

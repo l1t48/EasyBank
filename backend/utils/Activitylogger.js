@@ -1,5 +1,5 @@
-// | Function Name | Description                                                                                     |
-// |----------------|-------------------------------------------------------------------------------------------------|
+// | Function Name | Description                                                                                                |
+// |----------------|-------------------------------------------------------------------------------------------------          |
 // | logActivity    | Logs a user activity with details such as userId, userName, userRole, action, message, IP, and user-agent |
 
 const ActivityLog = require('../models/ActivityLog');

@@ -14,6 +14,7 @@ export default function AdminUsersManagementPanelEditUser({ isOpen, onClose, use
     const [formData, setFormData] = useState(initialFormState);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [success, setSuccess] = useState(null);
 
     const [toastMsg, setToastMsg] = useState("");
     const [showToast, setShowToast] = useState(false);
@@ -45,6 +46,7 @@ export default function AdminUsersManagementPanelEditUser({ isOpen, onClose, use
                 balance: user.balance !== undefined ? user.balance : 0,
             });
             setError(null);
+            setSuccess(null);
             setShowToast(false);
         }
     }, [user]);
@@ -69,6 +71,7 @@ export default function AdminUsersManagementPanelEditUser({ isOpen, onClose, use
     const handleSubmit = async (e) => {
         if (e) e.preventDefault();
         setError(null);
+        setSuccess(null);
         setLoading(true);
 
         const url = API.admin.updateUser(user.id);
@@ -87,6 +90,7 @@ export default function AdminUsersManagementPanelEditUser({ isOpen, onClose, use
 
             if (res.ok) {
                 setToastMsg(`User updated successfully!`);
+                setSuccess(`User updated successfully!`);
                 setToastType("success");
                 setShowToast(true);
                 onUserUpdated(data.user);
@@ -201,6 +205,7 @@ export default function AdminUsersManagementPanelEditUser({ isOpen, onClose, use
                     </div>
 
                     {error && <p className="text-red-500 text-sm font-semibold mt-3">{error}</p>}
+                    {success && <p className="text-green-500 text-sm font-semibold mt-3">{success}</p>}
                 </form>
 
                 {/* Footer */}
