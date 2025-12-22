@@ -92,9 +92,10 @@ export default function AdminUsersManagementPanelCreateUser({ isOpen, onClose, o
 
                 if (onUserCreated) onUserCreated(data.user);
                 setFormData({ firstName: '', lastName: '', email: '', password: '', accountType: 'User' });
-            } else {
-                const errorMessage = data.error || 'Failed to create user.';
-                setToastMsg("User Creation Failed");
+            }
+            if (!response.ok) {
+                const errorMessage = data.errors?.[0]?.msg || data.error || 'Failed to create user.';
+                setToastMsg(errorMessage);
                 setToastType("error");
                 setShowToast(true);
                 setError(errorMessage);

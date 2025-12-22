@@ -8,6 +8,7 @@ const initialFormState = {
     email: '',
     accountType: '',
     balance: 0,
+    password: '',
 };
 
 export default function AdminUsersManagementPanelEditUser({ isOpen, onClose, user, onUserUpdated }) {
@@ -23,12 +24,13 @@ export default function AdminUsersManagementPanelEditUser({ isOpen, onClose, use
     const overlayRef = useRef(null);
     const modalRef = useRef(null);
 
-    // Sync body scroll and global key listeners
+    // Sync body scroll
     useEffect(() => {
         document.body.style.overflow = isOpen ? "hidden" : "";
         return () => (document.body.style.overflow = "");
     }, [isOpen]);
 
+    // Keyboard listener
     useEffect(() => {
         if (!isOpen) return;
         const onKey = (e) => { if (e.key === "Escape") handleFormClose(); };
@@ -36,31 +38,39 @@ export default function AdminUsersManagementPanelEditUser({ isOpen, onClose, use
         return () => window.removeEventListener("keydown", onKey);
     }, [isOpen]);
 
+    // Load user data into form when modal opens or user changes
     useEffect(() => {
-        if (user) {
+        if (isOpen && user) {
             setFormData({
                 firstName: user.firstName || '',
                 lastName: user.lastName || '',
                 email: user.email || '',
                 accountType: user.accountType || 'User',
                 balance: user.balance !== undefined ? user.balance : 0,
+                password: '',
             });
+            // Clear alerts when switching users
             setError(null);
             setSuccess(null);
             setShowToast(false);
         }
-    }, [user]);
+    }, [user, isOpen]);
 
     const handleChange = (e) => {
         const { name, value, type } = e.target;
         setFormData((prev) => ({
             ...prev,
-            [name]: type === 'number' ? parseFloat(value) : value,
+            [name]: type === 'number' ? (value === "" ? 0 : parseFloat(value)) : value,
         }));
     };
 
+    // Clean up all states on close
     const handleFormClose = () => {
         setFormData(initialFormState);
+        setError(null);
+        setSuccess(null);
+        setShowToast(false);
+        setToastMsg("");
         onClose();
     };
 
@@ -70,11 +80,31 @@ export default function AdminUsersManagementPanelEditUser({ isOpen, onClose, use
 
     const handleSubmit = async (e) => {
         if (e) e.preventDefault();
+
+        const hasChanges =
+            formData.firstName !== user.firstName ||
+            formData.lastName !== user.lastName ||
+            formData.email !== user.email ||
+            formData.accountType !== user.accountType ||
+            formData.balance !== user.balance ||
+            formData.password !== ""; // If they typed anything in password
+
+        if (!hasChanges) {
+            setToastMsg("No changes detected.");
+            setToastType("info");
+            setShowToast(true);
+            setTimeout(handleFormClose, 1500);
+            return; // Stop here, don't call the API
+        }
+
         setError(null);
         setSuccess(null);
         setLoading(true);
 
-        const url = API.admin.updateUser(user.id);
+        const url = API.admin.updateUser(user.id || user._id);
+
+        const payload = { ...formData };
+        if (!payload.password) delete payload.password;
 
         try {
             const res = await fetch(url, {
@@ -83,7 +113,7 @@ export default function AdminUsersManagementPanelEditUser({ isOpen, onClose, use
                     'Content-Type': 'application/json',
                     Authorization: `Bearer ${localStorage.getItem('token')}`,
                 },
-                body: JSON.stringify(formData),
+                body: JSON.stringify(payload),
             });
 
             const data = await res.json();
@@ -94,12 +124,14 @@ export default function AdminUsersManagementPanelEditUser({ isOpen, onClose, use
                 setToastType("success");
                 setShowToast(true);
                 onUserUpdated(data.user);
+                // Wait 1.5s so user can see the success message, then close
                 setTimeout(handleFormClose, 1500);
             } else {
-                setError(data.error || 'Failed to update user.');
-                setToastMsg(data.error || "Update failed.");
+                const errorMessage = data.errors?.[0]?.msg || data.error || 'Failed to update user.';
+                setToastMsg(errorMessage);
                 setToastType("error");
                 setShowToast(true);
+                setError(errorMessage);
             }
         } catch (err) {
             setError('Network error or server unreachable.');
@@ -123,7 +155,6 @@ export default function AdminUsersManagementPanelEditUser({ isOpen, onClose, use
                 ref={modalRef}
                 className="bg-[var(--nav-bg)] rounded-xl shadow-lg w-full max-w-xl md:max-w-2xl mt-6 mb-6 max-h-[90vh] overflow-hidden flex flex-col ring-1 ring-black/10"
             >
-                {/* Header */}
                 <div className="flex items-start justify-between p-4 border-b border-[var(--nav-text)]/10">
                     <h2 className="text-lg md:text-2xl font-bold text-[var(--nav-text)]">
                         Edit User's Information
@@ -136,14 +167,13 @@ export default function AdminUsersManagementPanelEditUser({ isOpen, onClose, use
                     </button>
                 </div>
 
-                {/* Body */}
                 <form id="editUserForm" onSubmit={handleSubmit} className="p-4 overflow-y-auto" style={{ flex: 1 }}>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
-                            <label className="block text-[var(--nav-text)] text-sm mb-1" htmlFor="AdminEditUserModalfirstName">First Name</label>
+                            <label className="block text-[var(--nav-text)] text-sm mb-1" htmlFor="firstName">First Name</label>
                             <input
                                 type="text"
-                                id="AdminEditUserModalfirstName"
+                                id="firstName"
                                 name="firstName"
                                 value={formData.firstName}
                                 onChange={handleChange}
@@ -152,10 +182,10 @@ export default function AdminUsersManagementPanelEditUser({ isOpen, onClose, use
                             />
                         </div>
                         <div>
-                            <label className="block text-[var(--nav-text)] text-sm mb-1" htmlFor="AdminEditUserModallastName">Last Name</label>
+                            <label className="block text-[var(--nav-text)] text-sm mb-1" htmlFor="lastName">Last Name</label>
                             <input
                                 type="text"
-                                id="AdminEditUserModallastName"
+                                id="lastName"
                                 name="lastName"
                                 value={formData.lastName}
                                 onChange={handleChange}
@@ -164,23 +194,39 @@ export default function AdminUsersManagementPanelEditUser({ isOpen, onClose, use
                             />
                         </div>
                         <div className="sm:col-span-2">
-                            <label className="block text-[var(--nav-text)] text-sm mb-1" htmlFor="AdminEditUserModalemail">Email Address</label>
+                            <label className="block text-[var(--nav-text)] text-sm mb-1" htmlFor="email">Email Address</label>
                             <input
                                 type="email"
-                                id="AdminEditUserModalemail"
+                                id="email"
                                 name="email"
-                                autoComplete="off"
                                 value={formData.email}
                                 onChange={handleChange}
                                 required
                                 className="w-full p-2 border border-[var(--nav-text)] bg-[var(--nav-bg)] text-[var(--nav-hover)] rounded outline-none focus:ring focus:ring-[var(--nav-hover)]"
                             />
                         </div>
+
+                        <div className="sm:col-span-2">
+                            <label className="block text-[var(--nav-text)] text-sm mb-1" htmlFor="password">
+                                New Password <span className="text-xs opacity-50">(leave blank to keep current)</span>
+                            </label>
+                            <input
+                                type="password"
+                                id="password"
+                                name="password"
+                                autoComplete="new-password"
+                                value={formData.password}
+                                onChange={handleChange}
+                                placeholder="••••••••"
+                                className="w-full p-2 border border-[var(--nav-text)] bg-[var(--nav-bg)] text-[var(--nav-hover)] rounded outline-none focus:ring focus:ring-[var(--nav-hover)]"
+                            />
+                        </div>
+
                         <div>
-                            <label className="block text-[var(--nav-text)] text-sm mb-1" htmlFor="AdminEditUserModalaccountType">Account Role</label>
+                            <label className="block text-[var(--nav-text)] text-sm mb-1" htmlFor="accountType">Account Role</label>
                             <select
                                 name="accountType"
-                                id="AdminEditUserModalaccountType"
+                                id="accountType"
                                 value={formData.accountType}
                                 onChange={handleChange}
                                 className="w-full p-2 border border-[var(--nav-text)] bg-[var(--nav-bg)] text-[var(--nav-hover)] rounded outline-none focus:ring focus:ring-[var(--nav-hover)]"
@@ -191,11 +237,11 @@ export default function AdminUsersManagementPanelEditUser({ isOpen, onClose, use
                             </select>
                         </div>
                         <div>
-                            <label className="block text-[var(--nav-text)] text-sm mb-1" htmlFor="AdminEditUserModalbalance">Balance ($)</label>
+                            <label className="block text-[var(--nav-text)] text-sm mb-1" htmlFor="balance">Balance ($)</label>
                             <input
                                 type="number"
                                 name="balance"
-                                id="AdminEditUserModalbalance"
+                                id="balance"
                                 value={formData.balance}
                                 onChange={handleChange}
                                 step="0.01"
@@ -208,14 +254,13 @@ export default function AdminUsersManagementPanelEditUser({ isOpen, onClose, use
                     {success && <p className="text-green-500 text-sm font-semibold mt-3">{success}</p>}
                 </form>
 
-                {/* Footer */}
                 <div className="border-t border-[var(--nav-text)]/10 p-3 bg-gradient-to-t from-[var(--nav-bg)] to-transparent">
                     <div className="flex flex-col sm:flex-row gap-3">
                         <button
                             type="button"
                             onClick={handleFormClose}
                             disabled={loading}
-                            className="w-full sm:w-1/3 font-semibold py-2 rounded-md border border-[var(--danger-border)] bg-[var(--nav-text)] text-[var(--nav-bg)] hover:bg-[var(--danger-hover-bg)] transition-all duration-300"
+                            className="w-full sm:w-1/3 font-semibold py-2 rounded-md border border-[var(--nav-text)]/20 text-[var(--nav-text)] hover:bg-red-500/10 transition-all duration-300"
                         >
                             Cancel
                         </button>
@@ -224,7 +269,7 @@ export default function AdminUsersManagementPanelEditUser({ isOpen, onClose, use
                             form="editUserForm"
                             type="submit"
                             disabled={loading}
-                            className="w-full sm:w-1/3 font-semibold py-2 rounded-md bg-[var(--nav-text)] text-[var(--nav-bg)] hover:bg-[var(--nav-bg)] hover:text-[var(--nav-text)] hover:border hover:border-[var(--nav-hover)] transition-all duration-300"
+                            className="w-full sm:w-1/3 font-semibold py-2 rounded-md bg-[var(--nav-text)] text-[var(--nav-bg)] hover:opacity-90 transition-all duration-300"
                         >
                             {loading ? 'Saving...' : 'Save Changes'}
                         </button>

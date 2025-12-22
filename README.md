@@ -207,6 +207,7 @@ Two separate .env files are used: one for the frontend and one for the backend.
 - Certain frontend components rely directly on MongoDB _id values. Replacing these with generated public identifiers would reduce potential security exposure.
 - Multiple supervisors or administrators may see the same pending transactions simultaneously. Although backend atomic updates ensure that only one action succeeds and real-time updates synchronize the UI, this can still result in duplicated review work. Possible improvements include: 1. Atomic transaction assignment per supervisor, 2. Temporary locking mechanisms with TTL, 3. Queue-based transaction distribution
 For a portfolio project, the current solution was considered sufficient.
+- API layering/versioning was not implemented in this project but should be included to improve scalability, maintainability, and backward compatibility as the system grows.
 
 ### 11.3 Frontend & User Experience
 - Some frontend components make additional temporary API calls, resulting in unnecessary requests. These could be optimized by redesigning backend endpoints. This was deprioritized during the final stages of development.

@@ -17,6 +17,7 @@ const logActivity = require("../../utils/Activitylogger");
 const generateAccountNumber = require('../../utils/accountNumberGenerator');
 const validateUserRegistrationInput = require('../../utils/inputValidation');
 const hashPassword = require('../../utils/hashPassword');
+const { validateRegister, validateUserUpdate } = require("../../middlewares/validateInput")
 const { BAD_REQUEST, INTERNAL_SERVER_ERROR, NOT_FOUND } = require("../../config/global_variables");
 
 router.use(authMiddleware);
@@ -69,7 +70,7 @@ router.get("/admin/:accountNumber", authMiddleware, async (req, res) => {
   }
 });
 
-router.post("/create-user", authMiddleware, async (req, res) => {
+router.post("/create-user", authMiddleware, validateRegister, async (req, res) => {
   try {
     const validationError = validateUserRegistrationInput(req.body);
     if (validationError) {
@@ -134,10 +135,10 @@ router.post("/create-user", authMiddleware, async (req, res) => {
 });
 
 
-router.patch("/update-user/:id", authMiddleware, async (req, res) => {
+router.patch("/update-user/:id", authMiddleware, validateUserUpdate, async (req, res) => {
   try {
     const { id } = req.params;
-    const { firstName, lastName, email, accountType, balance } = req.body;
+    const { firstName, lastName, email, accountType, balance, password } = req.body;
 
     const user = await User.findById(id);
     if (!user) {
@@ -150,6 +151,10 @@ router.patch("/update-user/:id", authMiddleware, async (req, res) => {
         return res.status(BAD_REQUEST).json({ error: "Email is already registered" });
       }
       user.email = email;
+    }
+
+    if (password) {
+      user.password = await hashPassword(password);
     }
 
     const allowedRoles = ["User", "Admin", "Supervisor"];
