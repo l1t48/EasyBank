@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useId } from 'react';
 import { API } from '../../../Services/APIs';
 import Toast from '../../../Context/Toast';
 import { NOT_FOUND, AMOUNT_DECIMAL_PLACES } from '../../../Data/Global_variables';
@@ -9,6 +9,7 @@ export default function AdminUsersManagementPanelSearchUser({ isOpen, onClose })
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
+    const idPrefix = useId();
     const [toastMsg, setToastMsg] = useState("");
     const [showToast, setShowToast] = useState(false);
     const [toastType, setToastType] = useState("info");
@@ -127,14 +128,14 @@ className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4 o
                 {/* Body */}
                 <div className="p-4 overflow-y-auto" style={{ flex: 1 }}>
                     <form id="searchUserForm" onSubmit={handleSearch} className="mb-6">
-                        <label className="block text-[var(--nav-text)] text-sm mb-1" htmlFor="AdminSearchaccountNumber">
+                        <label className="block text-[var(--nav-text)] text-sm mb-1" htmlFor={`${idPrefix}-accountNumber`}>
                             Account Number
                         </label>
                         <div className="flex flex-col sm:flex-row gap-2">
                             <input
                                 type="text"
-                                id="AdminSearchaccountNumber"
-                                name="accountNumber"
+                                id={`${idPrefix}-accountNumber`}
+                                name={`${idPrefix}-accountNumber`}
                                 value={accountNumber}
                                 onChange={(e) => setAccountNumber(e.target.value)}
                                 required

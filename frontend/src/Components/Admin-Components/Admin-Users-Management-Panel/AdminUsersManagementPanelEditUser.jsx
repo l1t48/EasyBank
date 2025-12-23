@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useId } from 'react';
 import { API } from '../../../Services/APIs';
 import Toast from '../../../Context/Toast';
 
@@ -16,6 +16,8 @@ export default function AdminUsersManagementPanelEditUser({ isOpen, onClose, use
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(null);
+
+    const idPrefix = useId();
 
     const [toastMsg, setToastMsg] = useState("");
     const [showToast, setShowToast] = useState(false);
@@ -165,11 +167,11 @@ export default function AdminUsersManagementPanelEditUser({ isOpen, onClose, use
                 <form id="editUserForm" onSubmit={handleSubmit} className="p-4 overflow-y-auto" style={{ flex: 1 }}>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
-                            <label className="block text-[var(--nav-text)] text-sm mb-1" htmlFor="AdminEditUserModalfirstName">First Name</label>
+                            <label className="block text-[var(--nav-text)] text-sm mb-1" htmlFor={`${idPrefix}-firstName`}>First Name</label>
                             <input
                                 type="text"
-                                id="AdminEditUserModalfirstName"
-                                name="firstName"
+                                id={`${idPrefix}-firstName`}
+                                name={`${idPrefix}-firstName`}
                                 value={formData.firstName}
                                 onChange={handleChange}
                                 required
@@ -177,11 +179,11 @@ export default function AdminUsersManagementPanelEditUser({ isOpen, onClose, use
                             />
                         </div>
                         <div>
-                            <label className="block text-[var(--nav-text)] text-sm mb-1" htmlFor="AdminEditUserModallastName">Last Name</label>
+                            <label className="block text-[var(--nav-text)] text-sm mb-1" htmlFor={`${idPrefix}-lastName`}>Last Name</label>
                             <input
                                 type="text"
-                                id="AdminEditUserModallastName"
-                                name="lastName"
+                                id={`${idPrefix}-lastName`}
+                                name={`${idPrefix}-lastName`}
                                 value={formData.lastName}
                                 onChange={handleChange}
                                 required
@@ -189,11 +191,11 @@ export default function AdminUsersManagementPanelEditUser({ isOpen, onClose, use
                             />
                         </div>
                         <div className="sm:col-span-2">
-                            <label className="block text-[var(--nav-text)] text-sm mb-1" htmlFor="AdminEditUserModalemail">Email Address</label>
+                            <label className="block text-[var(--nav-text)] text-sm mb-1" htmlFor={`${idPrefix}-email`}>Email Address</label>
                             <input
                                 type="email"
-                                id="AdminEditUserModalemail"
-                                name="email"
+                                id={`${idPrefix}-email`}
+                                name={`${idPrefix}-email`}
                                 autoComplete="off"
                                 value={formData.email}
                                 onChange={handleChange}
@@ -203,13 +205,13 @@ export default function AdminUsersManagementPanelEditUser({ isOpen, onClose, use
                         </div>
 
                         <div className="sm:col-span-2">
-                            <label className="block text-[var(--nav-text)] text-sm mb-1" htmlFor="AdminEditUserModalpassword">
+                            <label className="block text-[var(--nav-text)] text-sm mb-1" htmlFor={`${idPrefix}-password`}>
                                 New Password
                             </label>
                             <input
                                 type="password"
-                                id="AdminEditUserModalpassword"
-                                name="password"
+                                id={`${idPrefix}-password`}
+                                name={`${idPrefix}-password`}
                                 autoComplete="new-password"
                                 value={formData.password}
                                 onChange={handleChange}
@@ -219,10 +221,10 @@ export default function AdminUsersManagementPanelEditUser({ isOpen, onClose, use
                         </div>
 
                         <div>
-                            <label className="block text-[var(--nav-text)] text-sm mb-1" htmlFor="AdminEditUserModalaccountType">Account Role</label>
+                            <label className="block text-[var(--nav-text)] text-sm mb-1" htmlFor={`${idPrefix}-accountType`}>Account Role</label>
                             <select
-                                name="accountType"
-                                id="AdminEditUserModalaccountType"
+                                name={`${idPrefix}-accountType`}
+                                id={`${idPrefix}-accountType`}
                                 value={formData.accountType}
                                 onChange={handleChange}
                                 className="w-full p-2 border border-[var(--nav-text)] bg-[var(--nav-bg)] text-[var(--nav-hover)] rounded outline-none focus:ring focus:ring-[var(--nav-hover)]"
@@ -233,11 +235,11 @@ export default function AdminUsersManagementPanelEditUser({ isOpen, onClose, use
                             </select>
                         </div>
                         <div>
-                            <label className="block text-[var(--nav-text)] text-sm mb-1" htmlFor="AdminEditUserModalbalance">Balance ($)</label>
+                            <label className="block text-[var(--nav-text)] text-sm mb-1" htmlFor={`${idPrefix}-balance`}>Balance ($)</label>
                             <input
                                 type="number"
-                                name="balance"
-                                id="AdminEditUserModalbalance"
+                                name={`${idPrefix}-balance`}
+                                id={`${idPrefix}-balance`}
                                 value={formData.balance}
                                 onChange={handleChange}
                                 step="0.01"

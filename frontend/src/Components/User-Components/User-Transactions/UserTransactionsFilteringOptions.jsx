@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useId } from "react";
 
 function UserTransactionsFilteringOptions({ isOpen, onClose, onApplyFilters }) {
   const [transactionId, setTransactionId] = useState("");
@@ -8,6 +8,7 @@ function UserTransactionsFilteringOptions({ isOpen, onClose, onApplyFilters }) {
   const [endDate, setEndDate] = useState("");
   const [minAmount, setMinAmount] = useState("");
   const [maxAmount, setMaxAmount] = useState("");
+  const idPrefix = useId();
 
   const [error, setError] = useState(null);
 
@@ -126,10 +127,11 @@ function UserTransactionsFilteringOptions({ isOpen, onClose, onApplyFilters }) {
         <form onSubmit={handleApplyFilters} className="p-4 overflow-y-auto" style={{ flex: 1 }}>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             <div className="col-span-1 lg:col-span-1">
-              <label htmlFor="FilterOptionsUserTransactionID" className="block text-[var(--nav-text)] text-sm mb-1">Transaction ID (Optional)</label>
+              <label htmlFor={`${idPrefix}-transactionID`} className="block text-[var(--nav-text)] text-sm mb-1">Transaction ID (Optional)</label>
               <input
                 type="text"
-                id="FilterOptionsUserTransactionID"
+                id={`${idPrefix}-transactionID`}
+                name={`${idPrefix}-transactionID`}
                 placeholder="e.g., TXN-"
                 value={transactionId}
                 onChange={(e) => setTransactionId(e.target.value)}
@@ -138,10 +140,11 @@ function UserTransactionsFilteringOptions({ isOpen, onClose, onApplyFilters }) {
             </div>
 
             <div>
-              <label htmlFor="FilterOptionsUserStatus" className="block text-[var(--nav-text)] text-sm mb-1">Status</label>
+              <label htmlFor={`${idPrefix}-status`} className="block text-[var(--nav-text)] text-sm mb-1">Status</label>
               <select
                 value={status}
-                id="FilterOptionsUserStatus"
+                id={`${idPrefix}-status`}
+                name={`${idPrefix}-status`}
                 onChange={(e) => setStatus(e.target.value)}
                 className="p-2 w-full border border-[var(--nav-text)] bg-[var(--nav-bg)] text-[var(--nav-hover)] rounded outline-none focus:ring focus:ring-[var(--nav-hover)]"
               >
@@ -154,9 +157,10 @@ function UserTransactionsFilteringOptions({ isOpen, onClose, onApplyFilters }) {
             </div>
 
             <div>
-              <label htmlFor="FilterOptionsUserType" className="block text-[var(--nav-text)] text-sm mb-1">Type</label>
+              <label htmlFor={`${idPrefix}-type`} className="block text-[var(--nav-text)] text-sm mb-1">Type</label>
               <select
-                id="FilterOptionsUserType"
+                id={`${idPrefix}-type`}
+                name={`${idPrefix}-type`}
                 value={type}
                 onChange={(e) => setType(e.target.value)}
                 className="p-2 w-full border border-[var(--nav-text)] bg-[var(--nav-bg)] text-[var(--nav-hover)] rounded outline-none focus:ring focus:ring-[var(--nav-hover)]"
@@ -172,20 +176,22 @@ function UserTransactionsFilteringOptions({ isOpen, onClose, onApplyFilters }) {
               <legend className="text-[var(--nav-text)] font-semibold px-1">Time Interval</legend>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-2">
                 <div>
-                  <label htmlFor="FilterOptionsUserFromDate" className="text-[var(--nav-text)] text-sm block mb-1">From Date</label>
+                  <label htmlFor={`${idPrefix}-fromDate`} className="text-[var(--nav-text)] text-sm block mb-1">From Date</label>
                   <input
                     type="date"
-                    id="FilterOptionsUserFromDate" 
+                    id={`${idPrefix}-fromDate`} 
+                    name={`${idPrefix}-fromDate`}
                     value={startDate}
                     onChange={(e) => setStartDate(e.target.value)}
                     className="p-2 w-full border rounded bg-[var(--nav-bg)] text-[var(--nav-hover)] outline-none focus:ring focus:ring-[var(--nav-hover)]"
                   />
                 </div>
                 <div>
-                  <label htmlFor="FilterOptionsUserToDate" className="text-[var(--nav-text)] text-sm block mb-1">To Date</label>
+                  <label htmlFor={`${idPrefix}-toDate`} className="text-[var(--nav-text)] text-sm block mb-1">To Date</label>
                   <input
                     type="date"
-                    id="FilterOptionsUserToDate"
+                    id={`${idPrefix}-toDate`}
+                    name={`${idPrefix}-toDate`}
                     value={endDate}
                     onChange={(e) => setEndDate(e.target.value)}
                     className="p-2 w-full border rounded bg-[var(--nav-bg)] text-[var(--nav-hover)] outline-none focus:ring focus:ring-[var(--nav-hover)]"
@@ -198,10 +204,11 @@ function UserTransactionsFilteringOptions({ isOpen, onClose, onApplyFilters }) {
               <legend className="text-[var(--nav-text)] font-semibold px-1">Amount Interval</legend>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-2">
                 <div>
-                  <label htmlFor="FilterOptionsUserMinAmount" className="text-[var(--nav-text)] text-sm block mb-1">Min Amount</label>
+                  <label htmlFor={`${idPrefix}-minAmount`} className="text-[var(--nav-text)] text-sm block mb-1">Min Amount</label>
                   <input
                     type="number"
-                    id="FilterOptionsUserMinAmount"
+                    id={`${idPrefix}-minAmount`}
+                    name={`${idPrefix}-minAmount`}
                     placeholder="Min"
                     value={minAmount}
                     onChange={(e) => setMinAmount(e.target.value)}
@@ -209,10 +216,11 @@ function UserTransactionsFilteringOptions({ isOpen, onClose, onApplyFilters }) {
                   />
                 </div>
                 <div>
-                  <label htmlFor="FilterOptionsUserMaxAmount" className="text-[var(--nav-text)] text-sm block mb-1">Max Amount</label>
+                  <label htmlFor={`${idPrefix}-maxAmount`} className="text-[var(--nav-text)] text-sm block mb-1">Max Amount</label>
                   <input
                     type="number"
-                    id="FilterOptionsUserMaxAmount"
+                    id={`${idPrefix}-maxAmount`}
+                    name={`${idPrefix}-maxAmount`}
                     placeholder="Max"
                     value={maxAmount}
                     onChange={(e) => setMaxAmount(e.target.value)}

@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useId } from "react";
 import { LOG_LIMIT, LOG_LIMIT_phase_2, LOG_LIMIT_phase_3, LOG_LIMIT_phase_4 } from "../../../Data/Global_variables";
 
 function SupervisorAuditLogsFilteringOptions({ isOpen, onClose, onApplyFilters }) {
@@ -7,6 +7,7 @@ function SupervisorAuditLogsFilteringOptions({ isOpen, onClose, onApplyFilters }
   const [endDate, setEndDate] = useState("");
   const [role, setRole] = useState("");
   const [limit, setLimit] = useState(LOG_LIMIT);
+  const idPrefix = useId();
 
   const [error, setError] = useState(null);
 
@@ -89,10 +90,11 @@ function SupervisorAuditLogsFilteringOptions({ isOpen, onClose, onApplyFilters }
         <form onSubmit={handleApplyFilters} className="p-4 overflow-y-auto" style={{ flex: 1 }}>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
             <div>
-              <label htmlFor="FilterOptionsLogAccountNumber" className="block text-[var(--nav-text)] text-sm mb-1">Account Number</label>
+              <label htmlFor={`${idPrefix}-accountNumber`} className="block text-[var(--nav-text)] text-sm mb-1">Account Number</label>
               <input
                 type="text"
-                id="FilterOptionsLogAccountNumber"
+                id={`${idPrefix}-accountNumber`}
+                name={`${idPrefix}-accountNumber`}
                 placeholder="e.g., 60c72b9..."
                 value={accountNumber}
                 onChange={(e) => setAccountNumber(e.target.value)}
@@ -101,10 +103,11 @@ function SupervisorAuditLogsFilteringOptions({ isOpen, onClose, onApplyFilters }
             </div>
 
             <div>
-              <label htmlFor="FilterOptionsLogRole" className="block text-[var(--nav-text)] text-sm mb-1">Role</label>
+              <label htmlFor={`${idPrefix}-role`} className="block text-[var(--nav-text)] text-sm mb-1">Role</label>
               <select
                 value={role}
-                id="FilterOptionsLogRole"
+                id={`${idPrefix}-role`}
+                name={`${idPrefix}-role`}
                 onChange={(e) => setRole(e.target.value)}
                 className="p-2 w-full border border-[var(--nav-text)] bg-[var(--nav-bg)] text-[var(--nav-hover)] rounded outline-none focus:ring focus:ring-[var(--nav-hover)]"
               >
@@ -115,20 +118,22 @@ function SupervisorAuditLogsFilteringOptions({ isOpen, onClose, onApplyFilters }
             </div>
 
             <div>
-              <label htmlFor="FilterOptionsLogFromDate" className="block text-[var(--nav-text)] text-sm mb-1">From Date</label>
+              <label htmlFor={`${idPrefix}-fromDate`} className="block text-[var(--nav-text)] text-sm mb-1">From Date</label>
               <input
                 type="date"
-                id="FilterOptionsLogFromDate"
+                id={`${idPrefix}-fromDate`}
+                name={`${idPrefix}-fromDate`}
                 value={startDate}
                 onChange={(e) => setStartDate(e.target.value)}
                 className="p-2 w-full border rounded bg-[var(--nav-bg)] text-[var(--nav-hover)] outline-none focus:ring focus:ring-[var(--nav-hover)]"
               />
             </div>
             <div>
-              <label htmlFor="FilterOptionsLogToDate" className="block text-[var(--nav-text)] text-sm mb-1">To Date</label>
+              <label htmlFor={`${idPrefix}-toDate`} className="block text-[var(--nav-text)] text-sm mb-1">To Date</label>
               <input
                 type="date"
-                id="FilterOptionsLogToDate"
+                id={`${idPrefix}-toDate`}
+                name={`${idPrefix}-toDate`}
                 value={endDate}
                 onChange={(e) => setEndDate(e.target.value)}
                 className="p-2 w-full border rounded bg-[var(--nav-bg)] text-[var(--nav-hover)] outline-none focus:ring focus:ring-[var(--nav-hover)]"
@@ -136,9 +141,10 @@ function SupervisorAuditLogsFilteringOptions({ isOpen, onClose, onApplyFilters }
             </div>
 
             <div>
-              <label htmlFor="FilterOptionsLogLimit" className="block text-[var(--nav-text)] text-sm mb-1">Limit</label>
+              <label htmlFor={`${idPrefix}-limit`} className="block text-[var(--nav-text)] text-sm mb-1">Limit</label>
               <select
-                id="FilterOptionsLogLimit"
+                id={`${idPrefix}-limit`}
+                name={`${idPrefix}-limit`}
                 value={limit}
                 onChange={(e) => setLimit(Number(e.target.value))}
                 className="p-2 w-full border border-[var(--nav-text)] bg-[var(--nav-bg)] text-[var(--nav-hover)] rounded outline-none focus:ring focus:ring-[var(--nav-hover)]"

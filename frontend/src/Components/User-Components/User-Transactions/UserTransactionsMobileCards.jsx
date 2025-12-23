@@ -4,7 +4,10 @@ import { AMOUNT_DECIMAL_PLACES } from '../../../Data/Global_variables';
 function UserTransactionsMobileCards({ transactions, fetchTx }) {
   return (
     <div className="xl:hidden space-y-3">
-      {transactions.map((tx) => {
+            {transactions.length === 0 ? (
+        <p className="text-center text-[var(--nav-text)]">No pending transactions.</p>
+      ) : (
+      transactions.map((tx) => {
         const canCancel = !["Approved", "Rejected", "Canceled"].includes(tx.state);
         return (
           <div
@@ -54,7 +57,8 @@ function UserTransactionsMobileCards({ transactions, fetchTx }) {
             </div>
           </div>
         );
-      })}
+      })
+    )}
     </div>
   );
 }

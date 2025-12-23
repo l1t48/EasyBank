@@ -1,10 +1,11 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useId } from "react";
 import { useAuth } from "../../../Context/AuthContext";
 import { API } from "../../../Services/APIs";
 import Toast from "../../../Context/Toast";
 
 function UserTransactionsCreateNewTransaction({ isOpen, onClose }) {
   const { token } = useAuth();
+  const idPrefix = useId();
 
   const [transactionType, setTransactionType] = useState("Deposit");
   const [amount, setAmount] = useState("");
@@ -126,12 +127,13 @@ function UserTransactionsCreateNewTransaction({ isOpen, onClose }) {
         <form id="createTransactionForm" onSubmit={handleSubmit} className="p-4 overflow-y-auto" style={{ flex: 1 }}>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-center">
             <div>
-              <label htmlFor="UserCreateNewTransactionTransactionType" className="block text-[var(--nav-text)] text-sm mb-1">
+              <label htmlFor={`${idPrefix}-type`} className="block text-[var(--nav-text)] text-sm mb-1">
                 Transaction Type
               </label>
               <select
                 value={transactionType}
-                id="UserCreateNewTransactionTransactionType"
+                name={`${idPrefix}-type`}
+                id={`${idPrefix}-type`}
                 onChange={(e) => setTransactionType(e.target.value)}
                 className="w-full p-2 border border-[var(--nav-text)] bg-[var(--nav-bg)] text-[var(--nav-hover)] rounded outline-none focus:ring focus:ring-[var(--nav-hover)]"
               >
@@ -142,11 +144,12 @@ function UserTransactionsCreateNewTransaction({ isOpen, onClose }) {
             </div>
 
             <div>
-              <label htmlFor="UserCreateNewTransactionAmount" className="block text-[var(--nav-text)] text-sm mb-1">
+              <label htmlFor={`${idPrefix}-amount`} className="block text-[var(--nav-text)] text-sm mb-1">
                 Amount
               </label>
               <input
-                id="UserCreateNewTransactionAmount"
+                id={`${idPrefix}-amount`}
+                name={`${idPrefix}-amount`}
                 type="number"
                 min="149"
                 placeholder="Enter amount"
@@ -159,12 +162,13 @@ function UserTransactionsCreateNewTransaction({ isOpen, onClose }) {
 
             {transactionType === "Transfer" && (
               <div className="sm:col-span-2">
-                <label htmlFor="UserCreateNewTransactionTargetAccountNumber" className="block text-[var(--nav-text)] text-sm mb-1">
+                <label htmlFor={`${idPrefix}-targetAccountNumber`} className="block text-[var(--nav-text)] text-sm mb-1">
                   Target Account Number
                 </label>
                 <input
                   type="text"
-                  id="UserCreateNewTransactionTargetAccountNumber"
+                  name={`${idPrefix}-targetAccountNumber`}
+                  id={`${idPrefix}-targetAccountNumber`}
                   placeholder="Enter target account number"
                   value={targetAccountNumber}
                   onChange={(e) => setTargetAccountNumber(e.target.value)}
