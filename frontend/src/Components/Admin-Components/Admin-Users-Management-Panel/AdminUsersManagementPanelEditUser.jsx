@@ -24,13 +24,11 @@ export default function AdminUsersManagementPanelEditUser({ isOpen, onClose, use
     const overlayRef = useRef(null);
     const modalRef = useRef(null);
 
-    // Sync body scroll
     useEffect(() => {
         document.body.style.overflow = isOpen ? "hidden" : "";
         return () => (document.body.style.overflow = "");
     }, [isOpen]);
 
-    // Keyboard listener
     useEffect(() => {
         if (!isOpen) return;
         const onKey = (e) => { if (e.key === "Escape") handleFormClose(); };
@@ -38,7 +36,6 @@ export default function AdminUsersManagementPanelEditUser({ isOpen, onClose, use
         return () => window.removeEventListener("keydown", onKey);
     }, [isOpen]);
 
-    // Load user data into form when modal opens or user changes
     useEffect(() => {
         if (isOpen && user) {
             setFormData({
@@ -49,7 +46,7 @@ export default function AdminUsersManagementPanelEditUser({ isOpen, onClose, use
                 balance: user.balance !== undefined ? user.balance : 0,
                 password: '',
             });
-            // Clear alerts when switching users
+
             setError(null);
             setSuccess(null);
             setShowToast(false);
@@ -64,7 +61,6 @@ export default function AdminUsersManagementPanelEditUser({ isOpen, onClose, use
         }));
     };
 
-    // Clean up all states on close
     const handleFormClose = () => {
         setFormData(initialFormState);
         setError(null);
@@ -87,14 +83,14 @@ export default function AdminUsersManagementPanelEditUser({ isOpen, onClose, use
             formData.email !== user.email ||
             formData.accountType !== user.accountType ||
             formData.balance !== user.balance ||
-            formData.password !== ""; // If they typed anything in password
+            formData.password !== "";
 
         if (!hasChanges) {
             setToastMsg("No changes detected.");
             setToastType("info");
             setShowToast(true);
             setTimeout(handleFormClose, 1500);
-            return; // Stop here, don't call the API
+            return;
         }
 
         setError(null);
@@ -124,7 +120,6 @@ export default function AdminUsersManagementPanelEditUser({ isOpen, onClose, use
                 setToastType("success");
                 setShowToast(true);
                 onUserUpdated(data.user);
-                // Wait 1.5s so user can see the success message, then close
                 setTimeout(handleFormClose, 1500);
             } else {
                 const errorMessage = data.errors?.[0]?.msg || data.error || 'Failed to update user.';
@@ -170,10 +165,10 @@ export default function AdminUsersManagementPanelEditUser({ isOpen, onClose, use
                 <form id="editUserForm" onSubmit={handleSubmit} className="p-4 overflow-y-auto" style={{ flex: 1 }}>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
-                            <label className="block text-[var(--nav-text)] text-sm mb-1" htmlFor="firstName">First Name</label>
+                            <label className="block text-[var(--nav-text)] text-sm mb-1" htmlFor="AdminEditUserModalfirstName">First Name</label>
                             <input
                                 type="text"
-                                id="firstName"
+                                id="AdminEditUserModalfirstName"
                                 name="firstName"
                                 value={formData.firstName}
                                 onChange={handleChange}
@@ -182,10 +177,10 @@ export default function AdminUsersManagementPanelEditUser({ isOpen, onClose, use
                             />
                         </div>
                         <div>
-                            <label className="block text-[var(--nav-text)] text-sm mb-1" htmlFor="lastName">Last Name</label>
+                            <label className="block text-[var(--nav-text)] text-sm mb-1" htmlFor="AdminEditUserModallastName">Last Name</label>
                             <input
                                 type="text"
-                                id="lastName"
+                                id="AdminEditUserModallastName"
                                 name="lastName"
                                 value={formData.lastName}
                                 onChange={handleChange}
@@ -194,11 +189,12 @@ export default function AdminUsersManagementPanelEditUser({ isOpen, onClose, use
                             />
                         </div>
                         <div className="sm:col-span-2">
-                            <label className="block text-[var(--nav-text)] text-sm mb-1" htmlFor="email">Email Address</label>
+                            <label className="block text-[var(--nav-text)] text-sm mb-1" htmlFor="AdminEditUserModalemail">Email Address</label>
                             <input
                                 type="email"
-                                id="email"
+                                id="AdminEditUserModalemail"
                                 name="email"
+                                autoComplete="off"
                                 value={formData.email}
                                 onChange={handleChange}
                                 required
@@ -207,12 +203,12 @@ export default function AdminUsersManagementPanelEditUser({ isOpen, onClose, use
                         </div>
 
                         <div className="sm:col-span-2">
-                            <label className="block text-[var(--nav-text)] text-sm mb-1" htmlFor="password">
-                                New Password <span className="text-xs opacity-50">(leave blank to keep current)</span>
+                            <label className="block text-[var(--nav-text)] text-sm mb-1" htmlFor="AdminEditUserModalpassword">
+                                New Password
                             </label>
                             <input
                                 type="password"
-                                id="password"
+                                id="AdminEditUserModalpassword"
                                 name="password"
                                 autoComplete="new-password"
                                 value={formData.password}
@@ -223,10 +219,10 @@ export default function AdminUsersManagementPanelEditUser({ isOpen, onClose, use
                         </div>
 
                         <div>
-                            <label className="block text-[var(--nav-text)] text-sm mb-1" htmlFor="accountType">Account Role</label>
+                            <label className="block text-[var(--nav-text)] text-sm mb-1" htmlFor="AdminEditUserModalaccountType">Account Role</label>
                             <select
                                 name="accountType"
-                                id="accountType"
+                                id="AdminEditUserModalaccountType"
                                 value={formData.accountType}
                                 onChange={handleChange}
                                 className="w-full p-2 border border-[var(--nav-text)] bg-[var(--nav-bg)] text-[var(--nav-hover)] rounded outline-none focus:ring focus:ring-[var(--nav-hover)]"
@@ -237,11 +233,11 @@ export default function AdminUsersManagementPanelEditUser({ isOpen, onClose, use
                             </select>
                         </div>
                         <div>
-                            <label className="block text-[var(--nav-text)] text-sm mb-1" htmlFor="balance">Balance ($)</label>
+                            <label className="block text-[var(--nav-text)] text-sm mb-1" htmlFor="AdminEditUserModalbalance">Balance ($)</label>
                             <input
                                 type="number"
                                 name="balance"
-                                id="balance"
+                                id="AdminEditUserModalbalance"
                                 value={formData.balance}
                                 onChange={handleChange}
                                 step="0.01"
@@ -260,7 +256,7 @@ export default function AdminUsersManagementPanelEditUser({ isOpen, onClose, use
                             type="button"
                             onClick={handleFormClose}
                             disabled={loading}
-                            className="w-full sm:w-1/3 font-semibold py-2 rounded-md border border-[var(--nav-text)]/20 text-[var(--nav-text)] hover:bg-red-500/10 transition-all duration-300"
+                            className="w-full sm:w-1/3 font-semibold py-2 rounded-md border border-[var(--danger-border)] bg-[var(--nav-text)] text-[var(--nav-bg)] hover:bg-[var(--danger-hover-bg)] transition-all duration-300"
                         >
                             Cancel
                         </button>
@@ -269,7 +265,7 @@ export default function AdminUsersManagementPanelEditUser({ isOpen, onClose, use
                             form="editUserForm"
                             type="submit"
                             disabled={loading}
-                            className="w-full sm:w-1/3 font-semibold py-2 rounded-md bg-[var(--nav-text)] text-[var(--nav-bg)] hover:opacity-90 transition-all duration-300"
+                            className="w-full sm:w-1/3 font-semibold py-2 rounded-md bg-[var(--nav-text)] text-[var(--nav-bg)] hover:bg-[var(--nav-bg)] hover:text-[var(--nav-text)] hover:border hover:border-[var(--nav-hover)] transition-all duration-300"
                         >
                             {loading ? 'Saving...' : 'Save Changes'}
                         </button>

@@ -29,7 +29,7 @@ router.post("/login", loginLimiter, validateLogin, async (req, res) => {
             return res.status(UNAUTHORIZED).json({ error: "Invalid email or password" });
 
         const token = jwt.sign(
-            { userId: user._id, accountType: user.accountType },
+            { userId: user._id, accountType: user.accountType, tokenVersion: user.tokenVersion },
             JWT_SECRET,
             { expiresIn: "30m" }
         );

@@ -22,7 +22,8 @@ const userSchema = new mongoose.Schema({
   creationDate: {
     type: Number,
     default: () => Date.now(), 
-  }
+  },
+  tokenVersion: { type: Number, default: 0 }
 }, { timestamps: true });
 
 // Exclude passwordHash when sending data back

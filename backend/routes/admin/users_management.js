@@ -154,7 +154,8 @@ router.patch("/update-user/:id", authMiddleware, validateUserUpdate, async (req,
     }
 
     if (password) {
-      user.password = await hashPassword(password);
+      user.passwordHash = await hashPassword(password);
+      user.tokenVersion = (user.tokenVersion || 0) + 1;
     }
 
     const allowedRoles = ["User", "Admin", "Supervisor"];
