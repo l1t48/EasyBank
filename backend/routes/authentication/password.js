@@ -19,19 +19,13 @@ router.post("/forgot-password", async (req, res) => {
     try {
         const { email } = req.body;
         const user = await User.findOne({ email });
-
-        if (!user)
-            return res.status(BAD_REQUEST).json({ error: "No account with that email" });
-
+        if (!user) return res.status(BAD_REQUEST).json({ error: "No account with that email" });
         const resetToken = crypto.randomBytes(_32BYTES).toString("hex");
         const resetTokenHash = crypto.createHash("sha256").update(resetToken).digest("hex");
-
         user.resetPasswordToken = resetTokenHash;
         user.resetPasswordExpire = Date.now() + PASSWORD_LIMIT_EXPIRESION * SEC_AMOUNT_PER_MIN * MS_AMOUNT_PER_SEC;
         await user.save();
-
         const resetUrl = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
-
         await sendMail(
             user.email,
             "Password Reset Request",
@@ -55,7 +49,6 @@ router.post("/forgot-password", async (req, res) => {
             </div>
             `
         );
-
         await logActivity({
             userId: user._id,
             userName: user.firstName,
@@ -65,9 +58,7 @@ router.post("/forgot-password", async (req, res) => {
             message: "Password reset requested",
             req
         });
-
         res.json({ message: "Password reset link sent to your email" });
-
     } catch (err) {
         console.error(err);
         res.status(INTERNAL_SERVER_ERROR).json({ error: "Internal server error" });
@@ -78,14 +69,11 @@ router.post("/reset-password/:token", validatePasswordReset, async (req, res) =>
     try {
         const user = req.userForReset;
         const { newPassword } = req.body;
-
         user.passwordHash = await hashPassword(newPassword);
         user.resetPasswordToken = undefined;
         user.resetPasswordExpire = undefined;
         await user.save();
-
         res.json({ message: "Password reset successful. You can now log in." });
-
         await logActivity({
             userId: user._id,
             userName: user.firstName,
@@ -95,7 +83,6 @@ router.post("/reset-password/:token", validatePasswordReset, async (req, res) =>
             message: "Password successfully reset",
             req
         });
-
     } catch (err) {
         console.error(err);
         res.status(INTERNAL_SERVER_ERROR).json({ error: "Internal server error" });

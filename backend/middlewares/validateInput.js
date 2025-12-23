@@ -31,24 +31,20 @@ const validateRegister = [
   },
 ];
 
-
 const validateUserUpdate = [
   body("firstName")
     .optional()
     .notEmpty().withMessage("First name cannot be empty")
     .isLength({ min: MINIMUM_ALLOWED_LENGTH_FIRSTNAME }).withMessage(`First name must be at least ${MINIMUM_ALLOWED_LENGTH_FIRSTNAME} characters`)
     .matches(/^[^\d].*$/).withMessage("First name must not start with a number"),
-    
   body("lastName")
     .optional()
     .notEmpty().withMessage("Last name cannot be empty")
     .isLength({ min: MINIMUM_ALLOWED_LENGTH_LASTNAME }).withMessage(`Last name must be at least ${MINIMUM_ALLOWED_LENGTH_LASTNAME} characters`)
     .matches(/^[^\d].*$/).withMessage("Last name must not start with a number"),
-    
   body("email")
     .optional()
     .isEmail().withMessage("Valid email is required"),
-    
   body("password")
     .optional()
     .isLength({ min: MINIMUM_ALLOWED_LENGTH_PASSWORD }).withMessage(`Password must be at least ${MINIMUM_ALLOWED_LENGTH_PASSWORD} characters`)
@@ -57,12 +53,10 @@ const validateUserUpdate = [
     .matches(/[A-Z]/).withMessage("Password must contain at least one uppercase letter")
     .matches(/[0-9]/).withMessage("Password must contain at least one number")
     .matches(/[@$!%*?&]/).withMessage("Password must contain at least one special character (@$!%*?&)"),
-
   body("balance")
     .optional()
     .notEmpty().withMessage("Amount should not be empty please enter a valid number")
     .isFloat({ min: 0 }).withMessage("Balance must be a positive number"),
-
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {

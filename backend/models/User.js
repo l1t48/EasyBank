@@ -5,24 +5,13 @@ const userSchema = new mongoose.Schema({
   lastName: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   passwordHash: { type: String, required: true },
-  accountType: {
-    type: String,
-    enum: ['User', 'Admin', 'Supervisor'],
-    default: 'User'
-  },
+  accountType: { type: String, enum: ['User', 'Admin', 'Supervisor'], default: 'User' },
   accountNumber: { type: String, unique: true, immutable: true, required: true },
   balance: { type: Number, default: 0 },
-  latestTransactionType: {
-    type: String,
-    enum: ['Send', 'Receive', 'Deposit', 'Withdrawal'],
-    default: null
-  },
+  latestTransactionType: { type: String, enum: ['Send', 'Receive', 'Deposit', 'Withdrawal'], default: null },
   resetPasswordToken: { type: String },
   resetPasswordExpire: { type: Date },
-  creationDate: {
-    type: Number,
-    default: () => Date.now(), 
-  },
+  creationDate: { type: Number, default: () => Date.now() },
   tokenVersion: { type: Number, default: 0 }
 }, { timestamps: true });
 

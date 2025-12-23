@@ -10,22 +10,16 @@ const { UNAUTHORIZED, FORBIDDEN } = require("../config/global_variables");
 async function authMiddleware(req, res, next) {
   const authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1];
-
-  if (!token)
-    return res.status(UNAUTHORIZED).json({ error: "Access denied. No token provided." });
-
+  if (!token) return res.status(UNAUTHORIZED).json({ error: "Access denied. No token provided." });
   try {
     const decoded = jwt.verify(token, JWT_SECRET);
-
     const user = await User.findById(decoded.userId);
-
     if (user && decoded.tokenVersion !== user.tokenVersion) {
-      return res.status(401).json({
+      return res.status(UNAUTHORIZED).json({
         code: "TOKEN_VERSION_MISMATCH",
         error: "Security update required. Please log in again."
       });
     }
-
     req.user = decoded;
     next();
   }

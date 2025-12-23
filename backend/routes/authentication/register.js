@@ -17,15 +17,12 @@ const { CREATED, BAD_REQUEST, INTERNAL_SERVER_ERROR } = require("../../config/gl
 router.post('/register-new-user', registerLimiter, validateRegister, async (req, res) => {
     try {
         const { firstName, lastName, email, password } = req.body;
-
         const existingEmail = await User.findOne({ email });
         if (existingEmail) {
             return res.status(BAD_REQUEST).json({ error: "Email is already registered" });
         }
-
         let accountNumber;
         let isUnique = false;
-
         while (!isUnique) {
             accountNumber = generateAccountNumber();
             const existingAccount = await User.findOne({ accountNumber });
@@ -33,7 +30,6 @@ router.post('/register-new-user', registerLimiter, validateRegister, async (req,
                 isUnique = true;
             }
         }
-
         const passwordHash = await hashPassword(password);
         const newUser = new User({
             firstName,
@@ -45,10 +41,7 @@ router.post('/register-new-user', registerLimiter, validateRegister, async (req,
             balance: 0,
             latestTransactionType: null
         });
-
         await newUser.save();
-
-
         await logActivity({
             userId: newUser._id,
             userName: newUser.firstName,
@@ -59,7 +52,6 @@ router.post('/register-new-user', registerLimiter, validateRegister, async (req,
             req
         });
         res.status(CREATED).json(newUser);
-
     } catch (error) {
         console.error('Error creating user:', error);
         res.status(INTERNAL_SERVER_ERROR).json({ error: 'Internal server error' });

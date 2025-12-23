@@ -43,7 +43,6 @@ async function emitToUser(userId, event, payload) {
   }
 }
 
-
 async function emitToAccount(accountNumber, event, payload) {
   try {
     getIO().to(`account:${accountNumber}`).emit(event, payload);
@@ -61,8 +60,8 @@ async function emitToRole(roleName, event, payload) {
 }
 
 function toPublicJson(tx, audience = "user", performer = null) {
-  if (!tx) return null;
-
+  if (!tx) 
+    return null;
   const base = {
     id: tx._id,
     transactionId: tx.transactionId || tx._id,
@@ -73,7 +72,6 @@ function toPublicJson(tx, audience = "user", performer = null) {
     createdAt: tx.createdAt,
     targetAccountNumber: tx.targetAccountNumber || null,
   };
-
   if (audience === "supervisor") {
     const performerAccountNumber = performer?.accountNumber || null;
     const performerName = performer?.name || null;
@@ -83,7 +81,6 @@ function toPublicJson(tx, audience = "user", performer = null) {
       userName: performerName
     };
   }
-
   if (audience === "admin") {
     const performerAccountNumber = performer?.accountNumber || null;
     const performerName = performer?.name || null;
@@ -93,12 +90,12 @@ function toPublicJson(tx, audience = "user", performer = null) {
       userName: performerName
     };
   }
-
   return base;
 }
 
 async function _fetchPerformerDetails(userId) {
-  if (!userId) return null;
+  if (!userId) 
+    return null;
   try {
     const perf = await User.findById(userId).select("accountNumber firstName lastName").lean();
     if (perf) {
@@ -114,8 +111,8 @@ async function _fetchPerformerDetails(userId) {
 }
 
 async function _notifyTargetTransfer(transaction, event) {
-  if (!transaction.targetAccountNumber) return;
-
+  if (!transaction.targetAccountNumber) 
+    return;
   const targetUser = await User.findOne({ accountNumber: transaction.targetAccountNumber }).select("_id email firstName").lean();
   if (targetUser && targetUser._id) {
     await emitToUser(targetUser._id.toString(), event, {
@@ -142,15 +139,12 @@ async function _notifyTargetTransfer(transaction, event) {
   }
 }
 
-
 async function _notifyStaff(transaction, event, performer) {
   const supPayload = toPublicJson(transaction, "supervisor", performer);
   const adminPayload = toPublicJson(transaction, "admin", performer);
-
   if (supPayload && transaction.amount < SUPERVISOR_APPROVAL_LIMIT) {
     await emitToRole("supervisor", event, supPayload);
   }
-
   if (adminPayload) {
     await emitToRole("admin", event, adminPayload);
   }
@@ -160,7 +154,6 @@ async function notifyTransactionUpdate(transaction, options = {}) {
   try {
     const event = options.event || "transactionUpdated";
     const performer = await _fetchPerformerDetails(transaction.userId);
-
     const userPayload = toPublicJson(transaction, "user", performer);
     if (transaction.userId) {
       await emitToUser(transaction.userId.toString(), event, userPayload);
@@ -175,12 +168,9 @@ async function notifyTransactionUpdate(transaction, options = {}) {
           );
         }
       }
-
     }
-
     await _notifyTargetTransfer(transaction, event);
     await _notifyStaff(transaction, event, performer);
-
   } catch (err) {
     console.error("notifyTransactionUpdate orchestration error:", err);
   }

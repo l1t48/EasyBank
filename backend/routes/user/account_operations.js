@@ -28,17 +28,14 @@ router.get("/my-account", authMiddleware, async (req, res) => {
     if (!userId) {
       return res.status(UNAUTHORIZED).json({ message: "Unauthorized: missing user id" });
     }
-
     const user = await User.findById(userId).select("-passwordHash");
     if (!user) {
       return res.status(NOT_FOUND).json({ message: "User not found" });
     }
-
     const recentTransactions = await Transaction.find({ userId })
       .sort({ createdAt: -1 })
       .limit(RECENT_TRANSACTIONS_LIMIT)
       .select("transactionType amount state createdAt approvedBy");
-
     const accountDetails = {
       userId: user._id,
       fullName: `${user.firstName} ${user.lastName}`.trim(),
@@ -50,7 +47,6 @@ router.get("/my-account", authMiddleware, async (req, res) => {
       latestTransactionType: user.latestTransactionType || null,
       recentTransactions
     };
-
     await logActivity({
       userId: user._id,
       userName: user.firstName,
@@ -60,10 +56,7 @@ router.get("/my-account", authMiddleware, async (req, res) => {
       message: 'Viewed account details',
       req
     });
-
-
     res.json({ accountDetails });
-
   } catch (error) {
     console.error("GET /api/user/my-account error:", error);
     res.status(INTERNAL_SERVER_ERROR).json({ message: "Server error" });
@@ -73,27 +66,22 @@ router.get("/my-account", authMiddleware, async (req, res) => {
 router.patch("/update-profile", authMiddleware, async (req, res) => {
   try {
     const userId = req.user.userId;
-
     const allowedUpdates = ["firstName", "lastName", "email"];
     const updates = {};
     for (let key of allowedUpdates) {
       if (req.body[key]) updates[key] = req.body[key];
     }
-
     if (Object.keys(updates).length === 0) {
       return res.status(BAD_REQUEST).json({ error: "No valid fields provided" });
     }
-
     const updatedUser = await User.findByIdAndUpdate(
       userId,
       { $set: updates },
       { new: true, runValidators: true, select: "-passwordHash" }
     );
-
     if (!updatedUser) {
       return res.status(BAD_REQUEST).json({ error: "User not found" });
     }
-
     await logActivity({
       userId: updatedUser._id,
       userName: updatedUser.firstName,
@@ -103,7 +91,6 @@ router.patch("/update-profile", authMiddleware, async (req, res) => {
       message: `Updated profile fields: ${Object.keys(updates).join(", ")}`,
       req
     });
-
     res.json({ success: true, user: updatedUser });
   } catch (error) {
     console.error("Update profile error:", error);
@@ -114,20 +101,16 @@ router.patch("/update-profile", authMiddleware, async (req, res) => {
 router.patch("/change-password", authMiddleware, validatePasswordChange, async (req, res) => {
   try {
     const { oldPassword, newPassword } = req.body;
-
     const user = await User.findById(req.user.userId);
     if (!user) {
       return res.status(NOT_FOUND).json({ error: "User not found." });
     }
-
     const isMatch = await bcrypt.compare(oldPassword, user.passwordHash);
     if (!isMatch) {
       return res.status(BAD_REQUEST).json({ error: "Old password is incorrect." });
     }
-
     user.passwordHash = await hashPassword(newPassword);
     await user.save();
-
     await logActivity({
       userId: user._id,
       userName: user.firstName,
@@ -137,7 +120,6 @@ router.patch("/change-password", authMiddleware, validatePasswordChange, async (
       message: 'Password successfully changed',
       req
     });
-
     res.json({ success: true, message: "Password updated successfully." });
   } catch (error) {
     console.error("Change password error:", error);

@@ -19,20 +19,16 @@ router.use(authorizeRoles("Supervisor"));
 router.patch("/change-password", authMiddleware, validatePasswordChange, async (req, res) => {
   try {
     const { oldPassword, newPassword } = req.body;
-
     const user = await User.findById(req.user.userId);
     if (!user) {
       return res.status(NOT_FOUND).json({ error: "User not found." });
     }
-
     const isMatch = await bcrypt.compare(oldPassword, user.passwordHash);
     if (!isMatch) {
       return res.status(BAD_REQUEST).json({ error: "Old password is incorrect." });
     }
-
     user.passwordHash = await hashPassword(newPassword);
     await user.save();
-
     await logActivity({
       userId: user._id,
       userName: user.firstName,
@@ -42,7 +38,6 @@ router.patch("/change-password", authMiddleware, validatePasswordChange, async (
       message: 'Password successfully changed',
       req
     });
-
     res.json({ success: true, message: "Password updated successfully." });
   } catch (error) {
     console.error("Change password error:", error);

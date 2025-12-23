@@ -1,10 +1,10 @@
 /*
   | Endpoint                        | Method | Auth Required | Roles | Description                                                                 |
   | --------------------------------| ------ | ------------- | ----- | --------------------------------------------------------------------------- |
-  | /api/admin/all-transactions      | GET    | Yes           | Admin | View all transactions in the system                                         |
-  | /api/admin/pending-transactions  | GET    | Yes           | Admin | Review all pending transactions (including issues reported by Supervisors)  |
-  | /api/admin/approve-transaction   | POST   | Yes           | Admin | Approve a pending transaction                                               |
-  | /api/admin/reject-transaction    | POST   | Yes           | Admin | Reject a pending transaction                                                |
+  | /api/admin/all-transactions      | GET    | Yes           | Admin | View all transactions in the system                                        |
+  | /api/admin/pending-transactions  | GET    | Yes           | Admin | Review all pending transactions                                            |
+  | /api/admin/approve-transaction   | POST   | Yes           | Admin | Approve a pending transaction                                              |
+  | /api/admin/reject-transaction    | POST   | Yes           | Admin | Reject a pending transaction                                               |
 */
 
 const express = require("express");
@@ -35,7 +35,7 @@ router.get("/pending-transactions", authMiddleware, async (req, res) => {
       transactionType,
       startDate,
       endDate,
-      accountNumber,          
+      accountNumber,
       targetUserId
     } = req.query;
 
@@ -43,16 +43,12 @@ router.get("/pending-transactions", authMiddleware, async (req, res) => {
 
     if (transactionId)
       filter.transactionId = { $regex: transactionId, $options: "i" };
-
     if (minAmount)
       filter.amount = { $gte: parseFloat(minAmount) };
-
     if (maxAmount)
       filter.amount = { ...filter.amount, $lte: parseFloat(maxAmount) };
-
-    if (transactionType) 
+    if (transactionType)
       filter.transactionType = transactionType;
-
     if (accountNumber) {
       const user = await User.findOne({ accountNumber }).lean();
       if (user) {
@@ -61,18 +57,15 @@ router.get("/pending-transactions", authMiddleware, async (req, res) => {
         return res.json({ success: true, transactions: [] });
       }
     }
-
-    if (targetUserId) 
+    if (targetUserId)
       filter.targetUserId = targetUserId;
-
-    if (startDate) 
+    if (startDate)
       filter.createdAt = { $gte: new Date(startDate) };
-    if (endDate) 
+    if (endDate)
       filter.createdAt = { ...filter.createdAt, $lte: new Date(endDate) };
 
     const sortOptions = {};
     sortOptions[sortBy] = order === "desc" ? -1 : 1;
-
     const transactions = await Transaction.find(filter)
       .sort(sortOptions)
       .populate("userId", "firstName lastName accountNumber")
@@ -110,13 +103,12 @@ router.get("/pending-transactions", authMiddleware, async (req, res) => {
 
       return {
         ...rest,
-        userId: userIdValue,        
-        user: userObj,                         
-        userAccountNumber,         
+        userId: userIdValue,
+        user: userObj,
+        userAccountNumber,
         target: targetObj
       };
     });
-
     const admin = await User.findById(req.user.userId);
     await logActivity({
       userId: req.user.userId,
@@ -127,7 +119,6 @@ router.get("/pending-transactions", authMiddleware, async (req, res) => {
       message: "Admin viewed pending transactions",
       req
     });
-
     return res.json({
       success: true,
       transactions: mappedTransactions
@@ -144,28 +135,23 @@ router.post("/approve-transaction", authMiddleware, async (req, res) => {
     if (!transactionId) {
       return res.status(BAD_REQUEST).json({ error: "Transaction ID is required" });
     }
-
     const transaction = await Transaction.findById(transactionId);
     if (!transaction)
       return res.status(NOT_FOUND).json({ error: "Transaction not found" });
     if (transaction.state !== "Pending")
       return res.status(BAD_REQUEST).json({ error: "Only pending transactions can be approved" });
-
     try {
       await processTransactionType(transaction);
     } catch (procErr) {
       console.error("Process transaction error:", procErr);
       return res.status(BAD_REQUEST).json({ error: procErr.message });
     }
-
     transaction.state = "Approved";
     transaction.handledBy = req.user.userId;
     transaction.updatedAt = Date.now();
     await transaction.save();
-
     await notifyTransactionUpdate(transaction, { event: "transactionApproved" });
     const admin = await User.findById(req.user.userId);
-
     await logActivity({
       userId: req.user.userId,
       userName: admin.firstName,
@@ -175,7 +161,6 @@ router.post("/approve-transaction", authMiddleware, async (req, res) => {
       message: `Admin approved transaction ID: ${transactionId}`,
       req
     });
-
     res.json({ success: true, transaction });
   } catch (error) {
     console.error("Approve transaction error:", error);
@@ -186,21 +171,17 @@ router.post("/approve-transaction", authMiddleware, async (req, res) => {
 router.post("/reject-transaction", authMiddleware, async (req, res) => {
   try {
     const { transactionId } = req.body;
-
     const transaction = await Transaction.findById(transactionId);
     if (!transaction)
       return res.status(NOT_FOUND).json({ error: "Transaction not found" });
     if (transaction.state !== "Pending")
       return res.status(BAD_REQUEST).json({ error: "Only pending transactions can be rejected" });
-
     transaction.state = "Rejected";
     transaction.handledBy = req.user.userId;
     transaction.updatedAt = Date.now();
     await transaction.save();
-
     await notifyTransactionUpdate(transaction, { event: "transactionRejected" });
     const admin = await User.findById(req.user.userId);
-
     await logActivity({
       userId: req.user.userId,
       userName: admin.firstName,
@@ -210,7 +191,6 @@ router.post("/reject-transaction", authMiddleware, async (req, res) => {
       message: `Admin rejected transaction ID: ${transactionId}`,
       req
     });
-
     res.json({ success: true, transaction });
   } catch (error) {
     console.error("Reject transaction error:", error);
@@ -230,55 +210,47 @@ router.get("/all-transactions", authMiddleware, async (req, res) => {
       state,
       startDate,
       endDate,
-      accountNumber,             
+      accountNumber,
     } = req.query;
 
     const filter = {};
+
     if (transactionId)
       filter.transactionId = { $regex: transactionId, $options: "i" };
-
     if (minAmount)
       filter.amount = { $gte: parseFloat(minAmount) };
-
     if (maxAmount)
       filter.amount = { ...filter.amount, $lte: parseFloat(maxAmount) };
-
     if (transactionType) filter.transactionType = transactionType;
     if (state) filter.state = state;
-
     if (accountNumber) {
       const user = await User.findOne({ accountNumber }).lean();
       if (user) {
-        filter.userId = user._id;  
+        filter.userId = user._id;
       } else {
         return res.json({ success: true, transactions: [] });
       }
     }
-
-    if (startDate) 
+    if (startDate)
       filter.createdAt = { $gte: new Date(startDate) };
-    if (endDate) 
+    if (endDate)
       filter.createdAt = { ...filter.createdAt, $lte: new Date(endDate) };
 
     const sortOptions = {};
     sortOptions[sortBy] = order === "desc" ? -1 : 1;
-
     const transactions = await Transaction.find(filter)
       .sort(sortOptions)
       .populate("userId", "firstName lastName accountNumber")
       .lean();
-
     const targetNumbers = [
       ...new Set(transactions.map(t => t.targetAccountNumber).filter(Boolean))
     ];
-
     const targetUsers = targetNumbers.length
       ? await User.find(
         { accountNumber: { $in: targetNumbers } },
         "firstName lastName accountNumber"
       ).lean()
       : [];
-
     const targetMap = new Map(
       targetUsers.map(u => [u.accountNumber, { firstName: u.firstName, lastName: u.lastName }])
     );
@@ -294,22 +266,18 @@ router.get("/all-transactions", authMiddleware, async (req, res) => {
           accountNumber: populatedUser.accountNumber ?? null
         }
         : null;
-
       const userAccountNumber = userObj?.accountNumber ?? t.userAccountNumber ?? null;
       const targetObj = t.targetAccountNumber ? (targetMap.get(t.targetAccountNumber) || null) : null;
       const { userId: _populated, ...rest } = t;
-
       return {
         ...rest,
-        userId: userIdValue,          
-        user: userObj,               
-        userAccountNumber,            
+        userId: userIdValue,
+        user: userObj,
+        userAccountNumber,
         target: targetObj
       };
     });
-
     const admin = await User.findById(req.user.userId);
-
     await logActivity({
       userId: req.user.userId,
       userName: admin.firstName,
@@ -319,7 +287,6 @@ router.get("/all-transactions", authMiddleware, async (req, res) => {
       message: "Admin viewed all transactions",
       req
     });
-
     return res.json({
       success: true,
       transactions: mappedTransactions
@@ -329,6 +296,5 @@ router.get("/all-transactions", authMiddleware, async (req, res) => {
     return res.status(INTERNAL_SERVER_ERROR).json({ error: "Server error" });
   }
 });
-
 
 module.exports = router;

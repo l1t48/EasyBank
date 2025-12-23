@@ -13,27 +13,22 @@ const logActivity = require('../../utils/Activitylogger');
 const { validateLogin } = require("../../middlewares/validateInput");
 const { loginLimiter } = require("../../middlewares/rateLimiter");
 const { UNAUTHORIZED, INTERNAL_SERVER_ERROR } = require("../../config/global_variables");
-
 const JWT_SECRET = process.env.JWT_SECRET;
 
 router.post("/login", loginLimiter, validateLogin, async (req, res) => {
     try {
         const { email, password } = req.body;
-
         const user = await User.findOne({ email });
         if (!user)
             return res.status(UNAUTHORIZED).json({ error: "Invalid email or password" });
-
         const isMatch = await bcrypt.compare(password, user.passwordHash);
         if (!isMatch)
             return res.status(UNAUTHORIZED).json({ error: "Invalid email or password" });
-
         const token = jwt.sign(
             { userId: user._id, accountType: user.accountType, tokenVersion: user.tokenVersion },
             JWT_SECRET,
             { expiresIn: "30m" }
         );
-
         res.json({
             message: "Login successful",
             token,
@@ -47,7 +42,6 @@ router.post("/login", loginLimiter, validateLogin, async (req, res) => {
                     balance: user.balance
                 }
         });
-
         await logActivity({
             userId: user._id,
             userName: user.firstName,
@@ -57,7 +51,6 @@ router.post("/login", loginLimiter, validateLogin, async (req, res) => {
             message: `${user.accountType} ${user.firstName} logged in `,
             req
         });
-
     } catch (err) {
         console.error(err);
         res.status(INTERNAL_SERVER_ERROR).json({ error: "Internal server error" });

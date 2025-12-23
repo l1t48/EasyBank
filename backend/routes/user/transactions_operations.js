@@ -9,7 +9,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const router = express.Router();
-
 const User = require("../../models/User");
 const Transaction = require("../../models/Transaction");
 const logActivity = require('../../utils/Activitylogger');
@@ -31,16 +30,13 @@ router.post("/create-transaction", authMiddleware, transactionLimiter, validateT
       return res.status(UNAUTHORIZED).json({ error: "Unauthorized: user not found in token" });
     }
     const requiresAdminApproval = amount >= SUPERVISOR_APPROVAL_LIMIT;
-
     const transactionData = {
       transactionType,
       amount,
       userId: user._id,
       state: "Pending",
     };
-
     let targetUser = null;
-
     if (transactionType === "Transfer") {
       targetUser = await User.findOne({ accountNumber: targetAccountNumber });
       if (!targetUser) {
@@ -48,17 +44,13 @@ router.post("/create-transaction", authMiddleware, transactionLimiter, validateT
       }
       transactionData.targetAccountNumber = targetAccountNumber;
     }
-
     const transaction = new Transaction(transactionData);
     await transaction.save();
-
     const performer = {
       accountNumber: user.accountNumber,
       name: `${user.firstName || ""} ${user.lastName || ""}`.trim()
     };
-
     await emitToUser(user._id.toString(), "transactionCreated", toPublicJson(transaction, "user", performer));
-
     if (targetUser) {
       await emitToUser(targetUser._id.toString(), "transactionCreated", {
         id: transaction._id,
@@ -66,18 +58,12 @@ router.post("/create-transaction", authMiddleware, transactionLimiter, validateT
         state: transaction.state
       });
     }
-
     const supPayload = toPublicJson(transaction, "supervisor", performer);
     const adminPayload = toPublicJson(transaction, "admin", performer);
-
     if (!requiresAdminApproval) {
       await emitToRole("supervisor", "pendingTransactionCreated", supPayload);
-      console.log(`Notifying supervisor of pending transaction: ${transaction._id}`);
     }
-
     await emitToRole("admin", "pendingTransactionCreated", adminPayload);
-    console.log(`Notifying admin of pending transaction: ${transaction._id}`);
-
     await logActivity({
       userId: user._id,
       userName: user.firstName,
@@ -90,7 +76,6 @@ router.post("/create-transaction", authMiddleware, transactionLimiter, validateT
           : `Transaction of type ${transactionType} created with amount ${amount}`,
       req,
     });
-
     return res.status(CREATED).json({
       success: true,
       message: "Transaction created successfully",
@@ -120,17 +105,14 @@ router.get("/transactions", authMiddleware, async (req, res) => {
       startDate,
       endDate
     } = req.query;
-
     const currentUser = await User.findById(userId).lean();
     if (!currentUser) return res.status(NOT_FOUND).json({ error: "User not found" });
-
     const filter = {
       $or: [
         { userId },
         { targetAccountNumber: currentUser.accountNumber }
       ]
     };
-
     if (transactionId) filter.transactionId = { $regex: transactionId, $options: "i" };
     if (minAmount) filter.amount = { ...filter.amount, $gte: parseFloat(minAmount) };
     if (maxAmount) filter.amount = { ...filter.amount, $lte: parseFloat(maxAmount) };
@@ -141,12 +123,10 @@ router.get("/transactions", authMiddleware, async (req, res) => {
 
     const sortOptions = {};
     sortOptions[sortBy] = order === "desc" ? -1 : 1;
-
     const transactions = await Transaction.find(filter)
       .sort(sortOptions)
       .populate("userId", "firstName lastName accountNumber")
       .lean();
-
 
     const targetNumbers = [
       ...new Set(transactions.map(t => t.targetAccountNumber).filter(Boolean))
@@ -162,17 +142,13 @@ router.get("/transactions", authMiddleware, async (req, res) => {
     const targetMap = new Map(
       targetUsers.map(u => [u.accountNumber, { firstName: u.firstName, lastName: u.lastName, accountNumber: u.accountNumber }])
     );
-
     const mappedTransactions = transactions.map(t => {
       const senderObj = t.userId
         ? { firstName: t.userId.firstName, lastName: t.userId.lastName, accountNumber: t.userId.accountNumber }
         : null;
-
       const targetObj = t.targetAccountNumber ? (targetMap.get(t.targetAccountNumber) || null) : null;
-
       const isReceived = t.targetAccountNumber === currentUser.accountNumber;
       const transactionTypeLabel = isReceived ? "receive" : t.transactionType;
-
       return {
         ...t,
         user: senderObj,
@@ -180,7 +156,6 @@ router.get("/transactions", authMiddleware, async (req, res) => {
         transactionType: transactionTypeLabel
       };
     });
-
     await logActivity({
       userId,
       userName: currentUser.firstName,
@@ -190,7 +165,6 @@ router.get("/transactions", authMiddleware, async (req, res) => {
       message: "User viewed their transaction history",
       req
     });
-
     return res.json({
       success: true,
       transactions: mappedTransactions
@@ -205,19 +179,15 @@ router.patch("/cancel-transaction/:id", authMiddleware, async (req, res) => {
   try {
     if (!mongoose.Types.ObjectId.isValid(req.params.id))
       return res.status(BAD_REQUEST).json({ error: "Invalid transaction ID" });
-
     const transaction = await Transaction.findById(req.params.id);
     if (!transaction)
       return res.status(NOT_FOUND).json({ error: "Transaction not found" });
     if (transaction.state !== "Pending")
       return res.status(BAD_REQUEST).json({ error: "Only pending transactions can be canceled" });
-
     transaction.state = "Canceled";
     transaction.updatedAt = Date.now();
     await transaction.save();
-
     await notifyTransactionUpdate(transaction, { event: "transactionCanceled" });
-
     try {
       const user = await User.findById(req.user.userId);
       await logActivity({
@@ -232,7 +202,6 @@ router.patch("/cancel-transaction/:id", authMiddleware, async (req, res) => {
     } catch (logError) {
       console.error("Log activity error:", logError);
     }
-
     res.json({ success: true, transaction });
   } catch (error) {
     console.error("Cancel transaction error:", error);

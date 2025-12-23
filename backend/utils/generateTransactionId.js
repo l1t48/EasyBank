@@ -4,11 +4,11 @@
 
 const crypto = require("crypto");
 
-const { _36BYTES, RANDOM_STRING_LENGTH, DATE_PAD_LENGTH } = require("../config/global_variables");
+const { _36BYTES, RANDOM_STRING_LENGTH, DATE_PAD_LENGTH, RANDOM_BASE36_PREFIX_LENGTH } = require("../config/global_variables");
 
 function randomAlphaNum(length = RANDOM_STRING_LENGTH) {
   const bytes = crypto.randomBytes(length);
-  return bytes.toString("base64").replace(/[^A-Z0-9]/gi, "").substring(0, length).toUpperCase() || Math.random().toString(_36BYTES).substring(2, 2+length).toUpperCase();
+  return bytes.toString("base64").replace(/[^A-Z0-9]/gi, "").substring(0, length).toUpperCase() || Math.random().toString(_36BYTES).substring(RANDOM_BASE36_PREFIX_LENGTH, RANDOM_BASE36_PREFIX_LENGTH+length).toUpperCase();
 }
 
 function formatDateYYYYMMDD(date = new Date()) {

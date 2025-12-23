@@ -29,7 +29,6 @@ function initSocket(server) {
       credentials: true,
     },
   });
-
   io.use(async (socket, next) => {
     try {
       const token = socket.handshake.auth?.token || (socket.handshake.headers?.authorization || "").split(" ")[1];
@@ -47,40 +46,33 @@ function initSocket(server) {
         accountNumber: user.accountNumber || null,
         accountType: (user.accountType || payload.accountType || "user").toString().toLowerCase(),
       };
-
       return next();
     } catch (err) {
       console.error("Socket auth error:", err.message || err);
       return next(new Error("Unauthorized"));
     }
   });
-
   io.on("connection", (socket) => {
     const { userId, accountNumber, accountType } = socket.user;
     console.log(`Socket connected ${socket.id} | User: ${userId} | Role: ${accountType}`);
     const userRoom = `user:${userId}`;
     socket.join(userRoom);
     console.log(`-> JOINED: ${userRoom}`);
-
     if (accountNumber) {
       const accountRoom = `account:${accountNumber}`;
       socket.join(accountRoom);
       console.log(`-> JOINED: ${accountRoom}`);
     }
-
     if (accountType) {
       const roleRoom = `role:${accountType.toString().toLowerCase()}`; 
       socket.join(roleRoom);
       console.log(`-> JOINED: ${roleRoom}`);
     }
-
     socket.emit("socket:connected", { userId });
-
     socket.on("disconnect", (reason) => {
       console.log(`Socket disconnected ${socket.id} | User: ${userId} | Reason: ${reason}`);
     });
   });
-
   return io;
 }
 

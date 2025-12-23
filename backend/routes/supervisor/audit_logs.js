@@ -37,7 +37,6 @@ router.get('/audit-logs', authMiddleware, async (req, res) => {
       .sort({ date: -1 })
       .limit(parseInt(limit));
 
-
     const supervisor = await User.findById(req.user.userId);
 
     await logActivity({

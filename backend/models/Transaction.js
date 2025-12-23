@@ -3,9 +3,9 @@ const generateTransactionId = require("../utils/generateTransactionId");
 
 const transactionSchema = new mongoose.Schema({
   transactionId: { type: String, required: true, unique: true, index: true },
-  transactionType: { type: String, required: true }, // "deposit", "withdrawal", "transfer"
+  transactionType: { type: String, required: true }, // "Deposit", "Withdrawal", "Transfer"
   amount: { type: Number, required: true },
-  state: { type: String, default: "Pending" }, // "pending", "approved", "rejected", "canceled"
+  state: { type: String, default: "Pending" }, // "Pending", "Approved", "Rejected", "Canceled"
   userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   targetAccountNumber: { type: String },
   handledBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },

@@ -1,7 +1,7 @@
 /**
  | Endpoint                  | Method | Auth Required | Roles       | Description                                                     |
  |---------------------      |--------|---------------|-------------|----------------------------------------------------------       |
- | /api//dashboard/supervisor| GET    | Yes           | Supervisor  | Returns supervisor dashboard: counts and recent reported issues |
+ | /api/dashboard/supervisor| GET    | Yes           | Supervisor  | Returns supervisor dashboard                                    |
 */
 
 const express = require("express");
@@ -13,7 +13,7 @@ const Transaction = require("../../models/Transaction");
 const authorizeRoles = require("../../middlewares/roleMiddleware");
 const authMiddleware = require("../../middlewares/authMiddleware");
 
-const {INTERNAL_SERVER_ERROR} = require("../../config/global_variables");
+const {INTERNAL_SERVER_ERROR, AMOUNT_OF_TRANSACTIONS_SHOWED_DASHBOARD} = require("../../config/global_variables");
 
 router.use(authMiddleware);
 
@@ -33,7 +33,7 @@ router.get("/supervisor", authorizeRoles("Supervisor"), async (req, res) => {
     const recentTransactions = await Transaction.find()
       .populate("userId", "firstName lastName accountNumber")
       .sort({ createdAt: -1 })
-      .limit(5);
+      .limit(AMOUNT_OF_TRANSACTIONS_SHOWED_DASHBOARD);
 
     res.json({
       dashboard: {

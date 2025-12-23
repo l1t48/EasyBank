@@ -2,7 +2,6 @@
 // |----------------|-------------|
 // | sendMail       | Sends an email using Nodemailer with Gmail service |
 
-
 const nodemailer = require('nodemailer');
 
 const transporter = nodemailer.createTransport({
@@ -20,7 +19,6 @@ async function sendMail(to, subject, html) {
     subject,
     html,
   });
-  console.log('Email sent:', info.messageId);
   return info;
 }
 

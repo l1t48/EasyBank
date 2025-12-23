@@ -4,7 +4,6 @@ const helmetMiddleware = require("./middlewares/helmetMiddleware");
 const corsMiddleware = require("./middlewares/corsMiddleware");
 
 const test_ping = require("./routes/test/test");
-
 const fetchUsersData = require("./routes/general/fetchUsersData");
 
 const login = require("./routes/authentication/login");
