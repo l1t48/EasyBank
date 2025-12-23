@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useId } from "react";
 import { useNavigate } from "react-router-dom";
 import { API } from "../../Services/APIs";
 import { useAuth } from "../../Context/AuthContext";
@@ -11,6 +11,8 @@ function LoginForm() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     
+    const idPrefix = useId();
+
     const [error, setError] = useState(null);
     const [message, setMessage] = useState("");
     const [toastMsg, setToastMsg] = useState("");
@@ -85,11 +87,11 @@ function LoginForm() {
         <form className="w-full flex flex-col p-5 text-left animate__animated animate__fadeIn" onSubmit={handleSubmit}>
             <h1 className="text-4xl [@media(max-width:745px)]:text-3xl font-bold text-center text-[var(--nav-text)] duration-300 transition-colors">Login</h1>
             <br />
-            <label htmlFor="email" className="[@media(max-width:745px)]:text-xl text-[var(--nav-text)] duration-300 transition-colors">Email</label>
+            <label htmlFor={`${idPrefix}-email`} className="[@media(max-width:745px)]:text-xl text-[var(--nav-text)] duration-300 transition-colors">Email</label>
             <input
                 type="text"
-                id="email"
-                name="email"
+                id={`${idPrefix}-email`}
+                name={`${idPrefix}-email`}
                 autoComplete="email"
                 placeholder="Enter your email"
                 value={email}
@@ -102,11 +104,11 @@ function LoginForm() {
                 outline-none"
             />
             <br />
-            <label htmlFor="password" className="[@media(max-width:745px)]:text-xl text-[var(--nav-text)] duration-300 transition-colors">Password</label>
+            <label htmlFor={`${idPrefix}-password`} className="[@media(max-width:745px)]:text-xl text-[var(--nav-text)] duration-300 transition-colors">Password</label>
             <input
                 type="password"
-                id="password"
-                name="password"
+                id={`${idPrefix}-password`}
+                name={`${idPrefix}-password`}
                 placeholder="Enter your password"
                 autoComplete="current-password"
                 className="

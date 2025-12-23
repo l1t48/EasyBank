@@ -37,21 +37,21 @@ router.post("/forgot-password", async (req, res) => {
             "Password Reset Request",
             `<div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
                 <h2 style="color: #2c3e50;">Password Reset Request</h2>
-                <p>We received a request to reset your password. Click the button below to proceed:</p>
+                <p style="color: #2c3e50;">We received a request to reset your password. Click the button below to proceed:</p>
                 <div style="margin: 20px 0;">
                     <a href="${resetUrl}" 
                     style="
                         display: inline-block;
                         padding: 12px 20px;
-                        background-color: #9E8FEB;
-                        color: #282440;
+                        background-color: #A3D78A;
+                        color: #2c3e50;
                         text-decoration: none;
                         border-radius: 5px;
                         font-weight: bold;">
                     Reset Password
                     </a>
                 </div>
-                <p style="font-size: 0.9em; color: #777;">This link will expire in 15 minutes. If you did not request a password reset, please ignore this email.</p>
+                <p style="font-size: 0.9em; color: #2c3e50;">This link will expire in 15 minutes. If you did not request a password reset, please ignore this email.</p>
             </div>
             `
         );

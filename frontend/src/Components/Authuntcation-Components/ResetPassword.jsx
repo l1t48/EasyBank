@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useId } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { API } from "../../Services/APIs";
 import Toast from "../../Context/Toast";
@@ -11,6 +11,8 @@ export default function ResetPassword() {
     const [message, setMessage] = useState("");
     const navigate = useNavigate();
     const [error, setError] = useState(null);
+
+    const idPrefix = useId();
 
     const [toastMsg, setToastMsg] = useState("");
     const [showToast, setShowToast] = useState(false);
@@ -49,15 +51,10 @@ export default function ResetPassword() {
                     <h1 className="text-4xl [@media(max-width:745px)]:text-3xl font-bold text-center text-[var(--nav-text)]">Reset Password</h1>
                     <br />
                     <br />  
+                    <label htmlFor={`${idPrefix}-password`} className="[@media(max-width:745px)]:text-xl text-[var(--nav-text)] text-2xl font-bold">New Password</label>
                     <input
-                        type="text"
-                        name="username"
-                        autoComplete="username"
-                        style={{ display: "none" }}
-                        aria-hidden="true"
-                    />
-                    <label className="[@media(max-width:745px)]:text-xl text-[var(--nav-text)] text-2xl font-bold">New Password</label>
-                    <input
+                        name={`${idPrefix}-password`}
+                        id={`${idPrefix}-password`}
                         type="password"
                         value={newPassword}
                         autoComplete="current-password"

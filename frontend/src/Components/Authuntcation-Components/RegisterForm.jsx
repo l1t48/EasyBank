@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useId } from "react";
 import { API } from "../../Services/APIs";
 import Toast from "../../Context/Toast";
 import { useNavigate } from "react-router-dom";
@@ -9,6 +9,8 @@ function RegsiterForm() {
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+
+    const idPrefix = useId();
 
     const [error, setError] = useState(null);
     const [message, setMessage] = useState("");
@@ -58,17 +60,17 @@ function RegsiterForm() {
         <form className="w-full flex flex-col p-5 text-left animate__animated animate__fadeIn" onSubmit={handleSubmit}>
             <h1 className="text-4xl [@media(max-width:745px)]:text-3xl font-bold text-center text-[var(--nav-text)] duration-300 transition-colors">Register</h1>
             <br />
-            <label htmlFor="firstName" className="[@media(max-width:745px)]:text-xl text-[var(--nav-text)] duration-300 transition-colors">First Name</label>
-            <input type="text" value={firstName} id="firstName" onChange={(e) => setFirstName(e.target.value)} placeholder="Enter your first name" autoComplete="given-name" className="p-2 mt-2 font-light text-xl [@media(max-width:745px)]:text-lg text-[var(--nav-hover)] border border-[var(--nav-text)] bg-[var(--nav-bg)] focus:border-[var(--nav-text)] focus:ring focus:ring-[var(--nav-hover)] outline-none" />
+            <label htmlFor={`${idPrefix}-firstName`} className="[@media(max-width:745px)]:text-xl text-[var(--nav-text)] duration-300 transition-colors">First Name</label>
+            <input type="text" value={firstName} name={`${idPrefix}-firstName`} id={`${idPrefix}-firstName`} onChange={(e) => setFirstName(e.target.value)} placeholder="Enter your first name" autoComplete="given-name" className="p-2 mt-2 font-light text-xl [@media(max-width:745px)]:text-lg text-[var(--nav-hover)] border border-[var(--nav-text)] bg-[var(--nav-bg)] focus:border-[var(--nav-text)] focus:ring focus:ring-[var(--nav-hover)] outline-none" />
             <br />
-            <label htmlFor="lastName" className="[@media(max-width:745px)]:text-xl text-[var(--nav-text)] duration-300 transition-colors">Last Name</label>
-            <input type="text" value={lastName} id="lastName" onChange={(e) => setLastName(e.target.value)} placeholder="Enter your last name" autoComplete="family-name" className="p-2 mt-2 font-light text-xl [@media(max-width:745px)]:text-lg text-[var(--nav-hover)] border border-[var(--nav-text)] bg-[var(--nav-bg)] focus:border-[var(--nav-text)] focus:ring focus:ring-[var(--nav-hover)] outline-none" />
+            <label htmlFor={`${idPrefix}-lastName`} className="[@media(max-width:745px)]:text-xl text-[var(--nav-text)] duration-300 transition-colors">Last Name</label>
+            <input type="text" value={lastName} id={`${idPrefix}-lastName`} name={`${idPrefix}-lastName`} onChange={(e) => setLastName(e.target.value)} placeholder="Enter your last name" autoComplete="family-name" className="p-2 mt-2 font-light text-xl [@media(max-width:745px)]:text-lg text-[var(--nav-hover)] border border-[var(--nav-text)] bg-[var(--nav-bg)] focus:border-[var(--nav-text)] focus:ring focus:ring-[var(--nav-hover)] outline-none" />
             <br />
-            <label htmlFor="email" className="[@media(max-width:745px)]:text-xl text-[var(--nav-text)] duration-300 transition-colors">Email</label>
-            <input type="email" value={email} id="email" onChange={(e) => setEmail(e.target.value)} placeholder="Enter your email" autoComplete="email" className="p-2 mt-2 font-light text-xl [@media(max-width:745px)]:text-lg text-[var(--nav-hover)] border border-[var(--nav-text)] bg-[var(--nav-bg)] focus:border-[var(--nav-text)] focus:ring focus:ring-[var(--nav-hover)] outline-none" />
+            <label htmlFor={`${idPrefix}-email`} className="[@media(max-width:745px)]:text-xl text-[var(--nav-text)] duration-300 transition-colors">Email</label>
+            <input type="email" value={email} id={`${idPrefix}-email`} name={`${idPrefix}-email`} onChange={(e) => setEmail(e.target.value)} placeholder="Enter your email" autoComplete="email" className="p-2 mt-2 font-light text-xl [@media(max-width:745px)]:text-lg text-[var(--nav-hover)] border border-[var(--nav-text)] bg-[var(--nav-bg)] focus:border-[var(--nav-text)] focus:ring focus:ring-[var(--nav-hover)] outline-none" />
             <br />
-            <label htmlFor="password" className="[@media(max-width:745px)]:text-xl text-[var(--nav-text)] duration-300 transition-colors">Password</label>
-            <input type="password" value={password} id="password" onChange={(e) => setPassword(e.target.value)} placeholder="Enter your password" autoComplete="new-password" className="p-2 mt-2 font-light text-xl [@media(max-width:745px)]:text-lg text-[var(--nav-hover)] border border-[var(--nav-text)] bg-[var(--nav-bg)] focus:border-[var(--nav-text)] focus:ring focus:ring-[var(--nav-hover)] outline-none" />
+            <label htmlFor={`${idPrefix}-password`} className="[@media(max-width:745px)]:text-xl text-[var(--nav-text)] duration-300 transition-colors">Password</label>
+            <input type="password" value={password} id={`${idPrefix}-password`} name={`${idPrefix}-password`} onChange={(e) => setPassword(e.target.value)} placeholder="Enter your password" autoComplete="new-password" className="p-2 mt-2 font-light text-xl [@media(max-width:745px)]:text-lg text-[var(--nav-hover)] border border-[var(--nav-text)] bg-[var(--nav-bg)] focus:border-[var(--nav-text)] focus:ring focus:ring-[var(--nav-hover)] outline-none" />
             <br />
             {message && <p className="text-green-500 text-lg">{message}</p>}
             {error && <p className="text-red-500 text-lg">{error}</p>}
