@@ -9,9 +9,7 @@ function UserTransactionsFilteringOptions({ isOpen, onClose, onApplyFilters }) {
   const [minAmount, setMinAmount] = useState("");
   const [maxAmount, setMaxAmount] = useState("");
   const idPrefix = useId();
-
   const [error, setError] = useState(null);
-
   const overlayRef = useRef(null);
   const modalRef = useRef(null);
 
@@ -38,22 +36,18 @@ function UserTransactionsFilteringOptions({ isOpen, onClose, onApplyFilters }) {
   const handleApplyFilters = (e) => {
     e.preventDefault();
     setError(null);
-
     if ((startDate && !endDate) || (!startDate && endDate)) {
       setError("Please provide both a Start Date and an End Date for the time interval.");
       return;
     }
-
     if ((minAmount && !maxAmount) || (!minAmount && maxAmount)) {
       setError("Please provide both a Minimum and Maximum Amount for the amount interval.");
       return;
     }
-
     if (minAmount && maxAmount && Number(minAmount) > Number(maxAmount)) {
       setError("Minimum amount cannot be greater than Maximum amount.");
       return;
     }
-
     const filters = {
       transactionId: transactionId.trim(),
       state: status || undefined,
@@ -63,11 +57,8 @@ function UserTransactionsFilteringOptions({ isOpen, onClose, onApplyFilters }) {
       minAmount: minAmount || undefined,
       maxAmount: maxAmount || undefined,
     };
-
     const cleanFilters = Object.fromEntries(Object.entries(filters).filter(([_, v]) => v));
-
     onApplyFilters(cleanFilters);
-
     onClose();
   };
 
@@ -80,7 +71,6 @@ function UserTransactionsFilteringOptions({ isOpen, onClose, onApplyFilters }) {
     setMinAmount("");
     setMaxAmount("");
     setError(null);
-
     onApplyFilters({});
   };
 
@@ -131,20 +121,19 @@ function UserTransactionsFilteringOptions({ isOpen, onClose, onApplyFilters }) {
               <input
                 type="text"
                 id={`${idPrefix}-transactionID`}
-                name={`${idPrefix}-transactionID`}
+                name="transactionID"
                 placeholder="e.g., TXN-"
                 value={transactionId}
                 onChange={(e) => setTransactionId(e.target.value)}
                 className="p-2 w-full border border-[var(--nav-text)] bg-[var(--nav-bg)] text-[var(--nav-hover)] rounded outline-none focus:ring focus:ring-[var(--nav-hover)]"
               />
             </div>
-
             <div>
               <label htmlFor={`${idPrefix}-status`} className="block text-[var(--nav-text)] text-sm mb-1">Status</label>
               <select
                 value={status}
                 id={`${idPrefix}-status`}
-                name={`${idPrefix}-status`}
+                name="status"
                 onChange={(e) => setStatus(e.target.value)}
                 className="p-2 w-full border border-[var(--nav-text)] bg-[var(--nav-bg)] text-[var(--nav-hover)] rounded outline-none focus:ring focus:ring-[var(--nav-hover)]"
               >
@@ -155,12 +144,11 @@ function UserTransactionsFilteringOptions({ isOpen, onClose, onApplyFilters }) {
                  <option value="Canceled">Canceled</option>
               </select>
             </div>
-
             <div>
               <label htmlFor={`${idPrefix}-type`} className="block text-[var(--nav-text)] text-sm mb-1">Type</label>
               <select
                 id={`${idPrefix}-type`}
-                name={`${idPrefix}-type`}
+                name="type"
                 value={type}
                 onChange={(e) => setType(e.target.value)}
                 className="p-2 w-full border border-[var(--nav-text)] bg-[var(--nav-bg)] text-[var(--nav-hover)] rounded outline-none focus:ring focus:ring-[var(--nav-hover)]"
@@ -171,7 +159,6 @@ function UserTransactionsFilteringOptions({ isOpen, onClose, onApplyFilters }) {
                 <option value="Transfer">Transfer</option>
               </select>
             </div>
-
             <fieldset className="col-span-1 sm:col-span-2 lg:col-span-2 border border-[var(--nav-text)] p-3 rounded-md">
               <legend className="text-[var(--nav-text)] font-semibold px-1">Time Interval</legend>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-2">
@@ -180,7 +167,7 @@ function UserTransactionsFilteringOptions({ isOpen, onClose, onApplyFilters }) {
                   <input
                     type="date"
                     id={`${idPrefix}-fromDate`} 
-                    name={`${idPrefix}-fromDate`}
+                    name="fromDate"
                     value={startDate}
                     onChange={(e) => setStartDate(e.target.value)}
                     className="p-2 w-full border rounded bg-[var(--nav-bg)] text-[var(--nav-hover)] outline-none focus:ring focus:ring-[var(--nav-hover)]"
@@ -191,7 +178,7 @@ function UserTransactionsFilteringOptions({ isOpen, onClose, onApplyFilters }) {
                   <input
                     type="date"
                     id={`${idPrefix}-toDate`}
-                    name={`${idPrefix}-toDate`}
+                    name="toDate"
                     value={endDate}
                     onChange={(e) => setEndDate(e.target.value)}
                     className="p-2 w-full border rounded bg-[var(--nav-bg)] text-[var(--nav-hover)] outline-none focus:ring focus:ring-[var(--nav-hover)]"
@@ -199,7 +186,6 @@ function UserTransactionsFilteringOptions({ isOpen, onClose, onApplyFilters }) {
                 </div>
               </div>
             </fieldset>
-
             <fieldset className="col-span-1 sm:col-span-2 lg:col-span-1 border border-[var(--nav-text)] p-3 rounded-md">
               <legend className="text-[var(--nav-text)] font-semibold px-1">Amount Interval</legend>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-2">
@@ -208,7 +194,7 @@ function UserTransactionsFilteringOptions({ isOpen, onClose, onApplyFilters }) {
                   <input
                     type="number"
                     id={`${idPrefix}-minAmount`}
-                    name={`${idPrefix}-minAmount`}
+                    name="minAmount"
                     placeholder="Min"
                     value={minAmount}
                     onChange={(e) => setMinAmount(e.target.value)}
@@ -220,7 +206,7 @@ function UserTransactionsFilteringOptions({ isOpen, onClose, onApplyFilters }) {
                   <input
                     type="number"
                     id={`${idPrefix}-maxAmount`}
-                    name={`${idPrefix}-maxAmount`}
+                    name="maxAmount"
                     placeholder="Max"
                     value={maxAmount}
                     onChange={(e) => setMaxAmount(e.target.value)}
@@ -230,7 +216,6 @@ function UserTransactionsFilteringOptions({ isOpen, onClose, onApplyFilters }) {
               </div>
             </fieldset>
           </div>
-
           {error && <p className="text-red-500 text-sm mt-3">{error}</p>}
         </form>
 
@@ -243,9 +228,7 @@ function UserTransactionsFilteringOptions({ isOpen, onClose, onApplyFilters }) {
             >
               Reset Filters
             </button>
-
             <div className="flex-1" />
-
             <button
               type="button"
               onClick={(e) => handleApplyFilters(e)}

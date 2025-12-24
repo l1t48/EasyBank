@@ -5,7 +5,6 @@ import {
   getAccountNumbersByIds,
   getUserFullNamesByAccountNumbers,
 } from "../../Utils/General-Utils/FetchUserData"
-
 const BACK_END_URL = import.meta.env.VITE_API_BACKEND_URL;
 
 const getNormalizedId = (payload) =>
@@ -31,13 +30,11 @@ export function usePendingTransactionsData(filters) {
     const txId = tx._id || tx.id || null;
     let userAccountNumber = tx.userAccountNumber || null;
     let targetUserName = tx.targetUserName || null;
-
     const userId = tx.userId || (tx.user && tx.user._id) || null;
     if (!userAccountNumber && userId) {
       const accountResults = await getAccountNumbersByIds([userId]);
       userAccountNumber = accountResults[0]?.accountNumber || null;
     }
-
     if (tx.targetAccountNumber && !targetUserName) {
       const targetNames = await getUserFullNamesByAccountNumbers([tx.targetAccountNumber]);
       targetUserName = targetNames[0]?.fullName || null;
@@ -77,7 +74,6 @@ export function usePendingTransactionsData(filters) {
 
       const userIds = txList.map((tx) => tx.userId).filter(Boolean);
       const targetAccs = txList.map((tx) => tx.targetAccountNumber).filter(Boolean);
-
       const [accountResults, targetNames] = await Promise.all([
         userIds.length ? getAccountNumbersByIds(userIds) : [],
         targetAccs.length ? getUserFullNamesByAccountNumbers(targetAccs) : [],
@@ -99,7 +95,6 @@ export function usePendingTransactionsData(filters) {
         updatedAt: tx.updatedAt,
         handledBy: tx.handledBy || null,
       }));
-
       setTransactions(cleaned);
     } catch (err) {
       console.error("Error loading admin pending transactions:", err);
@@ -177,8 +172,7 @@ export function usePendingTransactionsData(filters) {
     if (isInitialFetch.current) {
         fetchPending().catch((e) => console.warn("Admin: initial fetch pending failed", e));
     }
-
-
+    
     return () => {
       socket.off("pendingTransactionCreated", handleNewTransaction);
       socket.off("transactionCreated", handleNewTransaction);

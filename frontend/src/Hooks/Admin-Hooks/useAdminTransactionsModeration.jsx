@@ -4,7 +4,6 @@ import { API } from "../../Services/APIs";
 
 export function useAdminActions() {
   const [actionLoading, setActionLoading] = useState({});
-
   const setRowLoading = (id, kind, value) => {
     setActionLoading((prev) => ({
       ...prev,

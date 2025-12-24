@@ -56,6 +56,7 @@ export function AuthProvider({ children }) {
     function logout() {
         setToken(null);
         setUser(null);
+        window.location.href = "/";
     }
 
     // Provide auth data/functions to the app

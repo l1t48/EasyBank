@@ -9,18 +9,13 @@ function RegsiterForm() {
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-
     const idPrefix = useId();
-
     const [error, setError] = useState(null);
     const [message, setMessage] = useState("");
-
     const navigate = useNavigate();
-
     const [toastMsg, setToastMsg] = useState("");
     const [showToast, setShowToast] = useState(false);
     const [toastType, setToastType] = useState("info");
-
 
     async function handleSubmit(e) {
         e.preventDefault();

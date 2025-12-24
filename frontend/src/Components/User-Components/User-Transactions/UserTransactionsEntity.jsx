@@ -7,7 +7,6 @@ import UserTransactionsMobileCards from "./UserTransactionsMobileCards";
 function UserTransactionsEntity({ filters }) {
   const { toastMsg, showToast, toastType, setToast, closeToast } = useToast();
   const { transactions, loading, sortBy, order, handleSort, fetchTx } = useTransactions(filters, setToast);
-
   if (loading) {
     return (
       <div className="mt-5 w-full px-2 sm:px-4">
@@ -31,7 +30,7 @@ function UserTransactionsEntity({ filters }) {
           fetchTx={fetchTx}
         />
       </div>
-
+      
       <Toast
         message={toastMsg}
         show={showToast}

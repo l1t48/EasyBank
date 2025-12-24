@@ -29,7 +29,6 @@ export default function Transaction_menu_supervisor({ activeFilters, setActiveFi
         setDropdownOpen(false); 
         setIsEllipsisHorizontal(false); 
     };
-    
     const handleApplyFilters = (filters) => {
         setActiveFilters(filters);
     };
@@ -39,7 +38,6 @@ export default function Transaction_menu_supervisor({ activeFilters, setActiveFi
         <div className="w-full flex flex-col items-stretch px-4 sm:px-6 lg:px-8">
             <div className="w-full flex flex-row items-center justify-between gap-4 py-6">
                 <h1 className="text-3xl font-bold text-[var(--nav-text)] duration-300 transition-colors">Transactions</h1>
-
                 <div className="flex items-center gap-3">
                     <div className="relative" ref={dropdownRef}>
                         <button
@@ -53,7 +51,6 @@ export default function Transaction_menu_supervisor({ activeFilters, setActiveFi
                                 {dropdownOpen ? '⋮' : '⋯'}
                             </span>
                         </button>
-
                         {dropdownOpen && (
                             <div className="absolute right-0 mt-1 w-40 rounded shadow-md p-2 bg-[var(--nav-bg)] border border-[var(--nav-text)] z-50" style={{ minWidth: SUPERVISOR_TRANSACTIONS_MENU }}>
                                 <button

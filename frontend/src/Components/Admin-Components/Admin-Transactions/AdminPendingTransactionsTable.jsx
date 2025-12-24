@@ -1,8 +1,6 @@
 import { useRef, useEffect } from 'react';
+import { AMOUNT_DECIMAL_PLACES } from '../../../Data/Global_variables';
 
-/**
- * Desktop-specific table display for pending transactions with sorting and actions.
- */
 export default function AdminPendingTransactionsTable({
   transactions,
   actionLoading,
@@ -15,11 +13,6 @@ export default function AdminPendingTransactionsTable({
   toggleDropdown,
 }) {
   const dropdownRef = useRef(null);
-  
-  // Note: dropdown outside click logic is now handled inside Pending_transactions_admin 
-  // and passed down via dropdownRef/dropdownOpen
-
-  // Columns to display
   const columns = [
     "transactionId",
     "userAccountNumber",
@@ -30,16 +23,10 @@ export default function AdminPendingTransactionsTable({
     "createdAt"
   ];
 
-  // Helper to format column headers
   const formatColumnHeader = (col) => col.replace(/([A-Z])/g, " $1").replace(/^./, (str) => str.toUpperCase());
 
-  // Use useEffect to manage the dropdownRef on the currently open row
   useEffect(() => {
-    // This is a subtle point: The ref for closing outside the dropdown must be placed on the element
-    // containing the entire dropdown logic. In this case, it's on the cell of the active row.
-    // The parent component is responsible for setting the ref via the ternary operator on the <td>.
   }, [dropdownOpen]);
-
 
   if (transactions.length === 0) {
     return (
@@ -57,7 +44,6 @@ export default function AdminPendingTransactionsTable({
       </div>
     );
   }
-
   return (
     <div className="p-5 overflow-x-auto">
       <table className="min-w-full table-auto font-bold border text-[var(--nav-text)] border-[var(--nav-text)] text-sm md:text-base">
@@ -75,19 +61,15 @@ export default function AdminPendingTransactionsTable({
             ))}
           </tr>
         </thead>
-
         <tbody>
           {transactions.map((tx) => {
             const loadingRow = actionLoading[tx.id] || {};
             const isActionable = tx.state === "Pending";
-            
-            // Define the reference based on which row is open
             const currentRef = dropdownOpen === tx.id ? dropdownRef : null;
-
             return (
               <tr key={tx.id} className="bg-[var(--nav-bg)] text-center">
                 <td
-                  ref={currentRef} // Pass the ref here
+                  ref={currentRef}
                   className="p-2 border border-[var(--nav-text)] cursor-pointer underline relative"
                   onClick={() => toggleDropdown(tx.id)}
                 >
@@ -122,7 +104,7 @@ export default function AdminPendingTransactionsTable({
                 <td className="p-2 border border-[var(--nav-text)]">{tx.userAccountNumber || "-"}</td>
                 <td className="p-2 border border-[var(--nav-text)]">{tx.targetAccountNumber || "-"}</td>
                 <td className="p-2 border border-[var(--nav-text)]">{tx.transactionType}</td>
-                <td className="p-2 border border-[var(--nav-text)]">${Number(tx.amount).toFixed(2)}</td>
+                <td className="p-2 border border-[var(--nav-text)]">${Number(tx.amount).toFixed(AMOUNT_DECIMAL_PLACES)}</td>
                 <td className="p-2 border border-[var(--nav-text)]">{tx.state}</td>
                 <td className="p-2 border border-[var(--nav-text)]">{new Date(tx.createdAt).toLocaleDateString()}</td>
               </tr>

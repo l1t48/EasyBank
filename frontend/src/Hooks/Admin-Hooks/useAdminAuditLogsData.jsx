@@ -1,7 +1,6 @@
 import { useEffect, useState, useCallback } from "react";
 import { API } from "../../Services/APIs";
 import { WANTED_LIMIT_IN_USE_AUDITLOGS_DATA } from "../../Data/Global_variables";
-
 const wantedLimit = WANTED_LIMIT_IN_USE_AUDITLOGS_DATA;
 const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
 
@@ -10,7 +9,6 @@ export function useAuditLogsData() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [expandedId, setExpandedId] = useState(null);
-  
   const toggleExpandedId = (id) => setExpandedId(expandedId === id ? null : id);
 
   const fetchLogs = useCallback(async (filters = {}) => {
@@ -19,7 +17,6 @@ export function useAuditLogsData() {
         setLoading(false);
         return;
     }
-
     setLoading(true);
     setError(null);
     try {

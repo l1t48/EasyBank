@@ -10,7 +10,6 @@ import SupervisorDashboardCharts from "./SupervisorDashboardCharts";
 function SupervisorDashboard() {
   const { dashboard, isLoading, error, user } = useDashboardData();
   const { theme } = useContext(ThemeContext);
-
   const [toastMsg, setToastMsg] = useState("");
   const [showToast, setShowToast] = useState(false);
   const [toastType, setToastType] = useState("info");

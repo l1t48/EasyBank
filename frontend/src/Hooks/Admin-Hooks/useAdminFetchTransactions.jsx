@@ -12,7 +12,7 @@ export function useFetchTransactions({ sortBy, order, filters, setTransactions, 
           order,
           ...filters
         }).toString();
-        
+
         const res = await fetch(`${API.admin.allTransactions}?${query}`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -32,7 +32,6 @@ export function useFetchTransactions({ sortBy, order, filters, setTransactions, 
         const accountResults = await getAccountNumbersByIds(userIds);
         const accountMap = {};
         accountResults.forEach((r) => { accountMap[r.id] = r.accountNumber || null; });
-
         const targetAccs = txList.map((tx) => tx.targetAccountNumber).filter(Boolean);
         const targetNames = await getUserFullNamesByAccountNumbers(targetAccs);
         const targetMap = {};

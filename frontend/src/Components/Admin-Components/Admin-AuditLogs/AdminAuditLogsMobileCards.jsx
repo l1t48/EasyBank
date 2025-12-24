@@ -1,10 +1,8 @@
 import { copyJSON } from '../../../Utils/Admin-Utils/AdminAuditLogsExportUtils';
-
 import {JSON_INDENT_SPACES} from "../../../Data/Global_variables"
 
 function AdminAuditLogsMobileCards({ log, expandedId, toggleExpandedId }) {
     const isExpanded = expandedId === (log._id || log.id);
-
     return (
         <div className="rounded shadow border p-3 bg-[var(--nav-bg)] border-[var(--nav-text)] text-[var(--nav-text)]">
             <div className="flex justify-between items-start mb-2 border-b border-[var(--nav-text)] p-1">

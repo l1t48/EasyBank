@@ -6,21 +6,17 @@ import Toast from "../../../Context/Toast";
 function UserTransactionsCreateNewTransaction({ isOpen, onClose }) {
   const { token } = useAuth();
   const idPrefix = useId();
-
   const [transactionType, setTransactionType] = useState("Deposit");
   const [amount, setAmount] = useState("");
   const [targetAccountNumber, setTargetAccountNumber] = useState("");
-
   const [error, setError] = useState(null);
   const [message, setMessage] = useState("");
   const [toastMsg, setToastMsg] = useState("");
   const [showToast, setShowToast] = useState(false);
   const [toastType, setToastType] = useState("info");
-
   const overlayRef = useRef(null);
   const modalRef = useRef(null);
 
-  // Sync body scroll and global key listeners
   useEffect(() => {
     document.body.style.overflow = isOpen ? "hidden" : "";
     return () => (document.body.style.overflow = "");
@@ -49,19 +45,16 @@ function UserTransactionsCreateNewTransaction({ isOpen, onClose }) {
   const handleBackdropClick = (e) => {
     if (overlayRef.current && e.target === overlayRef.current) onClose();
   };
-
   const handleSubmit = async (e) => {
     if (e) e.preventDefault();
     setError(null);
     setMessage(null);
     setShowToast(false);
-
     const payload = {
       transactionType,
       amount,
       targetAccountNumber: transactionType === "Transfer" ? targetAccountNumber : undefined
     };
-
     try {
       const res = await fetch(API.user.createTransaction, {
         method: "POST",
@@ -71,9 +64,7 @@ function UserTransactionsCreateNewTransaction({ isOpen, onClose }) {
         },
         body: JSON.stringify(payload),
       });
-
       const data = await res.json();
-
       if (!res.ok) {
         setError(data.error || (data.errors && data.errors[0]?.msg) || "Transaction failed");
         setToastMsg("Transaction Failed");
@@ -81,13 +72,10 @@ function UserTransactionsCreateNewTransaction({ isOpen, onClose }) {
         setShowToast(true);
         return;
       }
-
       setMessage(data.message || "Transaction created successfully");
       setToastMsg("Transaction Successful!");
       setToastType("success");
       setShowToast(true);
-
-      // Reset Form
       setAmount("");
       setTargetAccountNumber("");
       setTransactionType("Deposit");
@@ -110,7 +98,6 @@ function UserTransactionsCreateNewTransaction({ isOpen, onClose }) {
         ref={modalRef}
         className="bg-[var(--nav-bg)] rounded-xl shadow-lg w-full max-w-xl md:max-w-2xl overflow-hidden flex flex-col ring-1 ring-black/10"
       >
-        {/* Header */}
         <div className="flex items-start justify-between p-4 border-b border-[var(--nav-text)]/10">
           <h2 className="text-lg md:text-2xl font-bold text-[var(--nav-text)]">
             Create a New Transaction
@@ -122,8 +109,6 @@ function UserTransactionsCreateNewTransaction({ isOpen, onClose }) {
             ✕
           </button>
         </div>
-
-        {/* Body */}
         <form id="createTransactionForm" onSubmit={handleSubmit} className="p-4 overflow-y-auto" style={{ flex: 1 }}>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-center">
             <div>
@@ -132,7 +117,7 @@ function UserTransactionsCreateNewTransaction({ isOpen, onClose }) {
               </label>
               <select
                 value={transactionType}
-                name={`${idPrefix}-type`}
+                name="type"
                 id={`${idPrefix}-type`}
                 onChange={(e) => setTransactionType(e.target.value)}
                 className="w-full p-2 border border-[var(--nav-text)] bg-[var(--nav-bg)] text-[var(--nav-hover)] rounded outline-none focus:ring focus:ring-[var(--nav-hover)]"
@@ -142,14 +127,13 @@ function UserTransactionsCreateNewTransaction({ isOpen, onClose }) {
                 <option value="Transfer">Transfer</option>
               </select>
             </div>
-
             <div>
               <label htmlFor={`${idPrefix}-amount`} className="block text-[var(--nav-text)] text-sm mb-1">
                 Amount
               </label>
               <input
                 id={`${idPrefix}-amount`}
-                name={`${idPrefix}-amount`}
+                name="amount"
                 type="number"
                 min="149"
                 placeholder="Enter amount"
@@ -159,7 +143,6 @@ function UserTransactionsCreateNewTransaction({ isOpen, onClose }) {
                 required
               />
             </div>
-
             {transactionType === "Transfer" && (
               <div className="sm:col-span-2">
                 <label htmlFor={`${idPrefix}-targetAccountNumber`} className="block text-[var(--nav-text)] text-sm mb-1">
@@ -178,12 +161,9 @@ function UserTransactionsCreateNewTransaction({ isOpen, onClose }) {
               </div>
             )}
           </div>
-
           {error && <p className="text-red-500 text-sm font-semibold mt-3">{error}</p>}
           {message && <p className="text-green-500 text-sm font-semibold mt-3">{message}</p>}
         </form>
-
-        {/* Footer */}
         <div className="border-t border-[var(--nav-text)]/10 p-3 bg-gradient-to-t from-[var(--nav-bg)] to-transparent">
           <div className="flex flex-col sm:flex-row gap-3">
             <button

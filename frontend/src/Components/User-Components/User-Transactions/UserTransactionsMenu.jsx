@@ -7,9 +7,7 @@ export default function UserTransactionsMenu({ activeFilters, setActiveFilters }
     const [isEllipsisHorizontal, setIsEllipsisHorizontal] = useState(false);
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const dropdownRef = useRef(null);
-
     const [isModalOpen, setIsModalOpen] = useState(false);
-
     const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
 
     const handleEllipsisClick = () => {
@@ -31,19 +29,16 @@ export default function UserTransactionsMenu({ activeFilters, setActiveFilters }
     const handleCreateTransaction = () => {
         setIsModalOpen(true);
         setDropdownOpen(false);
-        setIsEllipsisHorizontal(false); 
+        setIsEllipsisHorizontal(false);
     };
-
     const handleOpenFilters = () => {
-        setIsFilterModalOpen(true); 
-        setDropdownOpen(false); 
-        setIsEllipsisHorizontal(false); 
+        setIsFilterModalOpen(true);
+        setDropdownOpen(false);
+        setIsEllipsisHorizontal(false);
     };
-    
     const handleApplyFilters = (filters) => {
         setActiveFilters(filters);
     };
-
 
     return (
         <div className="w-full flex flex-col items-stretch px-4 sm:px-6 lg:px-8">
@@ -62,10 +57,9 @@ export default function UserTransactionsMenu({ activeFilters, setActiveFilters }
                                 {dropdownOpen ? '⋮' : '⋯'}
                             </span>
                         </button>
-
                         {dropdownOpen && (
                             <div className="absolute right-0 mt-1 w-40 rounded shadow-md p-2 bg-[var(--nav-bg)] border border-[var(--nav-text)] z-50" style={{ minWidth: USER_TRANSACTIONS_MENU }}>
-                                
+
                                 <button
                                     onClick={handleCreateTransaction}
                                     className="block w-full text-left px-2 py-1 font-bold rounded text-sm bg-[var(--nav-text)] text-[var(--nav-bg)] hover:text-[var(--nav-text)] hover:bg-[var(--nav-bg)] border border-[--bg]"
@@ -79,7 +73,7 @@ export default function UserTransactionsMenu({ activeFilters, setActiveFilters }
                                 >
                                     Filtering Options
                                 </button>
-                                
+
                             </div>
                         )}
                     </div>
@@ -98,7 +92,6 @@ export default function UserTransactionsMenu({ activeFilters, setActiveFilters }
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
             />
-            
             <Filter_options_user
                 isOpen={isFilterModalOpen}
                 onClose={() => setIsFilterModalOpen(false)}

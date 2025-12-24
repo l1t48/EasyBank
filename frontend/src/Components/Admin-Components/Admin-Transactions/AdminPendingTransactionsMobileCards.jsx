@@ -1,6 +1,7 @@
+import { AMOUNT_DECIMAL_PLACES } from "../../../Data/Global_variables";
+
 export default function AdminPendingTransactionsMobileCards({ tx, loadingRow, handleApprove, handleReject }) {
   const isActionable = tx.state === "Pending";
-
   return (
     <div
       key={tx.id}
@@ -23,7 +24,7 @@ export default function AdminPendingTransactionsMobileCards({ tx, loadingRow, ha
       </div>
       <div className="flex justify-between mb-1">
         <span className="font-semibold">Amount:</span>
-        <span>${Number(tx.amount).toFixed(2)}</span>
+        <span>${Number(tx.amount).toFixed(AMOUNT_DECIMAL_PLACES)}</span>
       </div>
       <div className="flex justify-between mb-1">
         <span className="font-semibold">State:</span>

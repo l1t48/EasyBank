@@ -5,26 +5,20 @@ import { features } from "../../Data/Features";
 import { DATA_INDEX_RADIX, INTERSECTION_THRESHOLD, CHEVRON_ICON_SIZE } from "../../Data/Global_variables";
 
 function FeaturesSection() {
-    const scrollRef = useRef(null); // Reference to the scrollable container
+    const scrollRef = useRef(null);
     const [visibleIndexes, setVisibleIndexes] = useState([]);
 
-    // Scroll function to move cards left or right
     const scroll = (direction) => {
         const { current } = scrollRef;
         if (current) {
-            const scrollAmount = current.clientWidth; // Scroll by the width of the container
+            const scrollAmount = current.clientWidth;
             current.scrollBy({
                 left: direction === "left" ? -scrollAmount : scrollAmount,
-                behavior: "smooth", // Smooth scrolling effect
+                behavior: "smooth",
             });
         }
     };
 
-    // -------------------------------------------------------------
-    // useEffect: Sets up IntersectionObserver to detect which cards
-    // are in focus (centered) in the scrollable container.
-    // This allows content inside cards to animate only when in view.
-    // -------------------------------------------------------------
     useEffect(() => {
         const observer = new IntersectionObserver(
             (entries) => {
@@ -42,15 +36,10 @@ function FeaturesSection() {
                 threshold: INTERSECTION_THRESHOLD,
             }
         );
-
-        // Get all children (cards) of the scrollable container
         const cards = scrollRef.current?.children;
         if (cards) {
-            // Observe each card with the IntersectionObserver
             Array.from(cards).forEach((card, index) => observer.observe(card));
         }
-
-        // Cleanup: disconnect observer when component unmounts
         return () => observer.disconnect();
     }, []);
 
@@ -59,9 +48,7 @@ function FeaturesSection() {
             <h2 className="text-3xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-center text-[var(--nav-text)] mb-10">
                 Our Features & Services
             </h2>
-
             <div className="relative w-full flex items-center justify-center h-[70%] md:h-[75%] mt-9">
-                {/* Left scroll button */}
                 <button
                     onClick={() => scroll("left")}
                     className="absolute left-2 md:left-6 top-1/2 -translate-y-1/2 bg-[var(--nav-bg)] text-[var(--nav-text)] p-3 md:p-4 rounded-full border border-[var(--nav-text)] z-20 hover:scale-110 active:scale-95 transition-transform duration-500 ease-in-out"
@@ -75,7 +62,7 @@ function FeaturesSection() {
                     {features.map((feature, index) => (
                         <div
                             key={index}
-                            data-index={index} // used by IntersectionObserver
+                            data-index={index}
                             className="flex-shrink-0 w-full md:w-[80vw] flex flex-col justify-center items-center snap-center
                                          bg-[var(--nav-bg)] text-center px-6 py-8 md:px-10 rounded-xl border border-[var(--nav-text)]"
                         >
@@ -93,8 +80,6 @@ function FeaturesSection() {
                         </div>
                     ))}
                 </div>
-
-                {/* Right scroll button */}
                 <button
                     onClick={() => scroll("right")}
                     className="absolute right-2 md:right-6 top-1/2 -translate-y-1/2 bg-[var(--nav-bg)] text-[var(--nav-text)] p-3 md:p-4 rounded-full border border-[var(--nav-text)] z-20 hover:scale-110 active:scale-95 transition-transform duration-150 ease-in-out"

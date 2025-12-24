@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { handleCancel } from '../../../Utils/User-Utils/UserTransactionsCancelUtils';
 import { TABLE_COLUMN_COUNT_TRANSACTION_USER, AMOUNT_DECIMAL_PLACES } from '../../../Data/Global_variables';
-
 const columnHeaders = {
   transactionId: "Transaction ID",
   userAccountNumber: "User Account Number",

@@ -1,7 +1,6 @@
 import React from 'react';
 import { copyJSON } from "../../../Utils/Supervisor-Utils/SupervisorAuditLogsExportUtils";
 import { TABLE_COLUMN_COUNT, AUDITLOG_MESSAGES_LENGTH } from "../../../Data/Global_variables";
-
 const tableHeaders = ['Time', 'Action', 'User', 'Account#', 'Message', 'Details'];
 
 const SupervisorAuditLogsTable = ({ logs, loading, expandedId, setExpandedId }) => {

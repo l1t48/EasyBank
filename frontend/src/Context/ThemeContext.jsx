@@ -1,5 +1,4 @@
 import { useState, useEffect, createContext } from "react";
-
 export const ThemeContext = createContext();
 
 export const ThemeProvider = ({ children }) => {
@@ -23,7 +22,7 @@ export const ThemeProvider = ({ children }) => {
       document.body.classList.remove("dark");
     }
 
-    setScrollbarTheme(savedTheme); // Apply scrollbar colors
+    setScrollbarTheme(savedTheme);
   }, []);
 
   const toggleTheme = () => {

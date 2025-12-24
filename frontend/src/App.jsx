@@ -10,18 +10,18 @@ import ThemeSwitcher from "./Components/General-Componenets/ThemeSwitcher.jsx";
 import TransactionOperations from "./Pages/TransactionOperations.jsx";
 import Accounts_managment from "./Pages/AccountsManagment.jsx";
 import AuditLogs from "./Pages/AuditLogs.jsx";
+import { useAuth } from "./Context/AuthContext.jsx";
 
 function App() {
-  const isLoggedIn = !!localStorage.getItem("token");
+  const { isAuthenticated } = useAuth();
+
   return (
     <>
       <ThemeSwitcher />
-
       <Routes>
-
         <Route
           path="/"
-          element={isLoggedIn ? <Navigate to="/dashboard" /> : <Home />}
+          element={isAuthenticated ? <Navigate to="/dashboard" /> : <Home />}
         />
         <Route
           path="/dashboard"

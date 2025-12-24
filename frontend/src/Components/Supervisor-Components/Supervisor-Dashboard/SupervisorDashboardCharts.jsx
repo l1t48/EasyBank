@@ -9,9 +9,7 @@ import {
   Legend,
   ArcElement,
 } from "chart.js";
-
 import { SUPERVISOR_CHART_DURATION } from "../../../Data/Global_variables";
-
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ArcElement);
 
 function SupervisorDashboardCharts({ dashboard, colors }) {
@@ -27,7 +25,6 @@ function SupervisorDashboardCharts({ dashboard, colors }) {
       },
     ],
   };
-
   const transactionsByTypeData = {
     labels: dashboard.transactionsByType.map(t => t._id),
     datasets: [
@@ -40,7 +37,6 @@ function SupervisorDashboardCharts({ dashboard, colors }) {
       },
     ],
   };
-
   const chartOptions = {
     responsive: true,
     plugins: {
@@ -62,7 +58,6 @@ function SupervisorDashboardCharts({ dashboard, colors }) {
         </h2>
         <Doughnut data={transactionsByStateData} options={chartOptions} />
       </div>
-
       <div style={{ backgroundColor: colors.cardBg, borderColor: colors.border }} className="p-5 rounded shadow border">
         <h2 style={{ color: colors.primary }} className="text-center text-lg font-semibold mb-3 duration-300 transition-colors">
           Transactions by Type

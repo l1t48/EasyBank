@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { usePendingTransactions } from "../../../Hooks/Supervisor-Hooks/useSupervisorPendingTransactions";
 import { handleApprove, handleReject } from "../../../Utils/Supervisor-Utils/SupervisorTransactionsOperations";
-import { AMOUNT_DECIMAL_PLACES } from "../../../Data/Global_variables";
+import { AMOUNT_DECIMAL_PLACES, TABLE_COLUMN_COUNT_PENDING_TRANSACTIONS_SUPERVISOR } from "../../../Data/Global_variables";
 
 function SupervisorTransactionsEntity({ filters }) {
   const {
@@ -14,7 +14,6 @@ function SupervisorTransactionsEntity({ filters }) {
     setRowLoading,
     removeTransaction,
   } = usePendingTransactions(filters);
-
   const [dropdownOpen, setDropdownOpen] = useState(null);
   const dropdownRef = useRef(null);
 
@@ -29,10 +28,8 @@ function SupervisorTransactionsEntity({ filters }) {
   }, [dropdownOpen]);
 
   const toggleDropdown = (id) => setDropdownOpen(dropdownOpen === id ? null : id);
-
   const onApprove = (id) => handleApprove(id, setRowLoading, removeTransaction);
   const onReject = (id) => handleReject(id, setRowLoading, removeTransaction);
-
 
   if (loading) return <p className="text-center text-[var(--nav-text)] mt-5">Loading...</p>;
 
@@ -97,7 +94,7 @@ function SupervisorTransactionsEntity({ filters }) {
           <tbody>
             {transactions.length === 0 ? (
               <tr>
-                <td colSpan={7} className="p-3 border text-center border-[var(--nav-text)]">No pending transactions.</td>
+                <td colSpan={TABLE_COLUMN_COUNT_PENDING_TRANSACTIONS_SUPERVISOR} className="p-3 border text-center border-[var(--nav-text)]">No pending transactions.</td>
               </tr>
             ) : (
               transactions.map((tx) => {
@@ -123,7 +120,7 @@ function SupervisorTransactionsEntity({ filters }) {
                     <td className="p-2 border border-[var(--nav-text)]">{tx.userAccountNumber || "-"}</td>
                     <td className="p-2 border border-[var(--nav-text)]">{tx.targetAccountNumber || "-"}</td>
                     <td className="p-2 border border-[var(--nav-text)]">{tx.transactionType}</td>
-                    <td className="p-2 border border-[var(--nav-text)]">${Number(tx.amount).toFixed(2)}</td>
+                    <td className="p-2 border border-[var(--nav-text)]">${Number(tx.amount).toFixed(AMOUNT_DECIMAL_PLACES)}</td>
                     <td className="p-2 border border-[var(--nav-text)]">{tx.state}</td>
                     <td className="p-2 border border-[var(--nav-text)]">{new Date(tx.createdAt).toLocaleDateString()}</td>
                   </tr>

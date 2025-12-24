@@ -5,7 +5,6 @@ import {
   normalizePayload, 
   enrichTransactionData 
 } from "../../Utils/Admin-Utils/AdminTransactionUtils";
-
 const BACK_END_URL = import.meta.env.VITE_API_BACKEND_URL;
 
 export function useRealTimeTransactions({ setTransactions }) {
@@ -55,7 +54,6 @@ export function useRealTimeTransactions({ setTransactions }) {
         const normalized = normalizePayload(updatedTx);
         setTransactions((prev) => prev.map((tx) => (tx.id === id ? { ...tx, ...normalized } : tx)));
       }));
-
 
     return () => {
       socket.removeAllListeners();

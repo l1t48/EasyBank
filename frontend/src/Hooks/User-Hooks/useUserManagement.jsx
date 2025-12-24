@@ -23,7 +23,6 @@ export function useUserManagement() {
             setLoading(false);
             return;
         }
-
         try {
             const res = await fetch(`${API.admin.allUsers}`, {
                 headers: {
@@ -46,7 +45,6 @@ export function useUserManagement() {
                 createdAt: u.createdAt || null,
                 disabled: !!u.disabled,
             }));
-
             setUsers(cleaned);
         } catch (err) {
             console.error("Error loading all users:", err);
@@ -60,7 +58,6 @@ export function useUserManagement() {
         if (!window.confirm(`Are you sure you want to PERMANENTLY delete the user: ${user.fullName} (${user.accountNumber})? This action cannot be undone.`)) {
             return;
         }
-
         setRowLoading(user.id, "delete", true);
         try {
             const url = API.admin.deleteUser(user.id);

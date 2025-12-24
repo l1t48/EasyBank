@@ -17,7 +17,6 @@ function AdminAllTransactionsEntity({ filters }) {
     setDropdownOpen, 
     toggleDropdown 
   } = useTransactionState();
-  
   const dropdownRef = useRef(null);
 
   useFetchTransactions({ sortBy, order, filters, setTransactions, setLoading });
@@ -32,7 +31,6 @@ function AdminAllTransactionsEntity({ filters }) {
     if (dropdownOpen) document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [dropdownOpen, setDropdownOpen]);
-
 
   if (loading) return <p className="text-center text-[var(--nav-text)] mt-5">Loading all transactions...</p>;
 

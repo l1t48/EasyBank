@@ -17,18 +17,15 @@ export const normalizePayload = (tx) => ({
 
 export const enrichTransactionData = async (tx) => {
   const id = getNormalizedId(tx);
-
   let userAccountNumber = tx.userAccountNumber || null;
   const targetAccountNumber = tx.targetAccountNumber || null;
-
-  // Resolve missing user account number
   const userId = tx.userId || tx.user?._id || null;
+  
   if (!userAccountNumber && userId) {
     const accountResults = await getAccountNumbersByIds([userId]);
     userAccountNumber = accountResults[0]?.accountNumber || null;
   }
 
-  // Resolve target user name if available
   let targetUserName = null;
   if (targetAccountNumber) {
     const targetNames = await getUserFullNamesByAccountNumbers([targetAccountNumber]);

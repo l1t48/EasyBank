@@ -10,12 +10,10 @@ import {
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
 import { USER_CHART_DURATION } from "../../../Data/Global_variables";
-
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ArcElement);
 
 function UserTransactionsCharts({ totalsByType, colors }) {
   const transactionTypes = Object.keys(totalsByType);
-  
   const totalsData = {
     labels: transactionTypes,
     datasets: [
@@ -28,7 +26,6 @@ function UserTransactionsCharts({ totalsByType, colors }) {
       },
     ],
   };
-
   const chartOptions = {
     responsive: true,
     plugins: {

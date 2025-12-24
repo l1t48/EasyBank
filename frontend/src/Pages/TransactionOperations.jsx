@@ -50,7 +50,6 @@ function TransactionOperations() {
 
         case "User":
             const [activeFilters, setActiveFilters] = useState({});
-
             return (
                 <div>
                     <Navbar />
@@ -65,7 +64,6 @@ function TransactionOperations() {
                     </div>
                 </div>
             );
-
 
         default:
             return <ErrorModule type="unauthorized" />;

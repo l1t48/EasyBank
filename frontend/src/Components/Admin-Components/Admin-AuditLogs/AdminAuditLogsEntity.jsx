@@ -8,7 +8,6 @@ import { TABLE_COLUMN_COUNT } from "../../../Data/Global_variables";
 
 function AdminAuditLogsEntity() {
   const { logs, loading, error, expandedId, toggleExpandedId, fetchLogs } = useAuditLogsData();
-
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
   const dropdownRef = useRef(null);
@@ -45,7 +44,6 @@ function AdminAuditLogsEntity() {
         onClose={() => setIsFilterModalOpen(false)}
         onApplyFilters={handleApplyFilters}
       />
-
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-3xl font-bold text-[var(--nav-text)] duration-300 transition-colors">Audit Logs</h2>
         <div className="flex items-center gap-3">
@@ -57,7 +55,6 @@ function AdminAuditLogsEntity() {
               <span className="sr-only">Menu</span>
               <span className="text-xl select-none">⋯</span>
             </button>
-
             {dropdownOpen && (
               <div className="absolute right-0 mt-1 w-44 rounded shadow-md p-2 bg-[var(--nav-bg)] border border-[var(--nav-text)] z-50">
                 <button
@@ -101,7 +98,6 @@ function AdminAuditLogsEntity() {
           ))
         )}
       </div>
-
       <div className="hidden xl:block mt-10">
         <div className="p-2 rounded border bg-[var(--nav-bg)] border-[var(--nav-text)]">
           <table className="min-w-full table-auto font-bold text-sm text-[var(--nav-text)] text-center">

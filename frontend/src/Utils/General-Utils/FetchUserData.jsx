@@ -1,14 +1,11 @@
 import { API } from "../../Services/APIs";
-
 const nameCache = new Map();
 const accountNumberCache = new Map();
 const targetNameCache = new Map();
 
 export async function getUserFullNamesByAccountNumbers(accountNumbers) {
   if (!Array.isArray(accountNumbers) || accountNumbers.length === 0) return [];
-
   const uncached = accountNumbers.filter((acc) => !targetNameCache.has(acc));
-
   if (uncached.length > 0) {
     try {
       const res = await fetch(API.general.namesByAccounts, {
@@ -19,7 +16,6 @@ export async function getUserFullNamesByAccountNumbers(accountNumbers) {
         },
         body: JSON.stringify({ accountNumbers: uncached }),
       });
-
       const data = await res.json();
       if (!res.ok || !data.success) {
         console.error("getUserFullNamesByAccountNumbers error:", data.error || "Unknown error");
@@ -32,40 +28,32 @@ export async function getUserFullNamesByAccountNumbers(accountNumbers) {
       console.error("getUserFullNamesByAccountNumbers fetch error:", err);
     }
   }
-
   return accountNumbers.map((acc) => targetNameCache.get(acc) || { accountNumber: acc, fullName: "Unknown User", found: false });
 }
 
 export async function getUserFullNameById(userId) {
   if (!userId) return null;
-
   if (nameCache.has(userId)) {
     return nameCache.get(userId);
   }
-
   try {
     const res = await fetch(API.general.name(userId), {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     });
-
     const data = await res.json();
-
     if (!res.ok || !data.success) {
       console.error("getUserFullNameById error:", data.error || "Unknown error");
       return null;
     }
-
     const result = {
       id: data.userId,
       firstName: data.firstName,
       lastName: data.lastName,
       fullName: data.fullName,
     };
-
     nameCache.set(userId, result);
-
     return result;
   } catch (err) {
     console.error("getUserFullNameById fetch error:", err);
@@ -73,12 +61,9 @@ export async function getUserFullNameById(userId) {
   }
 }
 
-
 export async function getUserFullNamesByIds(ids) {
   if (!Array.isArray(ids) || ids.length === 0) return [];
-
   const uniqueIds = [...new Set(ids)];
-
   const uncachedIds = uniqueIds.filter((id) => !nameCache.has(id));
 
   if (uncachedIds.length > 0) {
@@ -118,7 +103,6 @@ export async function getUserFullNamesByIds(ids) {
 
   return ids.map((id) => {
     const cached = nameCache.get(id) || null;
-
     if (!cached) {
       return {
         id,
@@ -128,7 +112,6 @@ export async function getUserFullNamesByIds(ids) {
         found: false,
       };
     }
-
     return {
       id,
       firstName: cached.firstName,
@@ -147,16 +130,13 @@ export async function getAccountNumberById(userId) {
     if (!cached) return null;
     return { id: userId, accountNumber: cached };
   }
-
   try {
     const res = await fetch(API.general.accountNumber(userId), {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     });
-
     const data = await res.json();
-
     if (!res.ok || !data.success) {
       console.error(
         "getAccountNumberById error:",
@@ -165,14 +145,11 @@ export async function getAccountNumberById(userId) {
       accountNumberCache.set(userId, null);
       return null;
     }
-
     const result = {
       id: data.userId,
       accountNumber: data.accountNumber,
     };
-
     accountNumberCache.set(userId, data.accountNumber);
-
     return result;
   } catch (err) {
     console.error("getAccountNumberById fetch error:", err);
@@ -183,11 +160,8 @@ export async function getAccountNumberById(userId) {
 
 export async function getAccountNumbersByIds(ids) {
   if (!Array.isArray(ids) || ids.length === 0) return [];
-
   const uniqueIds = [...new Set(ids)];
-
   const uncachedIds = uniqueIds.filter((id) => !accountNumberCache.has(id));
-
   if (uncachedIds.length > 0) {
     try {
       const res = await fetch(API.general.accountNumbers, {
@@ -198,9 +172,7 @@ export async function getAccountNumbersByIds(ids) {
         },
         body: JSON.stringify({ ids: uncachedIds }),
       });
-
       const data = await res.json();
-
       if (!res.ok || !data.success) {
         console.error(
           "getAccountNumbersByIds error:",
@@ -222,7 +194,6 @@ export async function getAccountNumbersByIds(ids) {
 
   return ids.map((id) => {
     const cached = accountNumberCache.get(id);
-
     if (!cached) {
       return {
         id,
@@ -230,7 +201,6 @@ export async function getAccountNumbersByIds(ids) {
         found: false,
       };
     }
-
     return {
       id,
       accountNumber: cached,
@@ -242,7 +212,6 @@ export async function getAccountNumbersByIds(ids) {
 export function clearAccountNumberCache() {
   accountNumberCache.clear();
 }
-
 
 export function clearTargetNameCache() {
   targetNameCache.clear();

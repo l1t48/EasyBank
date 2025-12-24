@@ -3,22 +3,18 @@ import { useNavigate } from "react-router-dom";
 import { API } from "../../Services/APIs";
 import { useAuth } from "../../Context/AuthContext";
 import Toast from "../../Context/Toast";
-
 import { REDIRECTION_TIME } from "../../Data/Global_variables";
 
 function LoginForm() {
     const { login } = useAuth();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    
     const idPrefix = useId();
-
     const [error, setError] = useState(null);
     const [message, setMessage] = useState("");
     const [toastMsg, setToastMsg] = useState("");
     const [showToast, setShowToast] = useState(false);
     const [toastType, setToastType] = useState("info");
-
     const navigate = useNavigate();
 
     async function forgotPassword(e) {
@@ -43,7 +39,6 @@ function LoginForm() {
             setError("Something went wrong. Please try again.");
         }
     }
-
     async function handleSubmit(e) {
         e.preventDefault();
         setError(null);
@@ -53,10 +48,8 @@ function LoginForm() {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email, password }),
             });
-
             const data = await res.json();
             setMessage(data.message)
-
             if (!res.ok) {
                 setError(
                     data.error ||
@@ -68,13 +61,10 @@ function LoginForm() {
                 setShowToast(true);
                 return;
             }
-
             setToastMsg("Login Successful!");
             setToastType("success");
             setShowToast(true);
-
             login(data.token, data.user);
-
             setTimeout(() => {
                 navigate("/dashboard");
             }, REDIRECTION_TIME);
@@ -142,7 +132,6 @@ function LoginForm() {
 
             <Toast message={toastMsg} show={showToast} type={toastType} onClose={() => setShowToast(false)} />
         </form>
-
     );
 }
 export default LoginForm

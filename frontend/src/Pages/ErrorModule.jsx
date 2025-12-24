@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLock } from "@fortawesome/free-solid-svg-icons";
+import { ERROR_TIMEOUT_VALUE } from "../Data/Global_variables";
 
 function ErrorModule({ type = "unauthorized" }) {
   const navigate = useNavigate();
@@ -22,7 +23,7 @@ function ErrorModule({ type = "unauthorized" }) {
   useEffect(() => {
     const timer = setTimeout(() => {
       navigate("/");
-    }, 10000);
+    }, ERROR_TIMEOUT_VALUE);
 
     return () => clearTimeout(timer);
   }, [navigate]);

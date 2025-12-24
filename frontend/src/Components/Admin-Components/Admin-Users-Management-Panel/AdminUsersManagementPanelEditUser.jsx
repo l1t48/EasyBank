@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useId } from 'react';
 import { API } from '../../../Services/APIs';
 import Toast from '../../../Context/Toast';
+import { FORM_CLOSE_TIMEOUT_VALUE } from '../../../Data/Global_variables';
 
 const initialFormState = {
     firstName: '',
@@ -16,13 +17,10 @@ export default function AdminUsersManagementPanelEditUser({ isOpen, onClose, use
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(null);
-
     const idPrefix = useId();
-
     const [toastMsg, setToastMsg] = useState("");
     const [showToast, setShowToast] = useState(false);
     const [toastType, setToastType] = useState("info");
-
     const overlayRef = useRef(null);
     const modalRef = useRef(null);
 
@@ -62,7 +60,6 @@ export default function AdminUsersManagementPanelEditUser({ isOpen, onClose, use
             [name]: type === 'number' ? (value === "" ? 0 : parseFloat(value)) : value,
         }));
     };
-
     const handleFormClose = () => {
         setFormData(initialFormState);
         setError(null);
@@ -71,14 +68,11 @@ export default function AdminUsersManagementPanelEditUser({ isOpen, onClose, use
         setToastMsg("");
         onClose();
     };
-
     const handleBackdropClick = (e) => {
         if (overlayRef.current && e.target === overlayRef.current) handleFormClose();
     };
-
     const handleSubmit = async (e) => {
         if (e) e.preventDefault();
-
         const hasChanges =
             formData.firstName !== user.firstName ||
             formData.lastName !== user.lastName ||
@@ -86,24 +80,19 @@ export default function AdminUsersManagementPanelEditUser({ isOpen, onClose, use
             formData.accountType !== user.accountType ||
             formData.balance !== user.balance ||
             formData.password !== "";
-
         if (!hasChanges) {
             setToastMsg("No changes detected.");
             setToastType("info");
             setShowToast(true);
-            setTimeout(handleFormClose, 1500);
+            setTimeout(handleFormClose, FORM_CLOSE_TIMEOUT_VALUE);
             return;
         }
-
         setError(null);
         setSuccess(null);
         setLoading(true);
-
         const url = API.admin.updateUser(user.id || user._id);
-
         const payload = { ...formData };
         if (!payload.password) delete payload.password;
-
         try {
             const res = await fetch(url, {
                 method: 'PATCH',
@@ -113,16 +102,14 @@ export default function AdminUsersManagementPanelEditUser({ isOpen, onClose, use
                 },
                 body: JSON.stringify(payload),
             });
-
             const data = await res.json();
-
             if (res.ok) {
                 setToastMsg(`User updated successfully!`);
                 setSuccess(`User updated successfully!`);
                 setToastType("success");
                 setShowToast(true);
                 onUserUpdated(data.user);
-                setTimeout(handleFormClose, 1500);
+                setTimeout(handleFormClose, FORM_CLOSE_TIMEOUT_VALUE);
             } else {
                 const errorMessage = data.errors?.[0]?.msg || data.error || 'Failed to update user.';
                 setToastMsg(errorMessage);
@@ -163,7 +150,6 @@ export default function AdminUsersManagementPanelEditUser({ isOpen, onClose, use
                         ✕
                     </button>
                 </div>
-
                 <form id="editUserForm" onSubmit={handleSubmit} className="p-4 overflow-y-auto" style={{ flex: 1 }}>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
@@ -171,7 +157,7 @@ export default function AdminUsersManagementPanelEditUser({ isOpen, onClose, use
                             <input
                                 type="text"
                                 id={`${idPrefix}-firstName`}
-                                name={`${idPrefix}-firstName`}
+                                name="firstName"
                                 value={formData.firstName}
                                 onChange={handleChange}
                                 required
@@ -183,7 +169,7 @@ export default function AdminUsersManagementPanelEditUser({ isOpen, onClose, use
                             <input
                                 type="text"
                                 id={`${idPrefix}-lastName`}
-                                name={`${idPrefix}-lastName`}
+                                name="lastName"
                                 value={formData.lastName}
                                 onChange={handleChange}
                                 required
@@ -195,7 +181,7 @@ export default function AdminUsersManagementPanelEditUser({ isOpen, onClose, use
                             <input
                                 type="email"
                                 id={`${idPrefix}-email`}
-                                name={`${idPrefix}-email`}
+                                name="email"
                                 autoComplete="off"
                                 value={formData.email}
                                 onChange={handleChange}
@@ -203,7 +189,6 @@ export default function AdminUsersManagementPanelEditUser({ isOpen, onClose, use
                                 className="w-full p-2 border border-[var(--nav-text)] bg-[var(--nav-bg)] text-[var(--nav-hover)] rounded outline-none focus:ring focus:ring-[var(--nav-hover)]"
                             />
                         </div>
-
                         <div className="sm:col-span-2">
                             <label className="block text-[var(--nav-text)] text-sm mb-1" htmlFor={`${idPrefix}-password`}>
                                 New Password
@@ -211,7 +196,7 @@ export default function AdminUsersManagementPanelEditUser({ isOpen, onClose, use
                             <input
                                 type="password"
                                 id={`${idPrefix}-password`}
-                                name={`${idPrefix}-password`}
+                                name="password"
                                 autoComplete="new-password"
                                 value={formData.password}
                                 onChange={handleChange}
@@ -219,11 +204,10 @@ export default function AdminUsersManagementPanelEditUser({ isOpen, onClose, use
                                 className="w-full p-2 border border-[var(--nav-text)] bg-[var(--nav-bg)] text-[var(--nav-hover)] rounded outline-none focus:ring focus:ring-[var(--nav-hover)]"
                             />
                         </div>
-
                         <div>
                             <label className="block text-[var(--nav-text)] text-sm mb-1" htmlFor={`${idPrefix}-accountType`}>Account Role</label>
                             <select
-                                name={`${idPrefix}-accountType`}
+                                name="accountType"
                                 id={`${idPrefix}-accountType`}
                                 value={formData.accountType}
                                 onChange={handleChange}
@@ -238,7 +222,7 @@ export default function AdminUsersManagementPanelEditUser({ isOpen, onClose, use
                             <label className="block text-[var(--nav-text)] text-sm mb-1" htmlFor={`${idPrefix}-balance`}>Balance ($)</label>
                             <input
                                 type="number"
-                                name={`${idPrefix}-balance`}
+                                name="balance"
                                 id={`${idPrefix}-balance`}
                                 value={formData.balance}
                                 onChange={handleChange}
@@ -247,11 +231,9 @@ export default function AdminUsersManagementPanelEditUser({ isOpen, onClose, use
                             />
                         </div>
                     </div>
-
                     {error && <p className="text-red-500 text-sm font-semibold mt-3">{error}</p>}
                     {success && <p className="text-green-500 text-sm font-semibold mt-3">{success}</p>}
                 </form>
-
                 <div className="border-t border-[var(--nav-text)]/10 p-3 bg-gradient-to-t from-[var(--nav-bg)] to-transparent">
                     <div className="flex flex-col sm:flex-row gap-3">
                         <button

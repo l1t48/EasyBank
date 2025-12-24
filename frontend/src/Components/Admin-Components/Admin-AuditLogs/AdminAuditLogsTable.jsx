@@ -5,7 +5,6 @@ import { JSON_INDENT_SPACES, TABLE_COLUMN_COUNT, MESSAGE_PREVIEW_LENGTH } from "
 function AdminAuditLogsTable({ log, expandedId, toggleExpandedId }) {
     const logId = log._id || log.id;
     const isExpanded = expandedId === logId;
-
     return (
         <React.Fragment>
             <tr className="align-top border-t hover:bg-[var(--nav-highlight)]">

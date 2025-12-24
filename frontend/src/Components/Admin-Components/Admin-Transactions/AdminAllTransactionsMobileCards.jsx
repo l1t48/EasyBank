@@ -2,7 +2,6 @@ import { AMOUNT_DECIMAL_PLACES } from "../../../Data/Global_variables";
 
 function AdminAllTransactionsMobileCards({ tx, loadingRow, handleApprove, handleReject }) {
   const isActionable = tx.state === "Pending";
-
   return (
     <div
       key={tx.id}

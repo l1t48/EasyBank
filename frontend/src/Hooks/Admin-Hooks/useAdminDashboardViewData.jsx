@@ -1,6 +1,7 @@
 import { useState, useEffect, useContext, useMemo } from "react";
 import { ThemeContext } from "../../Context/ThemeContext";
 import { API } from "../../Services/APIs";
+import { ADMIN_DASHBAORD_CHART_DURATION } from "../../Data/Global_variables";
 
 const createChartOptions = (colors) => ({
   responsive: true,
@@ -27,7 +28,7 @@ const createChartOptions = (colors) => ({
       title: { color: colors.primary, display: true, text: "Y Axis" },
     },
   },
-  animation: { duration: 1000, easing: "easeOutBounce" },
+  animation: { duration: ADMIN_DASHBAORD_CHART_DURATION, easing: "easeOutBounce" },
 });
 
 export function useAdminDashboardData() {
@@ -84,9 +85,7 @@ export function useAdminDashboardData() {
 
   const chartData = useMemo(() => {
     if (!dashboard) return {};
-
     const chartOptions = createChartOptions(colors);
-
     const metrics = [
       { label: "Total Users", value: dashboard.totalUsers },
       { label: "Total Admins", value: dashboard.totalAdmins },
@@ -95,7 +94,6 @@ export function useAdminDashboardData() {
       { label: "New Users (7 days)", value: dashboard.usersLast7Days },
       { label: "Total Transactions", value: dashboard.totalTransactions },
     ];
-
     const usersByRoleData = {
       labels: ["Users", "Admins", "Supervisors"],
       datasets: [{
@@ -106,7 +104,6 @@ export function useAdminDashboardData() {
         borderWidth: 1,
       }],
     };
-
     const newUsersData = {
       labels: ["Last 24h", "Last 7 days"],
       datasets: [{
@@ -117,7 +114,6 @@ export function useAdminDashboardData() {
         borderWidth: 1,
       }],
     };
-
     const transactionsByTypeData = {
       labels: dashboard.transactionsByType.map(t => t._id),
       datasets: [{
@@ -128,7 +124,6 @@ export function useAdminDashboardData() {
         borderWidth: 1,
       }],
     };
-
     const transactionsByStateData = {
       labels: dashboard.transactionsByState.map(t => t._id),
       datasets: [{

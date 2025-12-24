@@ -4,7 +4,6 @@ import SupervisorDashboard from "../Components/Supervisor-Components/Supervisor-
 import UserDashboardEntity from "../Components/User-Components/User-Dashboard/UserDashboardEntity";
 import ErrorModule from "./ErrorModule";
 
-
 function Dashboard(){
     const { user } = useAuth();
     if (!user) 

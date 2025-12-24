@@ -8,11 +8,9 @@ import { MENU_TRANSITION_DURATION_IN, MENU_TRANSITION_DURATION_OUT } from "../..
 
 function Navbar() {
     const [menuOpen, setMenuOpen] = useState(false); 
-    
     const { isAuthenticated, logout, user } = useAuth(); 
     const role = user?.accountType || "Guest";
     const menuData = ROLE_MENUS[role] || []; 
-
     const menuVariants = {
         hidden: { opacity: 0, height: 0 },
         visible: {
@@ -38,10 +36,8 @@ function Navbar() {
                     ☰
                 </button>
 
-                {/* Desktop Menu */}
                 <nav className="hidden lg:block">
                     <ul className="flex space-x-8 font-medium text-[var(--nav-text-sec)]">
-
                         {isAuthenticated ? (
                             <>
                                 {menuData.map((menu) => (
@@ -71,7 +67,6 @@ function Navbar() {
                 </nav>
             </div>
 
-            {/* Mobile Menu Section */}
             <AnimatePresence>
                 {menuOpen && (
                     <motion.nav
@@ -96,7 +91,6 @@ function Navbar() {
                                             </a>
                                         </li>
                                     ))}
-
                                     <li className="mt-4 border-t border-[var(--nav-hover)] pt-3">
                                         <button
                                             onClick={() => { logout(); setMenuOpen(false); }}

@@ -14,7 +14,6 @@ function Toast({ message, show, type = "info", onClose }) {
     error: "bg-red-500 text-white",
     info: "bg-[var(--bg)] text-[var(--nav-text-sec)] border border-[var(--nav-text-sec)]",
   };
-
   const icons = {
     success: faCircleCheck,
     error: faCircleXmark,

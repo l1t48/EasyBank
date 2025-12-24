@@ -2,7 +2,6 @@ import { AMOUNT_DECIMAL_PLACES } from "../../../Data/Global_variables";
 
 function AdminAllTransactionsTable({ tx, dropdownOpen, toggleDropdown, dropdownRef, loadingRow, handleApprove, handleReject }) {
   const isActionable = tx.state === "Pending";
-
   return (
     <tr key={tx.id} className="bg-[var(--nav-bg)] text-center">
       <td

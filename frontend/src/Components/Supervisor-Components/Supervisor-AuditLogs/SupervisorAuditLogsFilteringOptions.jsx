@@ -8,9 +8,7 @@ function SupervisorAuditLogsFilteringOptions({ isOpen, onClose, onApplyFilters }
   const [role, setRole] = useState("");
   const [limit, setLimit] = useState(LOG_LIMIT);
   const idPrefix = useId();
-
   const [error, setError] = useState(null);
-
   const overlayRef = useRef(null);
   const modalRef = useRef(null);
 
@@ -31,12 +29,10 @@ function SupervisorAuditLogsFilteringOptions({ isOpen, onClose, onApplyFilters }
   const handleApplyFilters = (e) => {
     e.preventDefault();
     setError(null);
-
     if ((startDate && !endDate) || (!startDate && endDate)) {
       setError("Please provide both a Start Date and an End Date.");
       return;
     }
-
     const filters = {
       accountNumber: accountNumber || undefined,
       startDate: startDate || undefined,
@@ -94,20 +90,19 @@ function SupervisorAuditLogsFilteringOptions({ isOpen, onClose, onApplyFilters }
               <input
                 type="text"
                 id={`${idPrefix}-accountNumber`}
-                name={`${idPrefix}-accountNumber`}
+                name="accountNumber"
                 placeholder="e.g., 60c72b9..."
                 value={accountNumber}
                 onChange={(e) => setAccountNumber(e.target.value)}
                 className="p-2 w-full border border-[var(--nav-text)] bg-[var(--nav-bg)] text-[var(--nav-hover)] rounded outline-none focus:ring focus:ring-[var(--nav-hover)]"
               />
             </div>
-
             <div>
               <label htmlFor={`${idPrefix}-role`} className="block text-[var(--nav-text)] text-sm mb-1">Role</label>
               <select
                 value={role}
                 id={`${idPrefix}-role`}
-                name={`${idPrefix}-role`}
+                name="role"
                 onChange={(e) => setRole(e.target.value)}
                 className="p-2 w-full border border-[var(--nav-text)] bg-[var(--nav-bg)] text-[var(--nav-hover)] rounded outline-none focus:ring focus:ring-[var(--nav-hover)]"
               >
@@ -116,13 +111,12 @@ function SupervisorAuditLogsFilteringOptions({ isOpen, onClose, onApplyFilters }
                 <option value="Supervisor">Supervisor</option>
               </select>
             </div>
-
             <div>
               <label htmlFor={`${idPrefix}-fromDate`} className="block text-[var(--nav-text)] text-sm mb-1">From Date</label>
               <input
                 type="date"
                 id={`${idPrefix}-fromDate`}
-                name={`${idPrefix}-fromDate`}
+                name="fromDate"
                 value={startDate}
                 onChange={(e) => setStartDate(e.target.value)}
                 className="p-2 w-full border rounded bg-[var(--nav-bg)] text-[var(--nav-hover)] outline-none focus:ring focus:ring-[var(--nav-hover)]"
@@ -133,18 +127,17 @@ function SupervisorAuditLogsFilteringOptions({ isOpen, onClose, onApplyFilters }
               <input
                 type="date"
                 id={`${idPrefix}-toDate`}
-                name={`${idPrefix}-toDate`}
+                name="toDate"
                 value={endDate}
                 onChange={(e) => setEndDate(e.target.value)}
                 className="p-2 w-full border rounded bg-[var(--nav-bg)] text-[var(--nav-hover)] outline-none focus:ring focus:ring-[var(--nav-hover)]"
               />
             </div>
-
             <div>
               <label htmlFor={`${idPrefix}-limit`} className="block text-[var(--nav-text)] text-sm mb-1">Limit</label>
               <select
                 id={`${idPrefix}-limit`}
-                name={`${idPrefix}-limit`}
+                name="limit"
                 value={limit}
                 onChange={(e) => setLimit(Number(e.target.value))}
                 className="p-2 w-full border border-[var(--nav-text)] bg-[var(--nav-bg)] text-[var(--nav-hover)] rounded outline-none focus:ring focus:ring-[var(--nav-hover)]"
@@ -156,7 +149,6 @@ function SupervisorAuditLogsFilteringOptions({ isOpen, onClose, onApplyFilters }
               </select>
             </div>
           </div>
-
           {error && <p className="text-red-500 text-sm mt-3">{error}</p>}
         </form>
 

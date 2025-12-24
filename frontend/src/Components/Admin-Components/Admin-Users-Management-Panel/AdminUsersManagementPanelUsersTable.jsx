@@ -5,7 +5,6 @@ function AdminUsersManagementPanelUsersTable({ user, loadingRow, dropdownOpen, t
         e.stopPropagation();
         onEditClick(user);
     };
-
     const handleDeleteClickWrapper = (e) => {
         e.stopPropagation();
         onDeleteClick(user);
@@ -40,7 +39,6 @@ function AdminUsersManagementPanelUsersTable({ user, loadingRow, dropdownOpen, t
                     </div>
                 )}
             </td>
-
             <td className="p-2 border border-[var(--nav-text)] text-left duration-300 transition-colors">{user.fullName}</td>
             <td className="p-2 border border-[var(--nav-text)] duration-300 transition-colors">{user.email}</td>
             <td className="p-2 border border-[var(--nav-text)] duration-300 transition-colors">{user.accountType}</td>

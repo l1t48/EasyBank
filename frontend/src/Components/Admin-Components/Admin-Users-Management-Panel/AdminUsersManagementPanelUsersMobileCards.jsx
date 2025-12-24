@@ -23,7 +23,6 @@ function AdminUsersManagementPanelUsersMobileCards({ user, loadingRow, onEditCli
                 <span className="font-semibold">Created:</span>
                 <span>{user.createdAt ? new Date(user.createdAt).toLocaleDateString() : "-"}</span>
             </div>
-
             <div className="flex justify-end gap-3 mt-3">
                 <button
                     onClick={() => onEditClick(user)}

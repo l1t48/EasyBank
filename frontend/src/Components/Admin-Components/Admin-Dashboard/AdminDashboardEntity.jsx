@@ -1,41 +1,24 @@
 import { useEffect, useState, useContext } from "react";
-
 import { useAuth } from "../../../Context/AuthContext";
 import { ThemeContext } from "../../../Context/ThemeContext";
-
 import Navbar from "../../General-Componenets/Navbar";
 import Toast from "../../../Context/Toast";
 import Footer from "../../General-Componenets/Footer";
 import AdminDashboardMetrics from "./AdminDashboardMetrics";
 import AdminDashboardCharts from "./AdminDashboardCharts";
-
 import { useAdminDashboardData } from "../../../Hooks/Admin-Hooks/useAdminDashboardViewData";
-
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
-  ArcElement,
-} from "chart.js";
-
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ArcElement} from "chart.js";
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ArcElement);
-
 
 function AdminDashboardEntity() {
   const { user } = useAuth();
   const { theme } = useContext(ThemeContext);
-  
   const { dashboard, loading, colors, chartData } = useAdminDashboardData();
   const { metrics, usersByRoleData, newUsersData, transactionsByTypeData, transactionsByStateData, chartOptions } = chartData;
-
   const [toastMsg, setToastMsg] = useState("");
   const [showToast, setShowToast] = useState(false);
   const [toastType, setToastType] = useState("info");
-  
+
   useEffect(() => {
     if (user.firstName) {
         setToastMsg(`Welcome ${user.firstName}`);
@@ -64,7 +47,6 @@ function AdminDashboardEntity() {
             chartType="Doughnut"
             colors={colors}
           />
-
           <AdminDashboardCharts
             title="New Users"
             data={newUsersData}
@@ -72,7 +54,6 @@ function AdminDashboardEntity() {
             chartType="Bar"
             colors={colors}
           />
-
           <AdminDashboardCharts
             title="Transactions by Type"
             data={transactionsByTypeData}
@@ -80,7 +61,6 @@ function AdminDashboardEntity() {
             chartType="Pie"
             colors={colors}
           />
-
           <AdminDashboardCharts
             title="Transactions by State"
             data={transactionsByStateData}

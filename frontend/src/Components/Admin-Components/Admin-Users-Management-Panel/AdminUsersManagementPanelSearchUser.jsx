@@ -8,16 +8,13 @@ export default function AdminUsersManagementPanelSearchUser({ isOpen, onClose })
     const [foundUser, setFoundUser] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-
     const idPrefix = useId();
     const [toastMsg, setToastMsg] = useState("");
     const [showToast, setShowToast] = useState(false);
     const [toastType, setToastType] = useState("info");
-
     const overlayRef = useRef(null);
     const modalRef = useRef(null);
 
-    // Global listeners and body scroll lock
     useEffect(() => {
         document.body.style.overflow = isOpen ? "hidden" : "";
         return () => (document.body.style.overflow = "");
@@ -37,27 +34,22 @@ export default function AdminUsersManagementPanelSearchUser({ isOpen, onClose })
         setFoundUser(null);
         setShowToast(false);
     };
-
     const formatDate = (timestamp) => {
         if (!timestamp) return 'N/A';
         return new Date(timestamp).toLocaleDateString();
     };
-
     const handleBackdropClick = (e) => {
         if (overlayRef.current && e.target === overlayRef.current) handleClose();
     };
-
     const handleSearch = async (e) => {
         if (e) e.preventDefault();
         clearMessages();
         setLoading(true);
-
         if (!accountNumber.trim()) {
             setError("Please enter an Account Number to search.");
             setLoading(false);
             return;
         }
-
         try {
             const userUrl = API.admin.getUser(accountNumber);
             const response = await fetch(userUrl, {
@@ -67,9 +59,7 @@ export default function AdminUsersManagementPanelSearchUser({ isOpen, onClose })
                     Authorization: `Bearer ${localStorage.getItem('token')}`,
                 },
             });
-
             const data = await response.json();
-
             if (response.ok) {
                 setFoundUser(data.user);
                 setToastMsg(`User found: ${data.user.firstName} ${data.user.lastName}`);
@@ -97,7 +87,7 @@ export default function AdminUsersManagementPanelSearchUser({ isOpen, onClose })
     };
 
     const handleClose = () => {
-        setAccountNumber(''); 
+        setAccountNumber('');
         clearMessages();
         onClose();
     };
@@ -106,26 +96,24 @@ export default function AdminUsersManagementPanelSearchUser({ isOpen, onClose })
         <div
             ref={overlayRef}
             onClick={handleBackdropClick}
-className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4 overflow-y-auto animate__animated animate__fadeIn"
+            className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4 overflow-y-auto animate__animated animate__fadeIn"
         >
             <div
                 ref={modalRef}
                 className="bg-[var(--nav-bg)] rounded-xl shadow-lg w-full max-w-xl md:max-w-2xl mt-6 mb-6 max-h-[90vh] overflow-hidden flex flex-col ring-1 ring-black/10"
             >
-                {/* Header */}
                 <div className="flex items-start justify-between p-4 border-b border-[var(--nav-text)]/10">
                     <h2 className="text-lg md:text-2xl font-bold text-[var(--nav-text)]">
                         Search a User
                     </h2>
-                    <button 
-                        onClick={handleClose} 
+                    <button
+                        onClick={handleClose}
                         className="ml-4 rounded p-2 hover:bg-[var(--nav-text)]/10 text-[var(--nav-text)]"
                     >
                         ✕
                     </button>
                 </div>
 
-                {/* Body */}
                 <div className="p-4 overflow-y-auto" style={{ flex: 1 }}>
                     <form id="searchUserForm" onSubmit={handleSearch} className="mb-6">
                         <label className="block text-[var(--nav-text)] text-sm mb-1" htmlFor={`${idPrefix}-accountNumber`}>
@@ -166,7 +154,6 @@ className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4 o
                     )}
                 </div>
 
-                {/* Footer */}
                 <div className="border-t border-[var(--nav-text)]/10 p-3 bg-gradient-to-t from-[var(--nav-bg)] to-transparent">
                     <div className="flex flex-col sm:flex-row gap-3">
                         <button

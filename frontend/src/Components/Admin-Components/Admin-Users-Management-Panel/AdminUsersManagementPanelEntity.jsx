@@ -13,7 +13,6 @@ function AdminUsersManagementPanelEntity() {
         handleDeleteUser, 
         handleUserUpdated 
     } = useUserManagement();
-
     const [dropdownOpen, setDropdownOpen] = useState(null);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [userToEdit, setUserToEdit] = useState(null);
@@ -36,7 +35,6 @@ function AdminUsersManagementPanelEntity() {
         setIsEditModalOpen(true);
         setDropdownOpen(null);
     };
-    
     const handleDeleteClick = (user) => {
         setDropdownOpen(null);
         handleDeleteUser(user);
@@ -61,7 +59,6 @@ function AdminUsersManagementPanelEntity() {
                     ))
                 )}
             </div>
-
             <div className="hidden xl:block">
                 <div className="p-5">
                     <table className="min-w-full table-auto font-bold border text-[var(--nav-text)] border-[var(--nav-text)] text-sm md:text-base">
@@ -74,7 +71,6 @@ function AdminUsersManagementPanelEntity() {
                                 <th className="p-2 border border-[var(--nav-text)] duration-300 transition-colors">Created</th>
                             </tr>
                         </thead>
-
                         <tbody>
                             {users.length === 0 ? (
                                 <tr>
@@ -100,7 +96,6 @@ function AdminUsersManagementPanelEntity() {
                     </table>
                 </div>
             </div>
-
             <AdminUsersManagementPanelEditUser
                 isOpen={isEditModalOpen}
                 onClose={() => setIsEditModalOpen(false)}

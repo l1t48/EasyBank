@@ -8,10 +8,8 @@ import { TABLE_COLUMN_COUNT_PENDING_TRANSACTIONS_ADMIN } from "../../../Data/Glo
 function AdminPendingTransactionsEntity({ filters }) {
   const { transactions, loading, handleSort, sortBy, order } = usePendingTransactionsData(filters);
   const { actionLoading, handleApprove, handleReject } = useAdminActions();
-
   const [dropdownOpen, setDropdownOpen] = useState(null);
   const dropdownRef = useRef(null);
-
   const toggleDropdown = (id) => setDropdownOpen(dropdownOpen === id ? null : id);
 
   useEffect(() => {
@@ -28,7 +26,6 @@ function AdminPendingTransactionsEntity({ filters }) {
 
   return (
     <div className="mt-5 w-full">
-      {/* Mobile layout */}
       <div className="xl:hidden space-y-3">
         {transactions.length === 0 ? (
           <p className="text-center text-[var(--nav-text)]">No pending transactions.</p>
@@ -45,7 +42,6 @@ function AdminPendingTransactionsEntity({ filters }) {
         )}
       </div>
 
-      {/* Desktop layout */}
       <div className="hidden xl:block">
         <div className="p-5">
           <table className="min-w-full table-auto font-bold border text-[var(--nav-text)] border-[var(--nav-text)] text-sm md:text-base">
@@ -63,7 +59,6 @@ function AdminPendingTransactionsEntity({ filters }) {
                 ))}
               </tr>
             </thead>
-
             <tbody>
               {transactions.length === 0 ? (
                 <tr>

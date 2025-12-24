@@ -3,17 +3,13 @@ import { useParams, useNavigate } from "react-router-dom";
 import { API } from "../../Services/APIs";
 import Toast from "../../Context/Toast";
 
-import { REDIRECTION_TIME_PASSWORD_RESET } from "../../Data/Global_variables";
-
 export default function ResetPassword() {
     const { token } = useParams();
     const [newPassword, setNewPassword] = useState("");
     const [message, setMessage] = useState("");
     const navigate = useNavigate();
     const [error, setError] = useState(null);
-
     const idPrefix = useId();
-
     const [toastMsg, setToastMsg] = useState("");
     const [showToast, setShowToast] = useState(false);
     const [toastType, setToastType] = useState("info");
@@ -32,9 +28,6 @@ export default function ResetPassword() {
             setToastMsg("Operation Successed!");
             setToastType("success");
             setShowToast(true);
-            setTimeout(() => {
-                navigate("/auth-page");
-            }, REDIRECTION_TIME_PASSWORD_RESET);
         } else {
             setError((data.errors && data.errors[0]?.msg) || data.error);
             setToastMsg("Operation Failed");
@@ -50,7 +43,16 @@ export default function ResetPassword() {
                     <br />
                     <h1 className="text-4xl [@media(max-width:745px)]:text-3xl font-bold text-center text-[var(--nav-text)]">Reset Password</h1>
                     <br />
-                    <br />  
+                    <br />
+                    <label htmlFor={`${idPrefix}-username`} className="[@media(max-width:745px)]:text-xl text-[var(--nav-text)] text-2xl font-bold hidden">Username</label>
+                    <input
+                        type="text"
+                        id={`${idPrefix}-username`}
+                        name={`${idPrefix}-username`}
+                        autoComplete="username"
+                        style={{ display: "none" }}
+                        aria-hidden="true"
+                    />
                     <label htmlFor={`${idPrefix}-password`} className="[@media(max-width:745px)]:text-xl text-[var(--nav-text)] text-2xl font-bold">New Password</label>
                     <input
                         name={`${idPrefix}-password`}
@@ -74,8 +76,8 @@ export default function ResetPassword() {
                         onClick={() => navigate("/auth-page")}
                         className="font-bold py-3 rounded-sm text-[var(--nav-text)] border border-[var(--nav-text)] bg-[var(--nav-bg)] text-xl [@media(max-width:745px)]:text-lg hover:bg-[var(--nav-text)] hover:text-[var(--nav-bg)] hover:border hover:border-[var(--nav-bg)] transition-all duration-300">
                         Go to login
-                    </button>   
-                    <Toast message={toastMsg} show={showToast} type={toastType} onClose={() => setShowToast(false)}/>
+                    </button>
+                    <Toast message={toastMsg} show={showToast} type={toastType} onClose={() => setShowToast(false)} />
                 </form>
             </div>
         </div>

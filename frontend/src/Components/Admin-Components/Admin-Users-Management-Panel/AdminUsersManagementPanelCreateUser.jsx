@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef, useId } from 'react';
 import { API } from '../../../Services/APIs';
 import Toast from '../../../Context/Toast';
-
 const allowedRoles = ["User", "Admin", "Supervisor"];
 
 export default function AdminUsersManagementPanelCreateUser({ isOpen, onClose, onUserCreated }) {
@@ -12,21 +11,16 @@ export default function AdminUsersManagementPanelCreateUser({ isOpen, onClose, o
         password: '',
         accountType: 'User',
     });
-
     const idPrefix = useId();
-
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(null);
-
     const [toastMsg, setToastMsg] = useState("");
     const [showToast, setShowToast] = useState(false);
     const [toastType, setToastType] = useState("info");
-
     const overlayRef = useRef(null);
     const modalRef = useRef(null);
 
-    // Sync body scroll and global listeners
     useEffect(() => {
         document.body.style.overflow = isOpen ? "hidden" : "";
         return () => (document.body.style.overflow = "");
@@ -62,18 +56,15 @@ export default function AdminUsersManagementPanelCreateUser({ isOpen, onClose, o
         setSuccess(null);
         setShowToast(false);
     };
-
     const handleBackdropClick = (e) => {
         if (overlayRef.current && e.target === overlayRef.current) onClose();
     };
-
     const handleSubmit = async (e) => {
         if (e) e.preventDefault();
         setError(null);
         setSuccess(null);
         setShowToast(false);
         setLoading(true);
-
         try {
             const response = await fetch(API.admin.createUser, {
                 method: 'POST',
@@ -83,9 +74,7 @@ export default function AdminUsersManagementPanelCreateUser({ isOpen, onClose, o
                 },
                 body: JSON.stringify(formData),
             });
-
             const data = await response.json();
-
             if (response.ok) {
                 setSuccess(`User created successfully!`);
                 setToastMsg(`User created successfully!`);
@@ -122,7 +111,6 @@ export default function AdminUsersManagementPanelCreateUser({ isOpen, onClose, o
                 ref={modalRef}
                 className="bg-[var(--nav-bg)] rounded-xl shadow-lg w-full max-w-xl md:max-w-2xl mt-6 mb-6 max-h-[90vh] overflow-hidden flex flex-col ring-1 ring-black/10"
             >
-                {/* Header */}
                 <div className="flex items-start justify-between p-4 border-b border-[var(--nav-text)]/10">
                     <h2 className="text-lg md:text-2xl font-bold text-[var(--nav-text)]">
                         Create a New User
@@ -134,7 +122,6 @@ export default function AdminUsersManagementPanelCreateUser({ isOpen, onClose, o
                         ✕
                     </button>
                 </div>
-
                 <form id="createUserForm" onSubmit={handleSubmit} className="p-4 overflow-y-auto" style={{ flex: 1 }}>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
@@ -142,7 +129,7 @@ export default function AdminUsersManagementPanelCreateUser({ isOpen, onClose, o
                             <input
                                 type="text"
                                 id={`${idPrefix}-firstName`}
-                                name={`${idPrefix}-firstName`}
+                                name="firstName"
                                 value={formData.firstName}
                                 onChange={handleChange}
                                 required
@@ -154,7 +141,7 @@ export default function AdminUsersManagementPanelCreateUser({ isOpen, onClose, o
                             <input
                                 type="text"
                                 id={`${idPrefix}-lastName`}
-                                name={`${idPrefix}-lastName`}
+                                name="lastName"
                                 value={formData.lastName}
                                 onChange={handleChange}
                                 required
@@ -166,7 +153,7 @@ export default function AdminUsersManagementPanelCreateUser({ isOpen, onClose, o
                             <input
                                 type="email"
                                 id={`${idPrefix}-email`}
-                                name={`${idPrefix}-email`}
+                                name="email"
                                 autoComplete="off"
                                 value={formData.email}
                                 onChange={handleChange}
@@ -178,8 +165,9 @@ export default function AdminUsersManagementPanelCreateUser({ isOpen, onClose, o
                             <label className="block text-[var(--nav-text)] text-sm mb-1" htmlFor={`${idPrefix}-password`}>Password</label>
                             <input
                                 type="password"
+                                autoComplete="off"
                                 id={`${idPrefix}-password`}
-                                name={`${idPrefix}-password`}
+                                name="password"
                                 value={formData.password}
                                 onChange={handleChange}
                                 required
@@ -189,7 +177,7 @@ export default function AdminUsersManagementPanelCreateUser({ isOpen, onClose, o
                         <div>
                             <label className="block text-[var(--nav-text)] text-sm mb-1" htmlFor={`${idPrefix}-accountType`}>Account Role</label>
                             <select
-                                name={`${idPrefix}-accountType`}
+                                name="accountType"
                                 id={`${idPrefix}-accountType`}
                                 value={formData.accountType}
                                 onChange={handleChange}
@@ -202,12 +190,9 @@ export default function AdminUsersManagementPanelCreateUser({ isOpen, onClose, o
                             </select>
                         </div>
                     </div>
-
                     {error && <p className="text-red-500 text-sm font-semibold mt-3">{error}</p>}
                     {success && <p className="text-green-500 text-sm font-semibold mt-3">{success}</p>}
                 </form>
-
-                {/* Footer */}
                 <div className="border-t border-[var(--nav-text)]/10 p-3 bg-gradient-to-t from-[var(--nav-bg)] to-transparent">
                     <div className="flex flex-col sm:flex-row gap-3">
                         <button
@@ -230,7 +215,6 @@ export default function AdminUsersManagementPanelCreateUser({ isOpen, onClose, o
                     </div>
                 </div>
             </div>
-
             <Toast
                 message={toastMsg}
                 show={showToast}
