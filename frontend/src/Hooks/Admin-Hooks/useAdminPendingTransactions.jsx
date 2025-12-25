@@ -126,7 +126,6 @@ export function usePendingTransactionsData(filters) {
     };
 
     socket.on("socket:connected", () => {
-      console.log("Admin socket:connected. Fetching initial data...");
       fetchPending();
     });
 

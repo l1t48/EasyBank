@@ -112,7 +112,7 @@ export function useUserManagement() {
     }, []);
 
     useEffect(() => {
-        fetchUsers().catch((e) => console.warn("fetchUsers failed", e));
+        fetchUsers();
     }, [fetchUsers]);
 
     return {
