@@ -14,7 +14,6 @@ export const handleCancel = async (id, fetchTx) => {
       fetchTx(); 
     }
   } catch (err) {
-    console.error("Cancel transaction error:", err);
     alert("Server error while canceling transaction.");
   }
 };

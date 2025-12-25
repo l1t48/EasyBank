@@ -25,7 +25,6 @@ export function useAuditLogs() {
       }
       setLogs(Array.isArray(json) ? json : json.logs || []);
     } catch (err) {
-      console.error("Error fetching audit logs:", err);
       setError(err.message || "An unknown error occurred while fetching logs.");
       setLogs([]);
     } finally {

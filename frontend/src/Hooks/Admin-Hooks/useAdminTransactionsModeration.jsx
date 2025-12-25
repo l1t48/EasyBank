@@ -23,7 +23,6 @@ export function useAdminActions() {
       const data = await res.json();
       if (!res.ok || !data.success) alert(data.error || "Failed to approve transaction.");
     } catch (err) {
-      console.error("Admin approve transaction error:", err);
       alert("Server error while approving transaction.");
     } finally {
       setRowLoading(id, "Approve", false);
@@ -42,7 +41,6 @@ export function useAdminActions() {
       const data = await res.json();
       if (!res.ok || !data.success) alert(data.error || "Failed to reject transaction.");
     } catch (err) {
-      console.error("Admin reject transaction error:", err);
       alert("Server error while rejecting transaction.");
     } finally {
       setRowLoading(id, "Reject", false);

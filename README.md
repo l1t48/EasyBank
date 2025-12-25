@@ -179,7 +179,6 @@ Two separate .env files are used: one for the frontend and one for the backend.
 
 ### 10.1 Frontend (.env)
 - VITE_API_BACKEND_URL=<BACKEND_URL>
-- VITE_API_TEST=<BACKEND_URL>/api/test/ping
 
 ### 10.2 Backend (.env)
 - MONGO_URI=<YOUR_MONGODB_URI>

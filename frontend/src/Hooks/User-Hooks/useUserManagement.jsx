@@ -19,7 +19,6 @@ export function useUserManagement() {
         setLoading(true);
         const token = getToken();
         if (!token) {
-            console.error("Token not found.");
             setLoading(false);
             return;
         }
@@ -47,7 +46,6 @@ export function useUserManagement() {
             }));
             setUsers(cleaned);
         } catch (err) {
-            console.error("Error loading all users:", err);
             setUsers([]);
         } finally {
             setLoading(false);
@@ -77,7 +75,7 @@ export function useUserManagement() {
                     data = JSON.parse(text);
                 }
             } catch (e) {
-                console.warn("Response was not valid JSON:", e);
+                console.warn("Response was not valid JSON");
             }
 
             if (res.ok && (data.success || !text)) {
@@ -87,7 +85,6 @@ export function useUserManagement() {
                 alert(data.error || `Failed to delete user. Server Status: ${res.status}`);
             }
         } catch (err) {
-            console.error("Admin delete user error:", err);
             alert("A network error occurred while deleting the user.");
         } finally {
             setRowLoading(user.id, "delete", false);

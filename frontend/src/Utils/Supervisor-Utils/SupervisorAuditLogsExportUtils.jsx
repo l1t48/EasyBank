@@ -6,7 +6,6 @@ export const copyJSON = (obj) => {
     navigator.clipboard.writeText(jsonString);
     alert('Copied JSON to clipboard');
   } catch (err) {
-    console.error('Copy failed', err);
     alert('Copy failed');
   }
 };
@@ -21,7 +20,6 @@ export const downloadJSON = (list) => {
     a.click();
     URL.revokeObjectURL(url);
   } catch (err) {
-    console.error('Download failed', err);
     alert('Download failed');
   }
 };

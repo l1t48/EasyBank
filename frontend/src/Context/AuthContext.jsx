@@ -38,7 +38,6 @@ export function AuthProvider({ children }) {
                     window.location.href = "/session-expired";
                 }
             } catch (err) {
-                console.error("Invalid token:", err);
                 logout();
                 window.location.href = "/auth-page";
             }

@@ -16,7 +16,6 @@ export const handleApprove = async (id, setRowLoading, onComplete) => {
             onComplete(id);
         }
     } catch (err) {
-        console.error("Approve transaction error:", err);
         alert("Server error while approving transaction.");
     } finally {
         setRowLoading(id, "Approve", false);
@@ -39,7 +38,6 @@ export const handleReject = async (id, setRowLoading, onComplete) => {
             onComplete(id);
         }
     } catch (err) {
-        console.error("Reject transaction error:", err);
         alert("Server error while rejecting transaction.");
     } finally {
         setRowLoading(id, "Reject", false);

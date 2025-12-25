@@ -97,7 +97,6 @@ export function usePendingTransactionsData(filters) {
       }));
       setTransactions(cleaned);
     } catch (err) {
-      console.error("Error loading admin pending transactions:", err);
       setTransactions([]);
     } finally {
       setLoading(false);
@@ -161,7 +160,7 @@ export function usePendingTransactionsData(filters) {
         const enriched = await enrichTransactionData(updatedTx);
         if (enriched?.id) upsertTx(enriched);
       } catch (err) {
-        console.error("Admin: Error handling transactionUpdated", err, updatedTx);
+        console.error("Admin: Error handling transactionUpdated");
       }
     });
 

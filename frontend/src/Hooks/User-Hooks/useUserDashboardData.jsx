@@ -16,7 +16,6 @@ const useDashboardData = () => {
         const data = await res.json();
         setDashboard(data.dashboard);
       } catch (err) {
-        console.error("Error fetching user dashboard:", err);
         setError(err);
       } finally {
         setIsLoading(false);

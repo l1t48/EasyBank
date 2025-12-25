@@ -52,7 +52,6 @@ export function useFetchTransactions({ sortBy, order, filters, setTransactions, 
 
         setTransactions(cleaned);
       } catch (err) {
-        console.error("Error loading all transactions:", err);
         setTransactions([]);
       } finally {
         setLoading(false);

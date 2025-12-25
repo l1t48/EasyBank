@@ -20,7 +20,6 @@ const useDashboardData = () => {
         const data = await res.json();
         setDashboard(data.dashboard);
       } catch (err) {
-        console.error("Error fetching supervisor dashboard:", err);
         setError("Failed to fetch dashboard data.");
       } finally {
         setIsLoading(false);

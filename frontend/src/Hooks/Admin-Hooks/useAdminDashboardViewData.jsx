@@ -75,7 +75,7 @@ export function useAdminDashboardData() {
         const data = await res.json();
         setDashboard(data.dashboard);
       } catch (err) {
-        console.error("Error fetching admin dashboard:", err);
+        console.error("Error fetching admin dashboard");
       } finally {
         setLoading(false);
       }

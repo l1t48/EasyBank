@@ -1,6 +1,6 @@
 import { UNAUTHORIZED } from "../../Data/Global_variables";
 
-export const setupInterceptors = () => {
+export const SetupInterceptors = () => {
     const { fetch: originalFetch } = window;
 
     window.fetch = async (...args) => {

@@ -37,7 +37,6 @@ function useTransactions(filters, setToast) {
       const txList = data.transactions || [];
       setTransactions(txList.map(processTx));
     } catch (err) {
-      console.error("Error loading transactions:", err);
       setTransactions([]);
     } finally {
       setLoading(false);

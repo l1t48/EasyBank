@@ -1,7 +1,11 @@
 const BACK_END_URL = import.meta.env.VITE_API_BACKEND_URL;
-const API_BASE_URL = BACK_END_URL; // change when deploying
+const API_BASE_URL = BACK_END_URL; 
 
 export const API = {
+    test: {
+        testBackend: `${API_BASE_URL}/api/test/ping`,
+    },
+
     auth: {
         register: `${API_BASE_URL}/api/auth/register-new-user`,
         login: `${API_BASE_URL}/api/auth/login`,

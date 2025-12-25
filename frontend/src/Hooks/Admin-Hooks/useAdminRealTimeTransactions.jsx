@@ -19,7 +19,7 @@ export function useRealTimeTransactions({ setTransactions }) {
           const enriched = await enrichTransactionData(newTx);
           setTransactions((prev) => [enriched, ...prev.filter((t) => t.id !== enriched.id)]);
         } catch (err) {
-          console.error(`Error handling ${evt}:`, err);
+          console.error(`Error handling ${evt}`);
         }
       });
     });
@@ -36,12 +36,12 @@ export function useRealTimeTransactions({ setTransactions }) {
           } else {
             enrichTransactionData(updatedTx).then(enriched => {
               setTransactions(current => [enriched, ...current.filter(t => t.id !== enriched.id)]);
-            }).catch(err => console.error("Error enriching late update:", err));
+            });
             return prev;
           }
         });
       } catch (err) {
-        console.error("Error handling transactionUpdated:", err);
+        console.error("Error handling transactionUpdated");
       }
     });
 

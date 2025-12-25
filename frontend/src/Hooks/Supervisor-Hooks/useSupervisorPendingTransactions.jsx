@@ -56,7 +56,7 @@ export function usePendingTransactions(filters) {
       createdAt: tx.createdAt,
       updatedAt: tx.updatedAt,
     };
-  }, []); 
+  }, []);
 
   useEffect(() => {
     const fetchPending = async () => {
@@ -100,7 +100,6 @@ export function usePendingTransactions(filters) {
 
         setTransactions(cleaned);
       } catch (err) {
-        console.error("Error loading pending transactions:", err);
         setTransactions([]);
       } finally {
         setLoading(false);
@@ -125,7 +124,7 @@ export function usePendingTransactions(filters) {
           const enriched = await enrichTransactionData(newTx);
           setTransactions((prev) => [enriched, ...prev]);
         } catch (err) {
-          console.error(`Error handling ${evt}:`, err);
+          console.error(`Error handling ${evt}`);
         }
       });
     });
@@ -148,8 +147,8 @@ export function usePendingTransactions(filters) {
         if (exists) return prev.map((tx) => (tx.id === id ? { ...tx, ...normalized } : tx));
 
         enrichTransactionData(updatedTx).then(enriched => {
-            setTransactions(p => [enriched, ...p.filter(t => t.id !== enriched.id)]);
-        }).catch(err => console.error("Error enriching updated transaction:", err));
+          setTransactions(p => [enriched, ...p.filter(t => t.id !== enriched.id)]);
+        });
 
         return prev;
       });

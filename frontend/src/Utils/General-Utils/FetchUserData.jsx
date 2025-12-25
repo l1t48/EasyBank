@@ -18,14 +18,14 @@ export async function getUserFullNamesByAccountNumbers(accountNumbers) {
       });
       const data = await res.json();
       if (!res.ok || !data.success) {
-        console.error("getUserFullNamesByAccountNumbers error:", data.error || "Unknown error");
+        console.error("getUserFullNamesByAccountNumbers error");
       } else {
         (data.results || []).forEach((item) => {
           targetNameCache.set(item.accountNumber, item);
         });
       }
     } catch (err) {
-      console.error("getUserFullNamesByAccountNumbers fetch error:", err);
+      console.error("getUserFullNamesByAccountNumbers fetch error");
     }
   }
   return accountNumbers.map((acc) => targetNameCache.get(acc) || { accountNumber: acc, fullName: "Unknown User", found: false });
@@ -44,7 +44,6 @@ export async function getUserFullNameById(userId) {
     });
     const data = await res.json();
     if (!res.ok || !data.success) {
-      console.error("getUserFullNameById error:", data.error || "Unknown error");
       return null;
     }
     const result = {
@@ -56,7 +55,6 @@ export async function getUserFullNameById(userId) {
     nameCache.set(userId, result);
     return result;
   } catch (err) {
-    console.error("getUserFullNameById fetch error:", err);
     return null;
   }
 }
@@ -80,7 +78,7 @@ export async function getUserFullNamesByIds(ids) {
       const data = await res.json();
 
       if (!res.ok || !data.success) {
-        console.error("getUserFullNamesByIds error:", data.error || "Unknown error");
+        console.error("getUserFullNamesByIds error");
       } else {
         (data.results || []).forEach((item) => {
           if (item.found) {
@@ -97,7 +95,7 @@ export async function getUserFullNamesByIds(ids) {
         });
       }
     } catch (err) {
-      console.error("getUserFullNamesByIds fetch error:", err);
+      console.error("getUserFullNamesByIds fetch error");
     }
   }
 
@@ -139,8 +137,7 @@ export async function getAccountNumberById(userId) {
     const data = await res.json();
     if (!res.ok || !data.success) {
       console.error(
-        "getAccountNumberById error:",
-        data.error || "Unknown error"
+        "getAccountNumberById error"
       );
       accountNumberCache.set(userId, null);
       return null;
@@ -152,7 +149,6 @@ export async function getAccountNumberById(userId) {
     accountNumberCache.set(userId, data.accountNumber);
     return result;
   } catch (err) {
-    console.error("getAccountNumberById fetch error:", err);
     return null;
   }
 }
@@ -175,8 +171,7 @@ export async function getAccountNumbersByIds(ids) {
       const data = await res.json();
       if (!res.ok || !data.success) {
         console.error(
-          "getAccountNumbersByIds error:",
-          data.error || "Unknown error"
+          "getAccountNumbersByIds error"
         );
       } else {
         (data.results || []).forEach((item) => {
@@ -188,7 +183,7 @@ export async function getAccountNumbersByIds(ids) {
         });
       }
     } catch (err) {
-      console.error("getAccountNumbersByIds fetch error:", err);
+      console.error("getAccountNumbersByIds fetch error");
     }
   }
 
