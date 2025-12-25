@@ -79,7 +79,6 @@ function useTransactions(filters, setToast) {
       }
     };
 
-    socket.on("socket:connected", ({ userId }) => console.log(`User socket connected: ${userId}`));
     socket.on("transactionCreated", fetchTx);
     socket.on("transactionUpdated", handleStatusUpdate);
     socket.on("transactionCanceled", handleStatusUpdate);

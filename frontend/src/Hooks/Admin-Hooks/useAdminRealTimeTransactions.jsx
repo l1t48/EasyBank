@@ -26,8 +26,6 @@ export function useRealTimeTransactions({ setTransactions }) {
 
     socket.on("transactionUpdated", async (updatedTx) => {
       const id = getNormalizedId(updatedTx);
-      if (!id) return console.warn("transactionUpdated: missing id", updatedTx);
-
       try {
         const normalized = normalizePayload(updatedTx);
         

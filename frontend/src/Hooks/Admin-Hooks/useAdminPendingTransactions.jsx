@@ -125,11 +125,9 @@ export function usePendingTransactionsData(filters) {
       setTransactions((prev) => prev.filter((t) => t.id !== id));
     };
 
-    socket.onAny((event, payload) => console.debug("[ADMIN SOCKET EVENT]", event, payload));
-
     socket.on("socket:connected", () => {
       console.log("Admin socket:connected. Fetching initial data...");
-      fetchPending().catch((e) => console.warn("Admin: fetchPending on connect failed", e));
+      fetchPending();
     });
 
     const handleNewTransaction = async (newTx) => {
@@ -137,8 +135,7 @@ export function usePendingTransactionsData(filters) {
         const cleanedTx = await enrichTransactionData(newTx);
         if (cleanedTx.state === 'Pending' || !cleanedTx.state) upsertTx(cleanedTx);
       } catch (err) {
-        console.warn("Admin: Error handling new transaction via socket. Falling back to full fetch.", err);
-        await fetchPending().catch((e) => console.warn("Admin: fallback fetch failed", e));
+        await fetchPending();
       }
     };
 
@@ -170,7 +167,7 @@ export function usePendingTransactionsData(filters) {
     });
 
     if (isInitialFetch.current) {
-        fetchPending().catch((e) => console.warn("Admin: initial fetch pending failed", e));
+        fetchPending();
     }
     
     return () => {
@@ -187,7 +184,7 @@ export function usePendingTransactionsData(filters) {
 
   useEffect(() => {
     if (!isInitialFetch.current) { 
-        fetchPending().catch((e) => console.warn("Admin: fetchPending failed on sort change", e));
+        fetchPending();
     }
   }, [sortBy, order, filters, fetchPending]); 
 

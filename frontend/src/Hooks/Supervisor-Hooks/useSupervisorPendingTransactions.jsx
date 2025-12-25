@@ -115,7 +115,6 @@ export function usePendingTransactions(filters) {
 
     const handleFinalizedTransaction = (updatedTx) => {
       const id = getNormalizedId(updatedTx);
-      if (!id) return console.warn("Finalized tx missing id", updatedTx);
       setTransactions((prev) => prev.filter((tx) => tx.id !== id));
     };
 
@@ -136,7 +135,6 @@ export function usePendingTransactions(filters) {
 
     socket.on("transactionUpdated", async (updatedTx) => {
       const id = getNormalizedId(updatedTx);
-      if (!id) return console.warn("transactionUpdated: missing id", updatedTx);
 
       if (updatedTx.state && updatedTx.state !== "Pending") {
         setTransactions((prev) => prev.filter((tx) => tx.id !== id));

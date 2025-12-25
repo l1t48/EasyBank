@@ -42,7 +42,7 @@ export function useAuditLogsData() {
   }, []); 
 
   useEffect(() => {
-    fetchLogs().catch((e) => console.warn('Initial audit log fetch failed', e));
+    fetchLogs();
   }, [fetchLogs]);
 
   return {

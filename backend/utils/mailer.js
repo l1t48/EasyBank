@@ -14,7 +14,7 @@ const transporter = nodemailer.createTransport({
 
 async function sendMail(to, subject, html) {
   const info = await transporter.sendMail({
-    from: `"Simple BankingSystem Support" <${process.env.EMAIL_USER}>`,
+    from: `"EasyBank" <${process.env.EMAIL_USER}>`,
     to,
     subject,
     html,

@@ -29,7 +29,6 @@ function emitTransactionUpdate(transaction) {
     const io = getIO();
     // This is the insecure part: global broadcast
     io.emit("transactionUpdated", transaction);
-    console.warn("WARNING: Called deprecated emitTransactionUpdate. Switch to notifyTransactionUpdate for targeted emissions.");
   } catch (err) {
     console.error("Socket emit error:", err);
   }

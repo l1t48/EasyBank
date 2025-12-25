@@ -34,7 +34,7 @@ export function useAuditLogs() {
   };
 
   useEffect(() => {
-    if (token) fetchLogs().catch((e) => console.warn('Initial fetch failed', e));
+    if (token) fetchLogs();
     else {
       setLoading(false);
       setError("Authentication token not found.");
