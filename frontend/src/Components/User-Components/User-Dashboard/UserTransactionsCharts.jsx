@@ -20,7 +20,7 @@ function UserTransactionsCharts({ totalsByType, colors }) {
       {
         label: "Total Amount by Type",
         data: transactionTypes.map(t => totalsByType[t].totalAmount),
-        backgroundColor: [colors.secondary, colors.primaryDigram, colors.accent],
+        backgroundColor: [colors.primaryDigram, colors.secondary, colors.accent],
         borderColor: colors.primary,
         borderWidth: 1,
       },
@@ -42,7 +42,7 @@ function UserTransactionsCharts({ totalsByType, colors }) {
   return (
     <>
       <h2 style={{ color: colors.primary }} className="text-center text-lg font-semibold mb-3 duration-300 transition-colors">
-        Transactions Total Amount by Type
+        Transactions Total Amount by Type (Approved)
       </h2>
       <Bar data={totalsData} options={chartOptions} />
     </>

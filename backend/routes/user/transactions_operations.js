@@ -148,7 +148,7 @@ router.get("/transactions", authMiddleware, async (req, res) => {
         : null;
       const targetObj = t.targetAccountNumber ? (targetMap.get(t.targetAccountNumber) || null) : null;
       const isReceived = t.targetAccountNumber === currentUser.accountNumber;
-      const transactionTypeLabel = isReceived ? "receive" : t.transactionType;
+      const transactionTypeLabel = isReceived ? "Receive" : t.transactionType;
       return {
         ...t,
         user: senderObj,
