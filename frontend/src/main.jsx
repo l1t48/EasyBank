@@ -5,7 +5,9 @@ import App from "./App";
 import "./Styles/main.css";
 import { AuthProvider } from "./Context/AuthContext";
 import { ThemeProvider } from "./Context/ThemeContext";
-import { SetupInterceptors } from "./Utils/General-Utils/SetupInterceptors";
+// import { SetupInterceptors } from "./Utils/General-Utils/SetupInterceptors";
+import { SetupInterceptors } from "./Utils/General-Utils/SetupInterceptors.jsx";
+
 
 SetupInterceptors();
 
