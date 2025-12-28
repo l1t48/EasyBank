@@ -63,13 +63,13 @@ export default function AdminUsersManagementPanelMenu({ onUserCreated, children 
                             <div className="absolute right-0 mt-1 w-44 rounded shadow-md p-2 bg-[var(--nav-bg)] border border-[var(--nav-text)] z-50" style={{ minWidth: DROPDOWN_MIN_WIDTH }}>
                                 <button
                                     onClick={handleCreateUser}
-                                    className="block w-full text-left px-2 py-1 font-bold border border-[--bg] rounded text-sm bg-[var(--nav-text)] text-[var(--nav-bg)] hover:text-[var(--nav-text)] hover:bg-[var(--nav-bg)]"
+                                    className="block w-full text-left px-2 py-1 font-bold border border-[--bg] rounded text-sm bg-[var(--nav-text)] text-[var(--nav-bg)] hover:text-[var(--nav-text)] hover:bg-[var(--nav-bg)] duration-300 transition-colors"
                                 >
                                     Create a New User
                                 </button>
                                 <button
                                     onClick={handleSearchUser}
-                                    className="block w-full text-left mt-2 px-2 py-1 font-bold border border-[--bg] rounded text-sm bg-[var(--nav-text)] text-[var(--nav-bg)] hover:text-[var(--nav-text)] hover:bg-[var(--nav-bg)]"
+                                    className="block w-full text-left mt-2 px-2 py-1 font-bold border border-[--bg] rounded text-sm bg-[var(--nav-text)] text-[var(--nav-bg)] hover:text-[var(--nav-text)] hover:bg-[var(--nav-bg)] duration-300 transition-colors"
                                 >
                                     Search a User
                                 </button>

@@ -132,6 +132,7 @@ export default function AdminUsersManagementPanelCreateUser({ isOpen, onClose, o
                                 name="firstName"
                                 value={formData.firstName}
                                 onChange={handleChange}
+                                placeholder="First name"
                                 required
                                 className="w-full p-2 border border-[var(--nav-text)] bg-[var(--nav-bg)] text-[var(--nav-hover)] rounded outline-none focus:ring focus:ring-[var(--nav-hover)]"
                             />
@@ -142,6 +143,7 @@ export default function AdminUsersManagementPanelCreateUser({ isOpen, onClose, o
                                 type="text"
                                 id={`${idPrefix}-lastName`}
                                 name="lastName"
+                                placeholder="Last name"
                                 value={formData.lastName}
                                 onChange={handleChange}
                                 required
@@ -154,6 +156,7 @@ export default function AdminUsersManagementPanelCreateUser({ isOpen, onClose, o
                                 type="email"
                                 id={`${idPrefix}-email`}
                                 name="email"
+                                placeholder="Email"
                                 autoComplete="off"
                                 value={formData.email}
                                 onChange={handleChange}
@@ -168,6 +171,7 @@ export default function AdminUsersManagementPanelCreateUser({ isOpen, onClose, o
                                 autoComplete="off"
                                 id={`${idPrefix}-password`}
                                 name="password"
+                                placeholder="Password"
                                 value={formData.password}
                                 onChange={handleChange}
                                 required

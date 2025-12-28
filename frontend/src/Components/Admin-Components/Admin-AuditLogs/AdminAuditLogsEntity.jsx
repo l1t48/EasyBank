@@ -59,19 +59,19 @@ function AdminAuditLogsEntity() {
               <div className="absolute right-0 mt-1 w-44 rounded shadow-md p-2 bg-[var(--nav-bg)] border border-[var(--nav-text)] z-50">
                 <button
                   onClick={handleRefresh}
-                  className="block w-full text-left px-2 py-1 font-bold rounded text-sm bg-[var(--nav-text)] text-[var(--nav-bg)] hover:bg-[var(--nav-bg)] hover:text-[var(--nav-text)] hover:border hover:border-[var(--nav-hover)] mb-1"
+                  className="block w-full text-left px-2 py-1 font-bold rounded text-sm bg-[var(--nav-text)] text-[var(--nav-bg)] hover:bg-[var(--nav-bg)] hover:text-[var(--nav-text)] hover:border hover:border-[var(--nav-hover)] mb-1 duration-300 transition-colors"
                 >
                   Refresh
                 </button>
                 <button
                   onClick={() => { setIsFilterModalOpen(true); setDropdownOpen(false); }}
-                  className="block w-full text-left px-2 py-1 font-bold rounded text-sm bg-[var(--nav-text)] text-[var(--nav-bg)] hover:bg-[var(--nav-bg)] hover:text-[var(--nav-text)] hover:border hover:border-[var(--nav-hover)] mt-2"
+                  className="block w-full text-left px-2 py-1 font-bold rounded text-sm bg-[var(--nav-text)] text-[var(--nav-bg)] hover:bg-[var(--nav-bg)] hover:text-[var(--nav-text)] hover:border hover:border-[var(--nav-hover)] mt-2 duration-300 transition-colors"
                 >
                   Filtering Options
                 </button>
                 <button
                   onClick={handleExport}
-                  className="block w-full text-left px-2 py-1 font-bold rounded text-sm bg-[var(--nav-text)] text-[var(--nav-bg)] hover:bg-[var(--nav-bg)] hover:text-[var(--nav-text)] hover:border hover:border-[var(--nav-hover)] mt-2"
+                  className="block w-full text-left px-2 py-1 font-bold rounded text-sm bg-[var(--nav-text)] text-[var(--nav-bg)] hover:bg-[var(--nav-bg)] hover:text-[var(--nav-text)] hover:border hover:border-[var(--nav-hover)] mt-2 duration-300 transition-colors"
                 >
                   Export as JSON
                 </button>

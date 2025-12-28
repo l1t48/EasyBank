@@ -66,7 +66,7 @@ function UserTransactionsTable({ transactions, sortBy, order, handleSort, fetchT
                           {canCancel ? (
                             <button
                               onClick={() => handleCancel(tx.id, fetchTx)}
-                              className="block w-full text-left px-2 py-1 rounded text-sm mt-1 font-bold border-[var(--danger-border)] bg-[var(--nav-text)] text-[var(--nav-bg)] hover:bg-[var(--danger-hover-bg)]"
+                              className="block w-full text-left px-2 py-1 rounded text-sm mt-1 font-bold border-[var(--danger-border)] bg-[var(--nav-text)] text-[var(--nav-bg)] hover:bg-[var(--danger-hover-bg)] duration-300 transition-colors"
                             >
                               Cancel
                             </button>

@@ -25,14 +25,14 @@ function AdminUsersManagementPanelUsersTable({ user, loadingRow, dropdownOpen, t
                         <button
                             onClick={handleEditClickWrapper}
                             disabled={loadingRow.delete}
-                            className={`block w-full text-left px-2 py-1 rounded text-sm font-bold border mb-1 ${loadingRow.delete ? "opacity-60 cursor-wait" : "bg-[var(--nav-text)] text-[var(--nav-bg)] hover:text-[var(--nav-text)] hover:bg-[var(--nav-bg)]"}`}
+                            className={`block w-full text-left px-2 py-1 rounded text-sm font-bold border mb-1 ${loadingRow.delete ? "opacity-60 cursor-wait" : "bg-[var(--nav-text)] text-[var(--nav-bg)] hover:text-[var(--nav-text)] hover:bg-[var(--nav-bg)] duration-300 transition-colors"}`}
                         >
                             Edit User
                         </button>
                         <button
                             onClick={handleDeleteClickWrapper}
                             disabled={loadingRow.delete}
-                            className={`block w-full text-left px-2 py-1 rounded text-sm mt-1 font-bold border ${loadingRow.delete ? "opacity-60 cursor-wait" : "border-[var(--danger-border)] bg-[var(--nav-text)] text-[var(--nav-bg)] hover:bg-[var(--danger-hover-bg)]"}`}
+                            className={`block w-full text-left px-2 py-1 rounded text-sm mt-1 font-bold border ${loadingRow.delete ? "opacity-60 cursor-wait" : "border-[var(--danger-border)] bg-[var(--nav-text)] text-[var(--nav-bg)] hover:bg-[var(--danger-hover-bg)] duration-300 transition-colors"}`}
                         >
                             {loadingRow.delete ? "Deleting..." : "Delete User"}
                         </button>

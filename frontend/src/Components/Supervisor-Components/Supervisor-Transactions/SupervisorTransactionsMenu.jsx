@@ -47,7 +47,7 @@ export default function Transaction_menu_supervisor({ activeFilters, setActiveFi
                             className="w-10 h-10 flex items-center justify-center rounded-xl bg-[var(--nav-text)] hover:bg-[var(--nav-bg)] text-[var(--nav-bg)] hover:text-[var(--nav-text)] hover:border hover:border-[var(--nav-hover)] shadow-md transition"
                         >
                             <span className="sr-only">Menu</span>
-                            <span className="text-xl select-none transform transition-transform duration-200">
+                            <span className="text-xl select-none transform transition-transform duration-300">
                                 {dropdownOpen ? '⋮' : '⋯'}
                             </span>
                         </button>
@@ -55,7 +55,7 @@ export default function Transaction_menu_supervisor({ activeFilters, setActiveFi
                             <div className="absolute right-0 mt-1 w-40 rounded shadow-md p-2 bg-[var(--nav-bg)] border border-[var(--nav-text)] z-50" style={{ minWidth: SUPERVISOR_TRANSACTIONS_MENU }}>
                                 <button
                                     onClick={handleOpenFilters}
-                                    className="block w-full text-left px-2 py-1 font-bold rounded text-sm mt-1 bg-[var(--nav-text)] text-[var(--nav-bg)] hover:text-[var(--nav-text)] hover:bg-[var(--nav-bg)] border border-[--bg]"
+                                    className="block w-full text-left px-2 py-1 font-bold rounded text-sm mt-1 bg-[var(--nav-text)] text-[var(--nav-bg)] hover:text-[var(--nav-text)] hover:bg-[var(--nav-bg)] border border-[--bg] duration-300 transition-colors"
                                 >
                                     Filtering Options
                                 </button>

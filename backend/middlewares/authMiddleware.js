@@ -14,7 +14,7 @@ async function authMiddleware(req, res, next) {
   try {
     const decoded = jwt.verify(token, JWT_SECRET);
     const user = await User.findById(decoded.userId);
-    if (user && decoded.tokenVersion !== user.tokenVersion) {
+    if (!user || decoded.tokenVersion !== user.tokenVersion) {// if (user && decoded.tokenVersion !== user.tokenVersion) {
       return res.status(UNAUTHORIZED).json({
         code: "TOKEN_VERSION_MISMATCH",
         error: "Security update required. Please log in again."

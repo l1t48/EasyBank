@@ -17,14 +17,14 @@ function AdminAllTransactionsTable({ tx, dropdownOpen, toggleDropdown, dropdownR
                 <button
                   onClick={(e) => { e.stopPropagation(); handleApprove(tx.id); }}
                   disabled={loadingRow.approve || loadingRow.reject}
-                  className={`block w-full text-left px-2 py-1 rounded text-sm font-bold border ${loadingRow.approve ? "opacity-60 cursor-wait" : "bg-[var(--nav-text)] text-[var(--nav-bg)] border border-[--bg] hover:text-[var(--nav-text)] hover:bg-[var(--nav-bg)]"}`}
+                  className={`block w-full text-left px-2 py-1 rounded text-sm font-bold border ${loadingRow.approve ? "opacity-60 cursor-wait" : "bg-[var(--nav-text)] text-[var(--nav-bg)] border border-[--bg] hover:text-[var(--nav-text)] hover:bg-[var(--nav-bg)] duration-300 transition-colors"}`}
                 >
                   {loadingRow.approve ? "Approving..." : "Approve"}
                 </button>
                 <button
                   onClick={(e) => { e.stopPropagation(); handleReject(tx.id); }}
                   disabled={loadingRow.approve || loadingRow.reject}
-                  className={`block w-full text-left px-2 py-1 rounded text-sm mt-1 font-bold border ${loadingRow.reject ? "opacity-60 cursor-wait" : "border-[var(--danger-border)] bg-[var(--nav-text)] text-[var(--nav-bg)] hover:bg-[var(--danger-hover-bg)]"}`}
+                  className={`block w-full text-left px-2 py-1 rounded text-sm mt-1 font-bold border ${loadingRow.reject ? "opacity-60 cursor-wait" : "border-[var(--danger-border)] bg-[var(--nav-text)] text-[var(--nav-bg)] hover:bg-[var(--danger-hover-bg)] duration-300 transition-colors"}`}
                 >
                   {loadingRow.reject ? "Rejecting..." : "Reject"}
                 </button>

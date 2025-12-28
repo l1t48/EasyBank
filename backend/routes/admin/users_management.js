@@ -44,24 +44,24 @@ router.get("/all-users", authMiddleware, async (req, res) => {
 });
 
 router.get("/admin/:accountNumber", authMiddleware, async (req, res) => {
-  try {
-    const user = await User.findOne({ accountNumber: req.params.accountNumber });
-    if (!user) return res.status(NOT_FOUND).json({ error: "User not found" });
-    const admin = await User.findById(req.user.userId);
-    await logActivity({
-      userId: admin._id,
-      userName: admin.firstName,
-      userRole: admin.accountType,
-      accountNumber: admin.accountNumber,
-      action: "ADMIN_VIEW_USER",
-      message: `Admin viewed details of user ${user.firstName} ${user.lastName} (Account: ${user.accountNumber})`,
-      req
-    });
-    res.json({ success: true, user });
-  } catch (error) {
-    console.error("Get user error:", error);
-    res.status(INTERNAL_SERVER_ERROR).json({ error: "Server error" });
-  }
+  try {
+    const user = await User.findOne({ accountNumber: req.params.accountNumber });
+    if (!user) return res.status(NOT_FOUND).json({ error: "User not found" });
+    const admin = await User.findById(req.user.userId);
+    await logActivity({
+      userId: admin._id,
+      userName: admin.firstName,
+      userRole: admin.accountType,
+      accountNumber: admin.accountNumber,
+      action: "ADMIN_VIEW_USER",
+      message: `Admin viewed details of user ${user.firstName} ${user.lastName} (Account: ${user.accountNumber})`,
+      req
+    });
+    res.json({ success: true, user });
+  } catch (error) {
+    console.error("Get user error:", error);
+    res.status(INTERNAL_SERVER_ERROR).json({ error: "Server error" });
+  }
 });
 
 router.post("/create-user", authMiddleware, validateRegister, async (req, res) => {

@@ -69,7 +69,7 @@ export default function Transaction_menu_admin({
                     setDropdownOpen(false);
                     setIsEllipsisHorizontal(false);
                   }}
-                  className="block w-full text-left px-2 py-1 font-bold border border-[--bg] rounded text-sm bg-[var(--nav-text)] text-[var(--nav-bg)] hover:text-[var(--nav-text)] hover:bg-[var(--nav-bg)]"
+                  className="block w-full text-left px-2 py-1 font-bold border border-[--bg] rounded text-sm bg-[var(--nav-text)] text-[var(--nav-bg)] hover:text-[var(--nav-text)] hover:bg-[var(--nav-bg)] duration-300 transition-colors"
                 >
                   {optionA}
                 </button>
@@ -80,13 +80,13 @@ export default function Transaction_menu_admin({
                     setDropdownOpen(false);
                     setIsEllipsisHorizontal(false);
                   }}
-                  className="block w-full text-left px-2 py-1 font-bold rounded border border-[--bg] text-sm mt-1 bg-[var(--nav-text)] text-[var(--nav-bg)] hover:text-[var(--nav-text)] hover:bg-[var(--nav-bg)]"
+                  className="block w-full text-left px-2 py-1 font-bold rounded border border-[--bg] text-sm mt-1 bg-[var(--nav-text)] text-[var(--nav-bg)] hover:text-[var(--nav-text)] hover:bg-[var(--nav-bg)] duration-300 transition-colors"
                 >
                   {optionB}
                 </button>
                 <button
                   onClick={handleOpenFilters}
-                  className="block w-full text-left px-2 py-1 font-bold rounded border border-[--bg] text-sm mt-1 bg-[var(--nav-text)] text-[var(--nav-bg)] hover:text-[var(--nav-text)] hover:bg-[var(--nav-bg)]"
+                  className="block w-full text-left px-2 py-1 font-bold rounded border border-[--bg] text-sm mt-1 bg-[var(--nav-text)] text-[var(--nav-bg)] hover:text-[var(--nav-text)] hover:bg-[var(--nav-bg)] duration-300 transition-colors"
                 >
                   Filtering Options
                 </button>
