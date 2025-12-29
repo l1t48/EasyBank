@@ -110,7 +110,11 @@ export function usePendingTransactions(filters) {
   }, [sortBy, order, filters]);
 
   useEffect(() => {
-    const socket = io(BACK_END_URL, { auth: { token: localStorage.getItem("token") } });
+    const socket = io(BACK_END_URL, {
+      auth: { token: localStorage.getItem("token") }, 
+      transports: ["websocket"],
+      secure: true,
+    });
 
     const handleFinalizedTransaction = (updatedTx) => {
       const id = getNormalizedId(updatedTx);
