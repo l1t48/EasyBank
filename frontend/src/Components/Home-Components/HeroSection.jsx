@@ -1,6 +1,6 @@
 import { useContext } from "react";
-import heroLight from "../../Assets/video/HeroSection-light.mp4?url";
-import heroDark from "../../Assets/video/HeroSection-dark.mp4?url";
+import heroLight from "../../assets/video/HeroSection-light.mp4?url";
+import heroDark from "../../assets/video/HeroSection-dark.mp4?url";
 import { ThemeContext } from "../../Context/ThemeContext";
 import { useNavigate } from "react-router-dom";
 
