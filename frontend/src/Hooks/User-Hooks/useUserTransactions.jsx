@@ -51,17 +51,12 @@ function useTransactions(filters, setToast) {
     if (!BACK_END_URL) return;
 
     const socket = io(BACK_END_URL, {
-      auth: { token: localStorage.getItem("token") },
-      transports: ["websocket", "polling"], 
-      secure: true,                       
-      reconnection: true,                  
-      reconnectionAttempts: 5,
-      reconnectionDelay: 5000,
+      auth: { token: localStorage.getItem("token") }
     });
-    
+
     socket.on("connect", () => console.log("✅ SOCKET CONNECTED TO RENDER!"));
-  socket.on("connect_error", (err) => console.error("❌ SOCKET ERROR:", err.message));
-    
+    socket.on("connect_error", (err) => console.error("❌ SOCKET ERROR:", err.message));
+
     const handleStatusUpdate = (updatedTxRaw) => {
       const updatedTx = processTx(updatedTxRaw);
       if (!updatedTx.id) return fetchTx();

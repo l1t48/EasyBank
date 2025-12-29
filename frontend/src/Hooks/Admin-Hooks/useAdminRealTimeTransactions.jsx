@@ -11,15 +11,10 @@ export function useRealTimeTransactions({ setTransactions }) {
   useEffect(() => {
     const socket = io(BACK_END_URL, {
       auth: { token: localStorage.getItem("token") },
-      transports: ["websocket", "polling"], 
-      secure: true,                         
-      reconnection: true,                  
-      reconnectionAttempts: 5,
-      reconnectionDelay: 5000,
     });
 
     socket.on("connect", () => console.log("✅ SOCKET CONNECTED TO RENDER!"));
-  socket.on("connect_error", (err) => console.error("❌ SOCKET ERROR:", err.message));
+    socket.on("connect_error", (err) => console.error("❌ SOCKET ERROR:", err.message));
 
     ["pendingTransactionCreated", "transactionCreated"].forEach((evt) => {
       socket.on(evt, async (newTx) => {
