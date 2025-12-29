@@ -18,6 +18,9 @@ export function useRealTimeTransactions({ setTransactions }) {
       reconnectionDelay: 5000,
     });
 
+    socket.on("connect", () => console.log("✅ SOCKET CONNECTED TO RENDER!"));
+  socket.on("connect_error", (err) => console.error("❌ SOCKET ERROR:", err.message));
+
     ["pendingTransactionCreated", "transactionCreated"].forEach((evt) => {
       socket.on(evt, async (newTx) => {
         try {

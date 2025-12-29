@@ -119,6 +119,9 @@ export function usePendingTransactions(filters) {
       reconnectionDelay: 5000,
     });
 
+    socket.on("connect", () => console.log("✅ SOCKET CONNECTED TO RENDER!"));
+  socket.on("connect_error", (err) => console.error("❌ SOCKET ERROR:", err.message));
+
     const handleFinalizedTransaction = (updatedTx) => {
       const id = getNormalizedId(updatedTx);
       setTransactions((prev) => prev.filter((tx) => tx.id !== id));

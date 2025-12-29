@@ -1,6 +1,6 @@
 const { Server } = require("socket.io");
 const jwt = require("jsonwebtoken");
-const User = require("./models/User"); 
+const User = require("./models/User");
 let io;
 
 /*
@@ -29,11 +29,16 @@ function initSocket(server) {
       credentials: true,
     },
     transports: ["websocket", "polling"],
-    allowEIO3: true 
+    allowEIO3: true
   });
   io.use(async (socket, next) => {
     try {
-      const token = socket.handshake.auth?.token || (socket.handshake.headers?.authorization || "").split(" ")[1];
+      let token = socket.handshake.auth?.token || (socket.handshake.headers?.authorization || "").split(" ")[1];
+      // ADD THIS BLOCK:
+      if (token && token.startsWith("Bearer ")) {
+        token = token.split(" ")[1];
+      }
+      // const token = socket.handshake.auth?.token || (socket.handshake.headers?.authorization || "").split(" ")[1];
       if (!token) return next(new Error("Unauthorized: token required"));
 
       const payload = jwt.verify(token, process.env.JWT_SECRET);
@@ -66,7 +71,7 @@ function initSocket(server) {
       console.log(`-> JOINED: ${accountRoom}`);
     }
     if (accountType) {
-      const roleRoom = `role:${accountType.toString().toLowerCase()}`; 
+      const roleRoom = `role:${accountType.toString().toLowerCase()}`;
       socket.join(roleRoom);
       console.log(`-> JOINED: ${roleRoom}`);
     }

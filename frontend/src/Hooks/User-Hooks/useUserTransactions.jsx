@@ -58,7 +58,10 @@ function useTransactions(filters, setToast) {
       reconnectionAttempts: 5,
       reconnectionDelay: 5000,
     });
-
+    
+    socket.on("connect", () => console.log("✅ SOCKET CONNECTED TO RENDER!"));
+  socket.on("connect_error", (err) => console.error("❌ SOCKET ERROR:", err.message));
+    
     const handleStatusUpdate = (updatedTxRaw) => {
       const updatedTx = processTx(updatedTxRaw);
       if (!updatedTx.id) return fetchTx();
