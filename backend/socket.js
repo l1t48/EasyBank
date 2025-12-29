@@ -28,8 +28,6 @@ function initSocket(server) {
       methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
       credentials: true,
     },
-    transports: ["websocket", "polling"], 
-    allowEIO3: true 
   });
   io.use(async (socket, next) => {
     try {
