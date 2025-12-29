@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import { io } from "socket.io-client";
-import { 
-  getNormalizedId, 
-  normalizePayload, 
-  enrichTransactionData 
+import {
+  getNormalizedId,
+  normalizePayload,
+  enrichTransactionData
 } from "../../Utils/Admin-Utils/AdminTransactionUtils";
 const BACK_END_URL = import.meta.env.VITE_API_BACKEND_URL;
 
@@ -11,6 +11,11 @@ export function useRealTimeTransactions({ setTransactions }) {
   useEffect(() => {
     const socket = io(BACK_END_URL, {
       auth: { token: localStorage.getItem("token") },
+      transports: ["websocket", "polling"], 
+      secure: true,                         
+      reconnection: true,                  
+      reconnectionAttempts: 5,
+      reconnectionDelay: 5000,
     });
 
     ["pendingTransactionCreated", "transactionCreated"].forEach((evt) => {
@@ -28,7 +33,7 @@ export function useRealTimeTransactions({ setTransactions }) {
       const id = getNormalizedId(updatedTx);
       try {
         const normalized = normalizePayload(updatedTx);
-        
+
         setTransactions((prev) => {
           const exists = prev.some((tx) => tx.id === id);
           if (exists) {

@@ -51,7 +51,12 @@ function useTransactions(filters, setToast) {
     if (!BACK_END_URL) return;
 
     const socket = io(BACK_END_URL, {
-      auth: { token: localStorage.getItem("token") }
+      auth: { token: localStorage.getItem("token") },
+      transports: ["websocket", "polling"], 
+      secure: true,                       
+      reconnection: true,                  
+      reconnectionAttempts: 5,
+      reconnectionDelay: 5000,
     });
 
     const handleStatusUpdate = (updatedTxRaw) => {
