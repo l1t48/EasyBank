@@ -18,7 +18,7 @@ export function usePendingTransactionsData(filters) {
   const isInitialFetch = useRef(true);
 
   const handleSort = (column) => {
-    setLoading(true);
+    setLoading(true); 
     if (sortBy === column) setOrder(order === "asc" ? "desc" : "asc");
     else {
       setSortBy(column);
@@ -57,8 +57,8 @@ export function usePendingTransactionsData(filters) {
 
   const fetchPending = useCallback(async () => {
     try {
-      if (!isInitialFetch.current) setLoading(true);
-
+      if (!isInitialFetch.current) setLoading(true); 
+      
       const query = new URLSearchParams({ sortBy, order, ...filters }).toString();
       const res = await fetch(`${API.admin.pendingTransactions}?${query}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}`, "Content-Type": "application/json" },
@@ -109,9 +109,6 @@ export function usePendingTransactionsData(filters) {
       auth: { token: localStorage.getItem("token") },
     });
 
-    socket.on("connect", () => console.log("✅ SOCKET CONNECTED TO RENDER!"));
-    socket.on("connect_error", (err) => console.error("❌ SOCKET ERROR:", err.message));
-
     const upsertTx = (txObj) => {
       if (!txObj || !txObj.id) return;
       setTransactions((prev) => {
@@ -155,7 +152,7 @@ export function usePendingTransactionsData(filters) {
         removeTxByPayload(updatedTx);
         return;
       }
-
+      
       try {
         const normalized = { id: updatedId, ...updatedTx };
         upsertTx(normalized);
@@ -168,9 +165,9 @@ export function usePendingTransactionsData(filters) {
     });
 
     if (isInitialFetch.current) {
-      fetchPending();
+        fetchPending();
     }
-
+    
     return () => {
       socket.off("pendingTransactionCreated", handleNewTransaction);
       socket.off("transactionCreated", handleNewTransaction);
@@ -184,10 +181,10 @@ export function usePendingTransactionsData(filters) {
   }, [enrichTransactionData, fetchPending, filters]);
 
   useEffect(() => {
-    if (!isInitialFetch.current) {
-      fetchPending();
+    if (!isInitialFetch.current) { 
+        fetchPending();
     }
-  }, [sortBy, order, filters, fetchPending]);
+  }, [sortBy, order, filters, fetchPending]); 
 
   return {
     transactions,

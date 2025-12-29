@@ -34,13 +34,35 @@ function emitTransactionUpdate(transaction) {
   }
 }
 
+// Force userId to String to avoid the [object Object] bug
 async function emitToUser(userId, event, payload) {
   try {
-    getIO().to(`user:${userId}`).emit(event, payload);
+    const cleanUserId = String(userId); 
+    getIO().to(`user:${cleanUserId}`).emit(event, payload);
+    console.log(`Production Log: Sent ${event} to user:${cleanUserId}`);
   } catch (err) {
     console.error(`Error emitting to user:${userId}:`, err);
   }
 }
+
+// Force roleName to lowercase to avoid Case-Sensitivity bugs
+async function emitToRole(roleName, event, payload) {
+  try {
+    const cleanRole = String(roleName).toLowerCase().trim();
+    getIO().to(`role:${cleanRole}`).emit(event, payload);
+    console.log(`Production Log: Sent ${event} to role:${cleanRole}`);
+  } catch (err) {
+    console.error(`Error emitting to role:${roleName}:`, err);
+  }
+}
+
+// async function emitToUser(userId, event, payload) {
+//   try {
+//     getIO().to(`user:${userId}`).emit(event, payload);
+//   } catch (err) {
+//     console.error(`Error emitting to user:${userId}:`, err);
+//   }
+// }
 
 async function emitToAccount(accountNumber, event, payload) {
   try {
@@ -50,13 +72,13 @@ async function emitToAccount(accountNumber, event, payload) {
   }
 }
 
-async function emitToRole(roleName, event, payload) {
-  try {
-    getIO().to(`role:${roleName.toString().toLowerCase()}`).emit(event, payload);
-  } catch (err) {
-    console.error(`Error emitting to role:${roleName}:`, err);
-  }
-}
+// async function emitToRole(roleName, event, payload) {
+//   try {
+//     getIO().to(`role:${roleName.toString().toLowerCase()}`).emit(event, payload);
+//   } catch (err) {
+//     console.error(`Error emitting to role:${roleName}:`, err);
+//   }
+// }
 
 function toPublicJson(tx, audience = "user", performer = null) {
   if (!tx) 
