@@ -14,6 +14,16 @@ The system simulates core banking workflows, including authentication, role-base
 
 This project is intended for learning, demonstration, and portfolio evaluation purposes.
 
+### 1.1 Deployment Note
+
+This application was not deployed to a public production environment due to infrastructure limitations of free hosting platforms.
+The system relies on persistent WebSocket connections (Socket.IO) for real-time, role-based notifications, which are not reliably supported on free-tier platforms due to container sleeping and connection termination.
+
+To ensure the real-time functionality is demonstrated correctly, a recorded demo video is provided instead. The video showcases the full system behavior under production-like conditions, including authentication, role-based updates, and live transaction state changes.
+
+The application is fully production-ready and can be deployed on platforms that support long-lived WebSocket connections (e.g., Fly.io, paid Render plans, or equivalent infrastructure).
+
+
 ## 2. User Roles & Permissions
 EasyBank implements Role-Based Access Control (RBAC) with three distinct roles, each having clearly defined permissions and limitations.
 
