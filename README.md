@@ -21,6 +21,14 @@ To ensure the system’s real-time behavior is demonstrated accurately, a record
 
 The application itself is fully production-ready and has been tested locally and in controlled environments where persistent WebSocket connections are supported. It can be reliably deployed on platforms that allow long-lived connections, such as Fly.io, paid Render plans, or equivalent infrastructure.
 
+### 1.2 Important Note on Repository Reset Due to Security Vulnerability
+
+At the early stage of this project, a security vulnerability occurred when the .env file was accidentally pushed to the remote repository, despite being listed in the .gitignore file. Since the sensitive data had already been committed and exposed in the repository history, simply removing the file was not sufficient to fully mitigate the risk.
+
+To ensure proper security and prevent any potential misuse of sensitive information, the decision was made to permanently remove the original repository, including its commit history and workflow. A new repository was then created, and development continued from a clean and secure state with corrected configuration handling.
+
+As a result, the current repository does not reflect the full development history of the project, but it represents the secure and final implementation.
+
 
 ## 2. User Roles & Permissions
 EasyBank implements Role-Based Access Control (RBAC) with three distinct roles, each having clearly defined permissions and limitations.
