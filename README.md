@@ -241,6 +241,9 @@ For a portfolio project, the current solution was considered sufficient.
 - A private internal chat system for secure staff communication was planned but excluded due to backend readiness and time limitations.
 - Automatic logout when a user leaves the browser session is not implemented and should be added.
 - Introducing an additional role focused on incident response, threat detection, and security analysis would significantly enhance the system from a cybersecurity perspective.
+- A centralized state management solution such as Redux was not implemented. Instead, component-level state and direct API calls were used, which increases complexity and reduces scalability. Implementing Redux would improve state consistency, maintainability, and separation of concerns.
+- Some components were duplicated across the application. These could be refactored into reusable, dynamic components to improve code maintainability, reduce redundancy, and enhance overall system scalability.
+- JWT token refresh mechanisms based on expiration time were not implemented. Currently, tokens remain valid until manual logout or expiration without automatic renewal. Implementing secure refresh tokens stored in HTTP-only cookies would improve session security and help mitigate common threats such as Cross-Site Scripting (XSS), which can otherwise expose tokens stored in client-side storage.
 
 
 ## 12 Testing
