@@ -12,6 +12,8 @@ dist
 dist-ssr
 *.local
 
+old_README.md
+
 .env
 .env.local
 .env.development.local

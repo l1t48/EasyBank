@@ -26,6 +26,6 @@
     "supertest": "^7.1.4"
   },
   "scripts": {
-    "test": "jest tests --detectOpenHandles --forceExit"
+    "dev": "nodemon server.js"
   }
 }
